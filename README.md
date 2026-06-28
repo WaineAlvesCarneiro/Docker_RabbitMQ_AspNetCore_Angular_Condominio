@@ -1,3 +1,5 @@
+# As telas ainda estou trabalhando no CSS
+
 # 🏢 Projeto de Gerenciamento de Condomínios (Multitenant)
 
 Sistema robusto e escalável projetado para arquitetura em Nuvem (**Cloud Native**) com suporte a múltiplos condomínios (**Multi-tenant**), onde cada condomínio é isolado estruturalmente como uma empresa distinta.
