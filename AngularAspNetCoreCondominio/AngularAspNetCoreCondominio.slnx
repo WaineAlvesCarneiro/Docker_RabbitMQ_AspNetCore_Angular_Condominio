@@ -1,0 +1,13 @@
+<Solution>
+  <Project Path="CondominioSaaSAngular.API/CondominioSaaSAngular.API.csproj" />
+  <Project Path="CondominioSaaSAngular.Application.Tests/CondominioSaaSAngular.Application.Tests.csproj" Id="0bbb9653-6429-48c8-99ae-e69838728efd" />
+  <Project Path="CondominioSaaSAngular.Application/CondominioSaaSAngular.Application.csproj" />
+  <Project Path="CondominioSaaSAngular.Configurations/CondominioSaaSAngular.Configurations.csproj" />
+  <Project Path="CondominioSaaSAngular.Domain.Tests/CondominioSaaSAngular.Domain.Tests.csproj" Id="9f99dfcb-d3bc-4026-9241-321ba857bbe3" />
+  <Project Path="CondominioSaaSAngular.Domain/CondominioSaaSAngular.Domain.csproj" />
+  <Project Path="CondominioSaaSAngular.Infrastructure/CondominioSaaSAngular.Infrastructure.csproj" />
+  <Project Path="CondominioSaaSAngular.Integration.Tests/CondominioSaaSAngular.Integration.Tests.csproj" Id="2cf3c317-bca9-4a56-928b-7ed70a142483" />
+  <Project Path="CondominioSaaSAngular.Worker/CondominioSaaSAngular.Worker.csproj">
+    <Build Solution="Debug|*" Project="false" />
+  </Project>
+</Solution>

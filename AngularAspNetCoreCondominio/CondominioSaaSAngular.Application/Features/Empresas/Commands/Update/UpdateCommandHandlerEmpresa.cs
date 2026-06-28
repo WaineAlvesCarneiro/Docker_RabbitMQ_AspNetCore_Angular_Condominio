@@ -1,0 +1,70 @@
+﻿using CondominioSaaSAngular.Application.DTOs;
+using CondominioSaaSAngular.Application.Mappings;
+using CondominioSaaSAngular.Domain.Common;
+using CondominioSaaSAngular.Domain.Entities;
+using CondominioSaaSAngular.Domain.Enums;
+using CondominioSaaSAngular.Domain.Interfaces;
+using CondominioSaaSAngular.Domain.Repositories;
+using CondominioSaaSAngular.Domain.Repositories.Auth;
+using MediatR;
+using Microsoft.Extensions.Logging;
+
+namespace CondominioSaaSAngular.Application.Features.Empresas.Commands.Update;
+
+public class UpdateCommandHandlerEmpresa(
+    IEmpresaRepository repository,
+    IAuthUserRepository authUserRepository,
+    IMensageriaService mensageriaService,
+    IEmailTemplateService emailTemplateService,
+    ILogger<UpdateCommandHandlerEmpresa> logger)
+        : IRequestHandler<UpdateCommandEmpresa, Result<EmpresaDto>>
+{
+    public async Task<Result<EmpresaDto>> Handle(UpdateCommandEmpresa request, CancellationToken cancellationToken)
+    {
+        var dadoToUpdate = await repository.GetByIdAsync(request.Id, cancellationToken);
+        if (dadoToUpdate == null) return Result<EmpresaDto>.Failure("Empresa não encontrada.");
+
+        bool statusMudouParaInativo = dadoToUpdate.UpdateFromCommand(request);
+        await repository.UpdateAsync(dadoToUpdate, cancellationToken);
+
+        if (statusMudouParaInativo) await SincronizarStatusUsuariosAsync(dadoToUpdate.Id, request.Ativo, cancellationToken);
+
+        await EnviarEmailAlteracoesAsync(dadoToUpdate);
+
+        return Result<EmpresaDto>.Success(dadoToUpdate.ToDto(), "Empresa atualizada com sucesso.");
+    }
+
+    private async Task EnviarEmailAlteracoesAsync(Empresa dadoToUpdate)
+    {
+        try
+        {
+            var corpoEmail = emailTemplateService.GerarEmpresaAlterada(dadoToUpdate.RazaoSocial);
+            var emailRequest = new EnvioEmailRequest(
+                dadoToUpdate.Email,
+                "Empresa alteração de Dados Cadastrais",
+                corpoEmail,
+                dadoToUpdate.Id
+            );
+
+            await mensageriaService.PublicarMensagemAsync(emailRequest);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "[Update Empresa] Falha ao enfileirar e-mail para {Email}", dadoToUpdate.Email);
+        }
+    }
+
+    private async Task SincronizarStatusUsuariosAsync(long empresaId, TipoEmpresaAtivo novoStatus, CancellationToken cancellationToken)
+    {
+        var usuarios = await authUserRepository.GetByEmpresaIdAsync(empresaId, cancellationToken);
+
+        foreach (var usuario in usuarios)
+        {
+            usuario.EmpresaAtiva = novoStatus;
+            usuario.DataAlteracao = DateTime.Now;
+            await authUserRepository.UpdateAsync(usuario, cancellationToken);
+        }
+
+        logger.LogInformation("[Update Status Usuarios] Status de {Qtd} usuários sincronizados com a empresa {Id}", usuarios.Count(), empresaId);
+    }
+}

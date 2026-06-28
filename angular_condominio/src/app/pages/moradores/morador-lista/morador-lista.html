@@ -1,0 +1,45 @@
+<div class="container">
+
+  <div class="header">
+    <h2>Lista de Moradores</h2>
+    <button class="btn primary" (click)="novo()">Novo Morador</button>
+  </div>
+
+  <table class="itens-table">
+    <thead>
+      <tr>
+        <th>Código</th>
+        <th>Nome</th>
+        <th>Celular</th>
+        <th>Data entrada</th>
+        <th>Data saída</th>
+        <th>Imóvel 'Bloco-Apto'</th>
+        <th>Proprietário</th>
+        <th class="actions">Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let morador of moradores">
+        <td data-label="Código">{{ morador.id }}</td>
+        <td data-label="Nome">{{ morador.nome }}</td>
+        <td data-label="Celular">{{ morador.celular | celularpipe }}</td>
+        <td data-label="Data entrada">{{ morador.dataEntrada | date:'dd/MM/yyyy':'':'pt-BR' }}</td>
+        <td data-label="Data saída">{{ morador.dataSaida | date:'dd/MM/yyyy':'':'pt-BR' }}</td>
+        <td data-label="Imóvel">{{ morador.imovelDto?.bloco + '-' + morador.imovelDto?.apartamento }}</td>
+        <td data-label="Proprietário">
+          <span class="status" [ngClass]="morador.isProprietario == true ? 'sim' : 'nao'">
+            {{ morador.isProprietario == true ? 'Sim' : 'Não' }}
+          </span>
+        </td>
+        <td class="actions" data-label="Ações">
+          <button class="btn edit" (click)="editar(morador.id)">
+            {{ userRole === 'Porteiro' ? 'Visualizar' : 'Editar' }}
+          </button>
+          <button *ngIf="userRole !== 'Porteiro'" class="btn delete" (click)="excluir(morador.id)">
+            Excluir
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

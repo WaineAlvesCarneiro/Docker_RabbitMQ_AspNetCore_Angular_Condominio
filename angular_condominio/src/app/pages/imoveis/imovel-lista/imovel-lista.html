@@ -1,0 +1,34 @@
+<div class="container">
+  <div class="header">
+    <h2>Lista de Imoveis</h2>
+    <button class="btn primary" routerLink="/imoveis/novo">Novo Imóvel</button>
+  </div>
+
+  <table class="itens-table">
+    <thead>
+      <tr>
+        <th>Código</th>
+        <th>Bloco</th>
+        <th>Apartamento</th>
+        <th>Box</th>
+        <th class="actions">Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let imovel of imoveis">
+        <td data-label="Código">{{ imovel.id }}</td>
+        <td data-label="Bloco">{{ imovel.bloco }}</td>
+        <td data-label="Apartamento">{{ imovel.apartamento}}</td>
+        <td data-label="Box">{{ imovel.boxGaragem }}</td>
+        <td class="actions" data-label="Ações">
+          <button class="btn edit" (click)="editar(imovel.id)">
+            {{ userRole === 'Porteiro' ? 'Visualizar' : 'Editar' }}
+          </button>
+          <button *ngIf="userRole !== 'Porteiro'" class="btn delete" (click)="excluir(imovel.id)">
+            Excluir
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

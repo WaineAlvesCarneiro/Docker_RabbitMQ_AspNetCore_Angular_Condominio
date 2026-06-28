@@ -1,0 +1,83 @@
+<h2>{{ form.get('id')?.value ? 'Editar Morador' : 'Novo Morador' }}</h2>
+
+<form [formGroup]="form" class="form-container" (ngSubmit)="salvar()" autocomplete="off">
+  <div *ngIf="form.get('id')?.value !== 0" class="form-group">
+    <label for="id">Código:</label>
+    <input type="number" id="id" formControlName="id"/>
+  </div>
+
+  <div class="form-group">
+    <label for="nome">Nome:</label>
+    <input id="nome" formControlName="nome" maxlength="50" #focusInput/>
+  </div>
+  <div *ngIf="form.get('nome')?.invalid && (formSubmetido)" class="validation-message">
+    <div *ngIf="form.get('nome')?.errors?.['required']">
+      Nome é obrigatório.
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="celular">Celular:</label>
+    <input id="celular" formControlName="celular" maxlength="15" celularMask placeholder="(99) 99999-9999"/>
+  </div>
+  <div *ngIf="form.get('celular')?.invalid && (formSubmetido)" class="validation-message">
+    <div *ngIf="form.get('celular')?.errors?.['required']">Celular é obrigatório.</div>
+    <div *ngIf="form.get('celular')?.errors?.['pattern']">Celular deve ter 11 dígitos (somente números).</div>
+  </div>
+
+  <div class="form-group">
+    <label for="email">E-mail:</label>
+    <input id="email" formControlName="email" maxlength="50"/>
+  </div>
+  <div *ngIf="form.get('email')?.invalid && (formSubmetido)" class="validation-message">
+    <div *ngIf="form.get('email')?.errors?.['required']">
+      E-mail é obrigatório.
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="dataEntrada">Data Entrada:</label>
+    <input type="date" id="dataEntrada" formControlName="dataEntrada"/>
+  </div>
+  <div *ngIf="form.get('dataEntrada')?.invalid && (formSubmetido)" class="validation-message">
+    <div *ngIf="form.get('dataEntrada')?.errors?.['required']">
+      Data entrada é obrigatório.
+    </div>
+  </div>
+
+  <div *ngIf="form.get('id')?.value !== 0" class="form-group">
+    <label for="dataSaida">Data Saída:</label>
+    <input type="date" id="dataSaida" formControlName="dataSaida"/>
+  </div>
+  
+  <div class="form-group">
+    <label for="imovel">Imóvel:</label>
+    <select id="imovelId" formControlName="imovelId">
+      <option *ngFor="let imovel of imoveis" [value]="imovel.id">
+        Bloco {{ imovel.bloco }} - Apto {{ imovel.apartamento }}
+      </option>
+    </select>
+  </div>
+  <div *ngIf="form.get('imovelId')?.invalid && (formSubmetido)" class="validation-message">
+    <div *ngIf="form.get('imovelId')?.errors?.['required']">
+      Imóvel é obrigatório.
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <label class="custom-checkbox">
+      <input type="checkbox" id="isProprietario" formControlName="isProprietario"/>
+      <span class="checkmark"></span>
+      Proprietário
+    </label>
+  </div>
+
+  <div class="form-actions">
+    <button type="submit" class="btn primary" [disabled]="isSaving || form.invalid">
+      <span *ngIf="!isSaving">Salvar</span>
+      <span *ngIf="isSaving">Aguarde...</span>
+    </button>
+    <button type="button" class="btn secondary" (click)="cancelar()">
+      {{ userRole === 'Porteiro' ? 'Voltar' : 'Cancelar' }}
+    </button>  </div>
+</form>

@@ -1,0 +1,36 @@
+<div class="container">
+  <div class="header">
+    <h2>Lista de Usuários</h2>
+    <button class="btn primary" (click)="novo()">Novo usuário</button>
+  </div>
+
+  <table class="itens-table">
+    <thead>
+      <tr>
+        <th>Código</th>
+        <th>Usuário</th>
+        <th>Perfil</th>
+        <th>Status Usuário</th>
+        <th>Status Empresa</th>
+        <th>Código Empresa</th>
+        <th>Empresa</th>
+        <th class="actions">Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let u of usuarios">
+        <td data-label="Código">{{ u.id }}</td>
+        <td data-label="Usuário">{{ u.userName }}</td>
+        <td data-label="Perfil">{{ getRoleLabel(u.role) }}</td>
+        <td data-label="Status">{{ tipoUserAtivoMap.get(u.ativo) }}</td>
+        <td data-label="Status Empresa">{{ tipoEmpresaAtivoMap.get(u.empresaAtiva) }}</td>
+        <td data-label="Código Empresa">{{ u.empresaId || '-' }}</td>
+        <td data-label="Empresa">{{ u.empresaDto?.razaoSocial || '-' }}</td>
+        <td class="actions" data-label="Ações">
+          <button class="btn edit" (click)="editar(u.id)">Editar</button>
+          <button class="btn delete" (click)="excluir(u.id)">Excluir</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

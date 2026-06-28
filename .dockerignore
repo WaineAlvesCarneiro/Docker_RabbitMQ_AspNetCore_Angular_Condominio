@@ -1,0 +1,69 @@
+# Dependencies
+**/bin/
+**/obj/
+**/node_modules/
+**/.npm/
+**/.nuget/
+
+# Development files
+**/.vscode/
+**/.vs/
+**/.idea/
+**/*.user
+**/*.suo
+**/*.pidb
+**/*.sln.docstates
+
+# Logs
+**/*.log
+**/*.logs
+**/logs/
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Docker
+docker-compose*.yml
+Dockerfile*
+.dockerignore
+*.dockerignore
+
+# Environment files with secrets
+.env
+.env.local
+.env.*.local
+
+# BUT commit the validation script
+!*.example
+
+# Test coverage
+**/coverage/
+**/TestResults/
+
+# Publish output
+**/publish/
+**/Release/
+
+# IDE specific
+**/Properties/launchSettings.json
+
+# OS metadata
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary files
+**/*.tmp
+**/*.temp
+**/*.cache
+
+# Documentation
+**/README.md
+**/docs/
+
+# Build outputs
+**/*.dll
+**/*.exe
+**/*.pdb

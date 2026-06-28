@@ -1,0 +1,21 @@
+﻿using CondominioSaaSAngular.Domain.Common;
+using CondominioSaaSAngular.Domain.Repositories;
+using MediatR;
+
+namespace CondominioSaaSAngular.Application.Features.Imoveis.Commands.Delete;
+
+public class DeleteCommandHandlerImovel(IImovelRepository repository, IMoradorRepository moradorRepository)
+    : IRequestHandler<DeleteCommandImovel, Result>
+{
+    public async Task<Result> Handle(DeleteCommandImovel request, CancellationToken cancellationToken)
+    {
+        var existsMoradorVinculadoNoImovel = await moradorRepository.ExisteMoradorVinculadoNoImovelAsync(request.Id, cancellationToken);
+        if (existsMoradorVinculadoNoImovel) return Result.Failure("Não é possível excluir o imóvel, pois tem morador vinculado.");
+
+        var dado = await repository.GetByIdAsync(request.Id, cancellationToken);
+        if (dado is null) return Result.Failure("Imóvel não encontrado.");
+
+        await repository.DeleteAsync(dado, cancellationToken);
+        return Result.Success("Imóvel deletado com sucesso.");
+    }
+}

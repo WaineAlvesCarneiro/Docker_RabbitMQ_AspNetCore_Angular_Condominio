@@ -1,0 +1,48 @@
+<h2>{{ form.get('id')?.value ? 'Editar Imóvel' : 'Novo Imóvel' }}</h2>
+
+<form [formGroup]="form" class="form-container" (ngSubmit)="salvar()" autocomplete="off">
+  <div *ngIf="id" class="form-group">
+    <label for="id">Código:</label>
+    <input type="number" id="id" formControlName="id" maxlength="10"/>
+  </div>
+
+  <div class="form-group">
+    <label for="bloco">Bloco:</label>
+    <input id="bloco" formControlName="bloco" maxlength="10" #focusInput/>
+  </div>
+  <div *ngIf="form.get('bloco')?.invalid && (formSubmetido)" class="validation-message">
+    <div *ngIf="form.get('bloco')?.errors?.['required']">
+      Bloco é obrigatório.
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="apartamento">Apartamento:</label>
+    <input id="apartamento" formControlName="apartamento" maxlength="10"/>
+  </div>
+  <div *ngIf="form.get('apartamento')?.invalid && (formSubmetido)" class="validation-message">
+    <div *ngIf="form.get('apartamento')?.errors?.['required']">
+      Apartamento é obrigatório.
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="boxGaragem">Box Garagem:</label>
+    <input id="boxGaragem" formControlName="boxGaragem"/>
+  </div>
+  <div *ngIf="form.get('boxGaragem')?.invalid && (formSubmetido)" class="validation-message">
+    <div *ngIf="form.get('boxGaragem')?.errors?.['required']">
+      Box Garagem é obrigatório.
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <button type="submit" class="btn primary" >
+      <span *ngIf="!isSaving">Salvar</span>
+      <span *ngIf="isSaving">Aguarde...</span>
+    </button>
+    <button type="button" class="btn secondary" (click)="cancelar()">
+      {{ userRole === 'Porteiro' ? 'Voltar' : 'Cancelar' }}
+    </button>
+  </div>
+</form>

@@ -1,0 +1,31 @@
+<div class="loginContainer">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="loginForm" autocomplete="off">
+    <h2>Primeiro Acesso</h2>
+    <p>Você precisa definir uma senha definitiva para continuar.</p>
+
+    <div>
+      <label for="novaSenha">Nova senha</label>
+      <input id="novaSenha" formControlName="novaSenha" type="password" #focusInput />
+      <div *ngIf="form.get('novaSenha')?.touched" class="validation-message">
+        <div *ngIf="form.get('novaSenha')?.errors?.['required']">A nova senha é obrigatória.</div>
+        <div *ngIf="form.get('novaSenha')?.errors?.['minlength']">A senha deve ter no mínimo 5 caracteres.</div>
+      </div>
+    </div>
+
+    <div>
+      <label for="confirmarSenha">Confirmar senha</label>
+      <input id="confirmarSenha" formControlName="confirmarSenha" type="password" />
+      <div *ngIf="(form.get('confirmarSenha')?.touched || form.touched)" class="validation-message">
+        <div *ngIf="form.get('confirmarSenha')?.errors?.['required']">Confirmação de senha é obrigatória.</div>
+        <div *ngIf="form.errors?.['passwordMismatch']">As senhas não conferem.</div>
+      </div>
+    </div>
+
+    <div>
+      <button type="submit" class="fullWidthButton" [disabled]="isSaving || form.invalid">
+        <span *ngIf="!isSaving">Salvar Senha</span>
+        <span *ngIf="isSaving">Aguarde...</span>
+      </button>
+    </div>
+  </form>
+</div>

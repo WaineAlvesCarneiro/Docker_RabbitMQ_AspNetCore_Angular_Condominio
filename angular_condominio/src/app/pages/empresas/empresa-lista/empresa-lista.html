@@ -1,0 +1,36 @@
+<div class="container">
+  <div class="header">
+      <h2>Lista de Empresas</h2>
+      <button class="btn primary" (click)="novo()">Novo empresa</button>
+    </div>
+
+  <table class="itens-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Status</th>
+        <th>Razão Social</th>
+        <th>CNPJ</th>
+        <th>Tipo de Condomínio</th>
+        <th>Nome Responsável</th>
+        <th>Celular</th>
+        <th class="actions">Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let e of empresas">
+        <td>{{ e.id }}</td>
+        <td>{{ getAtivoLabel(e.ativo) }}</td>
+        <td>{{ e.razaoSocial }}</td>
+        <td>{{ e.cnpj | cnpjpipe }}</td>
+        <td>{{ getTipoCondominioLabel(e.tipoDeCondominio) }}</td>
+        <td>{{ e.nome }}</td>
+        <td>{{ e.celular | celularpipe}}</td>
+        <td class="actions" data-label="Ações">
+          <button class="btn edit" (click)="editar(e.id)">Editar</button>
+          <button class="btn delete" (click)="excluir(e.id)">Excluir</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

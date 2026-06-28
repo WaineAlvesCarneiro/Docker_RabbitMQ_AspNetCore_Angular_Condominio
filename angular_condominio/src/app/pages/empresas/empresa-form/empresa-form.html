@@ -1,0 +1,128 @@
+<h2>{{ form.get('id')?.value ? 'Editar Empresa' : 'Cadastro de Empresa' }}</h2>
+
+<form [formGroup]="form" class="form-container" (ngSubmit)="salvar()" autocomplete="off">
+  <div *ngIf="form.get('id')?.value !== 0" class="form-group" >
+    <label for="id">Código:</label>
+    <input type="number" id="id" formControlName="id" />
+  </div>
+
+  <div *ngIf="form.get('id')?.value !== 0" class="form-group">
+    <label for="ativo">Status</label>
+    <select formControlName="ativo">
+      <option *ngFor="let opt of tiposEmpresaAtivo" [value]="opt.value">{{ opt.label }}</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="razaoSocial">Razão Social</label>
+    <input id="razaoSocial" formControlName="razaoSocial" #focusInput />
+    <div *ngIf="form.get('razaoSocial')?.invalid && formSubmetido" class="validation-message">
+      Razão Social é obrigatória
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="fantasia">Fantasia</label>
+    <input id="fantasia" formControlName="fantasia" />
+  </div>
+
+  <div class="form-group">
+    <label for="cnpj">CNPJ</label>
+    <input id="cnpj" formControlName="cnpj" (blur)="validarCnpj()" cnpjMask />
+    <div *ngIf="cnpjInvalido" class="validation-message">CNPJ inválido.</div>
+  </div>
+
+  <div class="form-group">
+    <label for="tipoDeCondominio">Tipo de Condomínio</label>
+    <select formControlName="tipoDeCondominio">
+      <option *ngFor="let opt of tiposDeCondominio" [value]="opt.value">{{ opt.label }}</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="nome">Nome:</label>
+    <input id="nome" formControlName="nome" maxlength="50" />
+    <div *ngIf="form.get('nome')?.invalid && formSubmetido" class="validation-message">
+      <div *ngIf="form.get('nome')?.errors?.['required']">Nome é obrigatório.</div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="celular">Celular:</label>
+    <input id="celular" formControlName="celular" maxlength="15" celularMask placeholder="(99) 99999-9999" />
+    <div *ngIf="form.get('celular')?.invalid && formSubmetido" class="validation-message">
+      <div *ngIf="form.get('celular')?.errors?.['required']">Celular é obrigatório.</div>
+      <div *ngIf="form.get('celular')?.errors?.['pattern']">Celular deve ter 11 dígitos.</div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="email">E-mail:</label>
+    <input id="email" formControlName="email" maxlength="50" />
+    <div *ngIf="form.get('email')?.invalid && formSubmetido" class="validation-message">
+      <div *ngIf="form.get('email')?.errors?.['required']">E-mail é obrigatório.</div>
+      <div *ngIf="form.get('email')?.errors?.['email']">Formato inválido.</div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="telefone">Telefone:</label>
+    <input id="telefone" formControlName="telefone" maxlength="14" telefoneMask placeholder="(99) 9999-9999" />
+  </div>
+
+  <div class="form-group">
+    <label for="senha">Senha</label>
+    <input id="senha" type="password" formControlName="senha" />
+    <div *ngIf="form.get('senha')?.invalid && formSubmetido" class="validation-message">
+      Senha é obrigatória no cadastro.
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="host">Host</label>
+    <input id="host" formControlName="host" />
+  </div>
+
+  <div class="form-group">
+    <label for="porta">Porta</label>
+    <input id="porta" type="number" formControlName="porta" />
+  </div>
+
+  <div class="form-group">
+    <label for="cep">CEP</label>
+    <input id="cep" formControlName="cep" (input)="onCepInput($event)" cepMask />
+  </div>
+
+  <div class="form-group">
+    <label for="uf">UF</label>
+    <input id="uf" formControlName="uf" />
+  </div>
+
+  <div class="form-group">
+    <label for="cidade">Cidade</label>
+    <input id="cidade" formControlName="cidade" />
+  </div>
+
+  <div class="form-group">
+    <label for="endereco">Endereço / Logradouro</label>
+    <input id="endereco" formControlName="endereco" />
+  </div>
+
+  <div class="form-group">
+    <label for="bairro">Bairro</label>
+    <input id="bairro" formControlName="bairro" />
+  </div>
+
+  <div class="form-group">
+    <label for="complemento">Complemento</label>
+    <input id="complemento" formControlName="complemento" />
+  </div>
+
+  <div class="form-actions">
+    <button type="submit" class="btn primary" [disabled]="isSaving || form.invalid">
+      <span *ngIf="!isSaving">Salvar</span>
+      <span *ngIf="isSaving">Aguarde...</span>
+    </button>
+    <button type="button" class="btn secondary" (click)="cancelar()">Cancelar</button>
+  </div>
+</form>

@@ -1,0 +1,28 @@
+<div class="loginContainer">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="loginForm" autocomplete="off">
+    <h2>Login</h2>
+
+    <div>
+      <label for="username">Usuário</label>
+      <input id="username" type="text" formControlName="username" #focusInput/>
+    </div>
+    <div *ngIf="form.get('username')?.invalid && form.get('username')?.touched" class="error-message">
+      Usuário é obrigatório.
+    </div>
+
+    <div>
+      <label for="password">Senha</label>
+      <input id="password" type="password" formControlName="password"/>
+    </div>
+    <div *ngIf="form.get('password')?.invalid && form.get('password')?.touched" class="error-message"> 
+      Senha é obrigatória.
+    </div>
+
+    <div>
+      <button type="submit" class="fullWidthButton" [disabled]="isLogging || form.invalid">
+        <span *ngIf="!isLogging">Entrar</span>
+        <span *ngIf="isLogging">Aguarde...</span>
+    </button>
+    </div>
+  </form>
+</div>

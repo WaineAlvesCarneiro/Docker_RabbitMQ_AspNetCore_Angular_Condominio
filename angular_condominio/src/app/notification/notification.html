@@ -1,0 +1,12 @@
+<div class="notification-container">
+  <div *ngFor="let notification of notifications"
+      [ngClass]="{
+        'success': notification.type === 'success',
+        'error': notification.type === 'error',
+        'alert': notification.type === 'alert'
+      }"
+      class="notification-message">
+    <span>{{ notification.message }}</span>
+    <button (click)="close(notification)">X</button>
+  </div>
+</div>

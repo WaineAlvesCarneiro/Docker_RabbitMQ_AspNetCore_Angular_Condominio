@@ -1,0 +1,65 @@
+﻿using CondominioSaaSAngular.Application.Features.Auth.Commands.Create;
+using CondominioSaaSAngular.Domain.Enums;
+using FluentValidation.TestHelper;
+
+namespace CondominioSaaSAngular.Application.Tests.Features.Auth.Commands.Create;
+
+public class CreateCommandValidatorTests
+{
+    private readonly CreateCommandValidatorAuthUser _validator;
+
+    public CreateCommandValidatorTests()
+    {
+        _validator = new CreateCommandValidatorAuthUser();
+    }
+
+    private CreateCommandAuthUser GetValidCommand() => new()
+    {
+        EmpresaId = 1,
+        UserName = "Admin",
+        Email = "email@gmail.com",
+        Role = (TipoRole)1,
+        DataInclusao = DateTime.Now
+    };
+
+    [Theory]
+    [InlineData("")]
+    [InlineData(" ")]
+    public void Validator_UserName_Vazio_Ou_Nulo_Deve_Ter_Erro(string userNameInvalida)
+    {
+        // Arrange
+        string messagemEsperada = "Usuário é obrigatório";
+        CreateCommandAuthUser command = GetValidCommand();
+        command.UserName = userNameInvalida;
+
+        // Act
+        TestValidationResult<CreateCommandAuthUser> resultado = _validator.TestValidate(command);
+
+        // Assert
+        resultado.ShouldHaveValidationErrorFor(c => c.UserName).WithErrorMessage(messagemEsperada);
+    }
+
+    [Fact]
+    public void Validator_UserName_Vazio_Deve_Ter_Erro()
+    {
+        // Arrange
+        string messagemEsperada = "Usuário é obrigatório";
+        CreateCommandAuthUser command = GetValidCommand();
+        command.UserName = "";
+        // Act
+        TestValidationResult<CreateCommandAuthUser> resultado = _validator.TestValidate(command);
+        // Assert
+        resultado.ShouldHaveValidationErrorFor(c => c.UserName).WithErrorMessage(messagemEsperada);
+    }
+
+    [Fact]
+    public void Validator_Comando_Valido_Nao_Deve_Ter_Erros()
+    {
+        // Arrange
+        CreateCommandAuthUser command = GetValidCommand();
+        // Act
+        TestValidationResult<CreateCommandAuthUser> resultado = _validator.TestValidate(command);
+        // Assert
+        resultado.ShouldNotHaveAnyValidationErrors();
+    }
+}
