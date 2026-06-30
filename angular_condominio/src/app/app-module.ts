@@ -3,19 +3,18 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
-import { CoreModule } from './core/core-module';
+
 import { registerLocaleData } from '@angular/common';
 import ptBr from '@angular/common/locales/pt';
-import { Layout } from './layout/layout';
-import { NotificationComponent } from './notification/notification';
-import { Confirmation } from './modal/confirmation/confirmation';
+import { Confirmation } from './shared/modal/confirmation/confirmation';
+import { NotificationComponent } from './shared/notification/notification';
+import { CoreModule } from './core/core-module';
 
 registerLocaleData(ptBr);
 
 @NgModule({
   declarations: [
     App,
-    Layout,
     Confirmation
   ],
   imports: [
@@ -31,4 +30,4 @@ registerLocaleData(ptBr);
   ],
   bootstrap: [App]
 })
-export class AppModule { }
+export class AppModule {}

@@ -1,5 +1,3 @@
-// src\app\modal\services\dialog-service.ts
-
 import { ApplicationRef, ComponentRef, EmbeddedViewRef, Injectable, Injector, createComponent, EnvironmentInjector } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { Confirmation } from '../confirmation/confirmation';

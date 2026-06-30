@@ -1,23 +1,23 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
 import { AuthGuard } from './core/guards/auth-guard';
-import { Layout } from './layout/layout';
+import { LayoutComponent } from './core/layout/layout.component';
 
 const routes: Routes = [
-  { path: 'login', loadChildren: () => import('./login/login-module').then(m => m.LoginModule) },
-  { path: 'definir-senha', loadChildren: () => import('./login/definir-senha/definir-senha-module').then(m => m.DefinirSenhaModule) },
+  { path: 'login', loadChildren: () => import('./pages/login/login-module').then(m => m.LoginModule) },
+  { path: 'definir-senha', loadChildren: () => import('./pages/login/definir-senha/definir-senha-module').then(m => m.DefinirSenhaModule) },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
-  
+
   {
     path: '',
-    component: Layout,
+    component: LayoutComponent,
     canActivate: [AuthGuard],
     children: [
+      { path: 'dashboard', loadChildren: () => import('./pages/dashboard/dashboard.module').then(m => m.DashboardModule) },
       { path: 'imoveis', loadChildren: () => import('./pages/imoveis/imoveis-module').then(m => m.ImoveisModule) },
       { path: 'moradores', loadChildren: () => import('./pages/moradores/moradores-module').then(m => m.MoradoresModule) },
-      { path: 'empresas', loadChildren: () => import('./pages/empresas/empresas-module').then(m => m.EmpresasModule) }
-      ,{ path: 'usuarios', loadChildren: () => import('./pages/usuarios/usuarios-module').then(m => m.UsuariosModule) }
+      { path: 'empresas', loadChildren: () => import('./pages/empresas/empresas-module').then(m => m.EmpresasModule) },
+      { path: 'usuarios', loadChildren: () => import('./pages/usuarios/usuarios-module').then(m => m.UsuariosModule) }
     ]
   }
 ];
@@ -26,4 +26,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

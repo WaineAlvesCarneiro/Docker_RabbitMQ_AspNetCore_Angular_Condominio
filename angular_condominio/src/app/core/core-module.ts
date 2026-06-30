@@ -1,18 +1,31 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AuthTokenInterceptor } from './interceptors/AuthTokenInterceptor';
-import { AuthService } from './services/AuthService';
 import { AuthGuard } from './guards/auth-guard';
+import { AuthRedirectService } from './services/auth-redirect.service';
+import { LayoutComponent } from './layout/layout.component';
+import { HeaderComponent } from './layout/header/header.component';
+import { SidebarComponent } from './layout/sidebar/sidebar.component';
+import { FooterComponent } from './layout/footer/footer.component';
+import { RouterModule } from '@angular/router';
+import { AuthService } from './services/AuthService';
+import { AuthTokenInterceptor } from './interceptors/AuthTokenInterceptor';
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    LayoutComponent,
+    HeaderComponent,
+    SidebarComponent,
+    FooterComponent
+  ],
   imports: [
     CommonModule,
-    HttpClientModule
+    HttpClientModule,
+    RouterModule
   ],
   providers: [
     AuthService,
+    AuthRedirectService,
     AuthGuard,
     {
       provide: HTTP_INTERCEPTORS,
@@ -21,6 +34,11 @@ import { AuthGuard } from './guards/auth-guard';
     }
   ],
   exports: [
+    LayoutComponent,
+    HeaderComponent,
+    SidebarComponent,
+    FooterComponent,
+    RouterModule
   ]
 })
 export class CoreModule {

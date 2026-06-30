@@ -1,4 +1,4 @@
-import { formatarDataParaInput, formatarDataParaApi } from '../utils/date-utils';
+import { formatarDataParaInput } from '../utils/date-utils';
 import { Usuario } from '../../pages/usuarios/usuario.model';
 
 export class UsuarioAdapter {

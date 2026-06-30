@@ -1,12 +1,12 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NotificationService } from '../../../notification/services/notification-service';
 import { Morador } from '../morador.model';
 import { Imovel } from '../../imoveis/imovel.model';
 import { MoradorService } from '../services/morador-service';
 import { ImovelService } from '../../imoveis/services/imovel-service';
 import { AuthService } from '../../../core/services/AuthService';
+import { NotificationService } from '../../../shared/notification/services/notification-service';
 
 @Component({
   selector: 'app-morador-form',

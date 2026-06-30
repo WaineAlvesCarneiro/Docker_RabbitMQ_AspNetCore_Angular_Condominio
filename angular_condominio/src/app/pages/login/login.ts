@@ -1,9 +1,8 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { AuthService } from '../core/services/AuthService';
-import { AuthRedirectService } from '../core/services/auth-redirect.service';
-import { NotificationService } from '../notification/services/notification-service';
+import { AuthService } from '../../core/services/AuthService';
+import { NotificationService } from '../../shared/notification/services/notification-service';
+import { AuthRedirectService } from '../../core/services/auth-redirect.service';
 
 @Component({
   selector: 'app-login',
@@ -21,7 +20,6 @@ export class Login implements OnInit, AfterViewInit {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router,
     private notificationService: NotificationService,
     private authRedirectService: AuthRedirectService
   ) {

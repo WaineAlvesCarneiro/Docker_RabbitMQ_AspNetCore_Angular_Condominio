@@ -4,8 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UsuarioService } from '../services/usuario-service';
 import { EmpresaService } from '../../empresas/services/empresa-service';
 import { Usuario } from '../usuario.model';
-import { NotificationService } from '../../../notification/services/notification-service';
 import { EnumService } from '../../../shared/services/enum.service';
+import { NotificationService } from '../../../shared/notification/services/notification-service';
 
 @Component({
   selector: 'app-usuario-form',

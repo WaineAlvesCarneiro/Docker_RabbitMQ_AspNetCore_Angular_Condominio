@@ -1,5 +1,5 @@
 import { Morador } from '../../pages/moradores/morador.model';
-import { formatarDataParaInput, formatarDataParaApi } from '../utils/date-utils';
+import { formatarDataParaInput } from '../utils/date-utils';
 
 export class MoradorAdapter {
   static fromApi(apiData: any): Morador {

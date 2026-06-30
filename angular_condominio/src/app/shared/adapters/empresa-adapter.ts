@@ -1,5 +1,5 @@
 import { Empresa } from '../../pages/empresas/empresa.model';
-import { formatarDataParaInput, formatarDataParaApi } from '../utils/date-utils';
+import { formatarDataParaInput } from '../utils/date-utils';
 
 export class EmpresaAdapter {
   static fromApi(apiData: any): Empresa {

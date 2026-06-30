@@ -1,8 +1,9 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../../core/services/AuthService';
-import { NotificationService } from '../../notification/services/notification-service';
+
+import { NotificationService } from '../../../shared/notification/services/notification-service';
+import { AuthService } from '../../../core/services/AuthService';
 
 @Component({
   selector: 'app-definir-senha',
@@ -62,10 +63,6 @@ export class DefinirSenha implements OnInit, AfterViewInit {
     const nova = control.get('novaSenha')?.value;
     const confirmar = control.get('confirmarSenha')?.value;
     if (nova && confirmar && nova !== confirmar) {
-      // if (nova === confirmar)
-      //   this.isSaving = true;
-      // else
-      //   this.isSaving = false;
       return { passwordMismatch: true };
     }    
 

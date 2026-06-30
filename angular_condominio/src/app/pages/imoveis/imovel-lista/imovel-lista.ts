@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { NotificationService } from '../../../notification/services/notification-service';
-import { DialogService } from '../../../modal/services/dialog-service';
 import { AuthService } from '../../../core/services/AuthService';
 import { Imovel } from '../imovel.model';
 import { ImovelService } from '../services/imovel-service';
+import { NotificationService } from '../../../shared/notification/services/notification-service';
+import { DialogService } from '../../../shared/modal/services/dialog-service';
 
 @Component({
   selector: 'app-imovel-lista',

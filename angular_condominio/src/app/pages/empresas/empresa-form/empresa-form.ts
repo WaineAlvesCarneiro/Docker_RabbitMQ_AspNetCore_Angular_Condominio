@@ -3,10 +3,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Empresa } from '../empresa.model';
 import { EmpresaService } from '../services/empresa-service';
-import { NotificationService } from '../../../notification/services/notification-service';
 import { EnumService } from '../../../shared/services/enum.service';
 import { buscarCep } from '../../../shared/utils/cep-utils';
 import { isCnpjValid } from '../../../shared/validate/cnpj-validate';
+import { NotificationService } from '../../../shared/notification/services/notification-service';
 
 @Component({
   selector: 'app-empresa-form',

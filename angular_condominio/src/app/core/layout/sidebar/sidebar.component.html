@@ -1,0 +1,24 @@
+<aside class="app-sidebar">
+  <div class="user-info" *ngIf="isLoggedIn && userName">
+    <span>{{ userName }}</span>
+  </div>
+  <nav class="main-nav">
+    <ul>
+      <li *ngIf="isSindicoOrPorteiro">
+        <a routerLink="/imoveis" routerLinkActive="active">Imóveis</a>
+      </li>
+      <li *ngIf="isSindicoOrPorteiro">
+        <a routerLink="/moradores" routerLinkActive="active">Moradores</a>
+      </li>
+      <li *ngIf="isSuporte">
+        <a routerLink="/empresas" routerLinkActive="active">Empresas</a>
+      </li>
+      <li *ngIf="isSuporte">
+        <a routerLink="/usuarios" routerLinkActive="active">Usuários</a>
+      </li>
+    </ul>
+  </nav>
+  <div class="logout-container">
+    <button class="nav-button" (click)="logout()">Sair</button>
+  </div>
+</aside>
