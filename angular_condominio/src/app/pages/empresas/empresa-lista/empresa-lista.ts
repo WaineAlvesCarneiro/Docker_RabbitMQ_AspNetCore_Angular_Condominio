@@ -2,15 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { EmpresaService } from '../services/empresa-service';
 import { Empresa } from '../empresa.model';
-import { NotificationService } from '../../../shared/notification/services/notification-service';
-import { DialogService } from '../../../shared/modal/services/dialog-service';
+import { NotificationService } from '../../../shared/modals/notification/services/notification-service';
+import { DialogService } from '../../../shared/modals/services/dialog-service';
 import { EnumService } from '../../../shared/services/enum.service';
 
 @Component({
   selector: 'app-empresa-lista',
   templateUrl: './empresa-lista.html',
   standalone: false,
-  styleUrl: './empresa-lista.css'
+  styleUrl: '../../../shared/styles/lista-tabela.css'
 })
 export class EmpresaLista implements OnInit {
   empresas: Empresa[] = [];
@@ -59,7 +59,7 @@ export class EmpresaLista implements OnInit {
       if (confirmed) {
         this.empresaService.excluir(String(id)).subscribe({
           next: () => {
-            this.notificationService.showSuccess('Morador excluído com sucesso!');
+            this.notificationService.showSuccess('Empresa excluído com sucesso!');
             this.carregar();
           },
           error: (err) => {
@@ -71,6 +71,8 @@ export class EmpresaLista implements OnInit {
             }
           }
         });
+      } else {
+        this.notificationService.showAlerta('Exclusão cancelada pelo usuário.');
       }
     });
   }

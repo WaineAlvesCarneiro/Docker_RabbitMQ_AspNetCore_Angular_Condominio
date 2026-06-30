@@ -29,10 +29,6 @@
   border-radius: 4px;
 }
 
-.fullWidthButton {
-  align-items: center;
-}
-
 .error-message {
   color: red;
   text-align: center;
@@ -40,6 +36,14 @@
   margin-bottom: 10px;
   font-size: 0.9em;
   word-break: break-word;
+}
+
+.validation-message {
+  color: #d9534f;
+  font-size: 0.8em;
+  margin-top: 0px;
+  margin-bottom: 10px;
+  align-items: center;
 }
 
 .submit-container {
@@ -66,10 +70,6 @@ button[type="submit"]:disabled {
   align-items: center;
 }
 
-.validation-message {
-  color: #d9534f;
-  font-size: 0.8em;
-  margin-top: 0px;
-  margin-bottom: 10px;
+.fullWidthButton {
   align-items: center;
 }

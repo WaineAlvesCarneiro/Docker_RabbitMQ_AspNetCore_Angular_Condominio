@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NotificationService } from '../../../shared/notification/services/notification-service';
+import { NotificationService } from '../../../shared/modals/notification/services/notification-service';
 import { Imovel } from '../imovel.model';
 import { ImovelService } from '../services/imovel-service';
 import { AuthService } from '../../../core/services/AuthService';
@@ -10,7 +10,7 @@ import { AuthService } from '../../../core/services/AuthService';
   selector: 'app-imovel-form',
   standalone: false,
   templateUrl: './imovel-form.html',
-  styleUrls: ['./imovel-form.css']
+  styleUrls: ['../../../shared/styles/form-module.css']
 })
 export class ImovelForm implements OnInit , AfterViewInit {
   @ViewChild('focusInput') focusInputRef!: ElementRef;

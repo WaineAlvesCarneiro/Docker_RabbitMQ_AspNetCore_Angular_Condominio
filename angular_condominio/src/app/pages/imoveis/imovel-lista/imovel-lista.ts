@@ -3,14 +3,14 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/AuthService';
 import { Imovel } from '../imovel.model';
 import { ImovelService } from '../services/imovel-service';
-import { NotificationService } from '../../../shared/notification/services/notification-service';
-import { DialogService } from '../../../shared/modal/services/dialog-service';
+import { NotificationService } from '../../../shared/modals/notification/services/notification-service';
+import { DialogService } from '../../../shared/modals/services/dialog-service';
 
 @Component({
   selector: 'app-imovel-lista',
   standalone: false,
   templateUrl: './imovel-lista.html',
-  styleUrl: './imovel-lista.css'
+  styleUrl: '../../../shared/styles/lista-tabela.css'
 })
 export class ImovelLista {
   imoveis: Imovel[] = [];
@@ -65,9 +65,9 @@ export class ImovelLista {
 
   novo(): void { this.router.navigate(['/imoveis/novo']); }
 
-  editar(id?: string) { this.router.navigate(['/imoveis/', id]); }
+  editar(id?: string): void { this.router.navigate(['/imoveis/', id]); }
 
-  excluir(id?: string) {
+  excluir(id?: string): void {
     if (!id) return;
     this.dialogService.openConfirmation('Tem certeza que deseja excluir este imóvel?').subscribe(confirmed => {
       if (confirmed) {
@@ -85,6 +85,8 @@ export class ImovelLista {
             }
           }
         });
+      } else {
+        this.notificationService.showAlerta('Exclusão cancelada pelo usuário.');
       }
     });
   }

@@ -6,24 +6,19 @@ import { Imovel } from '../../imoveis/imovel.model';
 import { MoradorService } from '../services/morador-service';
 import { ImovelService } from '../../imoveis/services/imovel-service';
 import { AuthService } from '../../../core/services/AuthService';
-import { NotificationService } from '../../../shared/notification/services/notification-service';
+import { NotificationService } from '../../../shared/modals/notification/services/notification-service';
 
 @Component({
   selector: 'app-morador-form',
-  standalone: false,
   templateUrl: './morador-form.html',
-  styleUrls: ['./morador-form.css']
+  standalone: false,
+  styleUrls: ['../../../shared/styles/form-module.css']
 })
 export class MoradorForm implements OnInit, AfterViewInit {
   @ViewChild('focusInput') focusInputRef!: ElementRef;
 
-  ngAfterViewInit(): void {
-    this.focusInputRef.nativeElement.focus();
-  }
-
   form!: FormGroup;
   imoveis: Imovel[] = [];
-
   isSaving = false;
   id?: string;
   formSubmetido = false;
@@ -38,7 +33,7 @@ export class MoradorForm implements OnInit, AfterViewInit {
     private router: Router,
     private notificationService: NotificationService,
     private fb: FormBuilder
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -53,7 +48,7 @@ export class MoradorForm implements OnInit, AfterViewInit {
     });
 
     this.imovelService.getAll().subscribe({
-      next: (res) => this.imoveis = res.dados,
+      next: (res) => this.imoveis = res,
       error: () => this.notificationService.showError('Erro ao carregar imóvel.')
     });
 
@@ -62,16 +57,17 @@ export class MoradorForm implements OnInit, AfterViewInit {
 
     this.userRole = this.authService.getUserRole();
     this.isPorteiro = this.userRole === 'Porteiro' || this.userRole === '3';
-    if (this.userRole === 'Porteiro')
-      this.form.disable();
+    if (this.userRole === 'Porteiro') this.form.disable();
+  }
+
+  ngAfterViewInit(): void {
+    this.focusInputRef.nativeElement.focus();
   }
 
   carregar(id: string): void {
     this.moradorService.getId(id).subscribe({
       next: (u) => {
         this.form.patchValue(u);
-        this.form.get('passwordHash')?.clearValidators();
-        this.form.get('passwordHash')?.updateValueAndValidity();
       },
       error: (err) => {
         this.notificationService.showError('Erro ao carregar morador');
@@ -90,7 +86,6 @@ export class MoradorForm implements OnInit, AfterViewInit {
     }
 
     const imovelSelecionado = this.imoveis.find(i => Number(i.id) === Number(this.form.get('imovelId')?.value));
-
     if (!imovelSelecionado) {
       this.notificationService.showAlerta('Imóvel inválido. Verifique o campo e tente novamente.');
       return;
@@ -110,7 +105,6 @@ export class MoradorForm implements OnInit, AfterViewInit {
     };
 
     this.isSaving = true;
-    
     const obs = this.id
       ? this.moradorService.atualizar({ ...morador, id: this.id })
       : this.moradorService.criar(morador);

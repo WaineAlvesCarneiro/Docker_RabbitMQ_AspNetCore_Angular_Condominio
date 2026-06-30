@@ -6,13 +6,13 @@ import { EmpresaService } from '../services/empresa-service';
 import { EnumService } from '../../../shared/services/enum.service';
 import { buscarCep } from '../../../shared/utils/cep-utils';
 import { isCnpjValid } from '../../../shared/validate/cnpj-validate';
-import { NotificationService } from '../../../shared/notification/services/notification-service';
+import { NotificationService } from '../../../shared/modals/notification/services/notification-service';
 
 @Component({
   selector: 'app-empresa-form',
   templateUrl: './empresa-form.html',
   standalone: false,
-  styleUrls: ['./empresa-form.css']
+  styleUrls: ['../../../shared/styles/form-module.css']
 })
 export class EmpresaForm implements OnInit, AfterViewInit {
   @ViewChild('focusInput') focusInputRef!: ElementRef;

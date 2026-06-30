@@ -1,4 +1,58 @@
-<div class="dashboard">
-  <h2>Bem-vindo ao Condomínio</h2>
-  <p>Este será o painel inicial.</p>
+<div class="dashboardContainer">
+  <h3>{{ userRole === 'Suporte' ? 'Painel Administrativo' : titulo }}</h3>
+
+  <div *ngIf="loading"><p>Carregando dados...</p></div>
+  <div *ngIf="error"><p style="color:red">{{ error }}</p></div>
+
+  <div class="dashboardGrid" *ngIf="!loading && !error">
+    <ng-container *ngIf="userRole === 'Suporte'">
+      <div class="dashboardCard">
+        <h2>Empresas Cadastradas</h2>
+        <p>Total: {{ data.empresas.length }}</p>
+        <app-button
+          variant="secondary"
+          size="md"
+          (click)="navigate('/empresas')"
+        >
+          Ver Detalhes
+        </app-button>
+      </div>
+      <div class="dashboardCard">
+        <h2>Usuários Cadastrados</h2>
+        <p>Total: {{ data.usuarios.length }}</p>
+        <app-button
+          variant="secondary"
+          size="md"
+          (click)="navigate('/usuarios')"
+        >
+          Ver Detalhes
+        </app-button>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="userRole === 'Sindico' || userRole === 'Porteiro'">
+      <div class="dashboardCard">
+        <h2>Imóveis Cadastrados</h2>
+        <p>Total: {{ data.imoveis.length }}</p>
+        <app-button
+          variant="secondary"
+          size="md"
+          (click)="navigate('/imoveis')"
+        >
+          Ver Detalhes
+        </app-button>
+      </div>
+      <div class="dashboardCard">
+        <h2>Moradores Ativos</h2>
+        <p>Total: {{ data.moradores.length }}</p>
+        <app-button
+          variant="secondary"
+          size="md"
+          (click)="navigate('/moradores')"
+        >
+          Ver Detalhes
+        </app-button>
+      </div>
+    </ng-container>
+  </div>
 </div>

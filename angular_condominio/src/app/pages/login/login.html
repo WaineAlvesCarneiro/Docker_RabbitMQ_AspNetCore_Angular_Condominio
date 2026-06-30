@@ -18,11 +18,17 @@
       Senha é obrigatória.
     </div>
 
-    <div>
-      <button type="submit" class="fullWidthButton" [disabled]="isLogging || form.invalid">
-        <span *ngIf="!isLogging">Entrar</span>
-        <span *ngIf="isLogging">Aguarde...</span>
-    </button>
+    <div class="submit-container">
+      <app-button
+        type="submit"
+        variant="success"
+        size="md"
+        [block]="true"
+        [disabled]="isLogging || form.invalid"
+        [loading]="isLogging"
+      >
+        Entrar
+      </app-button>
     </div>
   </form>
 </div>

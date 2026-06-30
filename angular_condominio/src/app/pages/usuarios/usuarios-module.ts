@@ -1,10 +1,8 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
 import { UsuariosRoutingModule } from './usuarios-routing-module';
 import { UsuarioLista } from './usuario-lista/usuario-lista';
 import { UsuarioForm } from './usuario-form/usuario-form';
+import { SharedModule } from '../../shared/shared-module';
 
 @NgModule({
   declarations: [
@@ -12,10 +10,8 @@ import { UsuarioForm } from './usuario-form/usuario-form';
     UsuarioForm
   ],
   imports: [
-    CommonModule,
     UsuariosRoutingModule,
-    FormsModule,
-    ReactiveFormsModule
+    SharedModule
   ]
 })
 export class UsuariosModule { }

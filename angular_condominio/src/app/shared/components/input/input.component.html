@@ -1,0 +1,26 @@
+<div class="form-group">
+  <label *ngIf="label" [ngClass]="{ required: required }" class="form-label">
+    {{ label }}
+  </label>
+  <input
+    [ngClass]="getInputClasses()"
+    [type]="type"
+    [placeholder]="placeholder"
+    [(ngModel)]="value"
+    [disabled]="disabled"
+    [readonly]="readonly"
+    [required]="required"
+    [maxlength]="maxLength"
+    [minlength]="minLength"
+    [attr.pattern]="pattern"
+    [min]="min"
+    [max]="max"
+    [step]="step"
+    (input)="onInputChange($event)"
+    (blur)="onInputBlur()"
+    (focus)="onInputFocus()"
+  />
+
+  <span *ngIf="hasError" class="form-error">{{ error }}</span>
+  <span *ngIf="hint && !hasError" class="form-hint">{{ hint }}</span>
+</div>

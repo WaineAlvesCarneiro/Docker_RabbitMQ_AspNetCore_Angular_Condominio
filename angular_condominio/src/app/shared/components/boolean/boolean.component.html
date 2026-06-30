@@ -1,0 +1,18 @@
+<div class="form-group">
+  <div class="form-check">
+    <input
+      [id]="id"
+      type="checkbox"
+      [checked]="value"
+      [disabled]="disabled"
+      [required]="required"
+      (change)="onCheckboxChange($event)"
+      (blur)="onCheckboxBlur()"
+    />
+    <label *ngIf="label" [for]="id" [ngClass]="{ required: required }">
+      {{ label }}
+    </label>
+  </div>
+  <span *ngIf="hasError" class="form-error">{{ error }}</span>
+  <span *ngIf="hint && !hasError" class="form-hint">{{ hint }}</span>
+</div>

@@ -4,8 +4,8 @@ import { map, Observable } from 'rxjs';
 import { Result } from '../../../shared/models/result.model';
 import { PaginatedResponse } from '../../../shared/models/paginated-response.model';
 import { environment } from '../../../../environments/environment';
-
 import { Imovel } from '../imovel.model';
+import { ImovelAdapter } from '../../../shared/adapters/imovel-adapter';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +15,10 @@ export class ImovelService {
 
   constructor(private http: HttpClient) {}
 
-  getAll(): Observable<Result<Imovel[]>> {
-    return this.http.get<Result<Imovel[]>>(this.apiUrl);
+  getAll(): Observable<Imovel[]> {
+    return this.http.get<Result<Imovel[]>>(this.apiUrl).pipe(
+      map(r => (r.dados || []).map(e => ImovelAdapter.fromApi(e)))
+    );
   }
 
   getAllPage(page: number = 0, pageSize: number = 10, orderBy: string = 'id', direction: string = 'ASC') {

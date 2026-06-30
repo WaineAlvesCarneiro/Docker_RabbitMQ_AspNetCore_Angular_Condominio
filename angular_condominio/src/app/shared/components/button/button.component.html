@@ -1,0 +1,9 @@
+<button
+  [ngClass]="getButtonClasses()"
+  [disabled]="disabled || loading"
+  [type]="type"
+  (click)="onButtonClick()"
+>
+  <span *ngIf="loading" class="spinner spinner-sm"></span>
+  <ng-content></ng-content>
+</button>

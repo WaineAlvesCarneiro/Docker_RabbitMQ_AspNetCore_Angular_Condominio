@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../core/services/AuthService';
-import { NotificationService } from '../../shared/notification/services/notification-service';
+import { NotificationService } from '../../shared/modals/notification/services/notification-service';
 import { AuthRedirectService } from '../../core/services/auth-redirect.service';
 
 @Component({

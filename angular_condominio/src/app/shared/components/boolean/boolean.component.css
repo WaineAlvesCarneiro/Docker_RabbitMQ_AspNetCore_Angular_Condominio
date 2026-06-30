@@ -1,0 +1,7 @@
+:host {
+  display: block;
+}
+
+.form-group {
+  margin: var(--spacing-md) 0;
+}

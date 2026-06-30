@@ -3,14 +3,14 @@ import { Router } from '@angular/router';
 import { UsuarioService } from '../services/usuario-service';
 import { Usuario } from '../usuario.model';
 import { EnumService } from '../../../shared/services/enum.service';
-import { NotificationService } from '../../../shared/notification/services/notification-service';
-import { DialogService } from '../../../shared/modal/services/dialog-service';
+import { NotificationService } from '../../../shared/modals/notification/services/notification-service';
+import { DialogService } from '../../../shared/modals/services/dialog-service';
 
 @Component({
   selector: 'app-usuario-lista',
   templateUrl: './usuario-lista.html',
   standalone: false,
-  styleUrl: './usuario-lista.css'
+  styleUrl: '../../../shared/styles/lista-tabela.css'
 })
 export class UsuarioLista implements OnInit {
   usuarios: Usuario[] = [];
@@ -87,7 +87,7 @@ export class UsuarioLista implements OnInit {
       if (confirmed) {
         this.usuarioService.excluir(String(id)).subscribe({
           next: () => {
-            this.notificationService.showSuccess('Morador excluído com sucesso!');
+            this.notificationService.showSuccess('Usuário excluído com sucesso!');
             this.carregar();
           },
           error: (err) => {
@@ -99,6 +99,8 @@ export class UsuarioLista implements OnInit {
             }
           }
         });
+      } else {
+        this.notificationService.showAlerta('Exclusão cancelada pelo usuário.');
       }
     });
   }

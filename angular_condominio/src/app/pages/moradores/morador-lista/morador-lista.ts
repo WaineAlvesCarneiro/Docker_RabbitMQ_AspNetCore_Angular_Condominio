@@ -3,14 +3,14 @@ import { Router } from '@angular/router';
 import { Morador } from '../morador.model';
 import { MoradorService } from '../services/morador-service';
 import { AuthService } from '../../../core/services/AuthService';
-import { NotificationService } from '../../../shared/notification/services/notification-service';
-import { DialogService } from '../../../shared/modal/services/dialog-service';
+import { NotificationService } from '../../../shared/modals/notification/services/notification-service';
+import { DialogService } from '../../../shared/modals/services/dialog-service';
 
 @Component({
   selector: 'app-morador-lista',
   standalone: false,
   templateUrl: './morador-lista.html',
-  styleUrl: './morador-lista.css'
+  styleUrl: '../../../shared/styles/lista-tabela.css'
 })
 export class MoradorLista {
   moradores: Morador[] = [];
@@ -65,9 +65,9 @@ export class MoradorLista {
 
   novo(): void { this.router.navigate(['/moradores/novo']); }
 
-  editar(id?: string) { this.router.navigate(['/moradores/', id]); }
+  editar(id?: string): void { this.router.navigate(['/moradores/', id]); }
 
-  excluir(id?: string) {
+  excluir(id?: string): void {
     this.dialogService.openConfirmation('Tem certeza que deseja excluir este morador?').subscribe(confirmed => {
       if (confirmed) {
         this.moradorService.excluir(String(id)).subscribe({
@@ -80,10 +80,12 @@ export class MoradorLista {
               this.notificationService.showAlerta(err.error.erro);
             } else {
               this.notificationService.showError('Erro ao excluir morador.');
-              console.error('Erro ao excluir morador: ', err);
+              console.error(`Erro ao excluir morador ${id}:`, err);
             }
           }
         });
+      } else {
+        this.notificationService.showAlerta('Exclusão cancelada pelo usuário.');
       }
     });
   }

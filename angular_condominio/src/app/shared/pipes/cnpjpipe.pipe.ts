@@ -2,7 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
   name: 'cnpjpipe',
-  standalone: true
+  standalone: false
 })
 export class CnpjPipe implements PipeTransform {
   transform(value: string | number): string {

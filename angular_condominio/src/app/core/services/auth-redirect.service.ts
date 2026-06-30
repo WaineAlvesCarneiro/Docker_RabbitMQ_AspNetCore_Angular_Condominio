@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { NotificationService } from '../../shared/notification/services/notification-service';
+import { NotificationService } from '../../shared/modals/notification/services/notification-service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthRedirectService {

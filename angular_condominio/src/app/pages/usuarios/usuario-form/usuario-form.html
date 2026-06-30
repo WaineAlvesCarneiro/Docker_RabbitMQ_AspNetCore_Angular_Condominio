@@ -38,10 +38,24 @@
   </div>
 
   <div class="form-actions">
-    <button type="submit" class="btn primary" [disabled]="isSaving || form.invalid">
+    <app-button
+      type="submit"
+      variant="primary"
+      size="md"
+      [disabled]="isSaving || form.invalid"
+      [loading]="isSaving"
+    >
       <span *ngIf="!isSaving">Salvar</span>
       <span *ngIf="isSaving">Aguarde...</span>
-    </button>
-    <button type="button" class="btn secondary" (click)="cancelar()">Cancelar</button>
+    </app-button>
+
+    <app-button
+      type="button"
+      variant="secondary"
+      size="md"
+      (click)="cancelar()"
+    >
+      Cancelar
+    </app-button>
   </div>
 </form>

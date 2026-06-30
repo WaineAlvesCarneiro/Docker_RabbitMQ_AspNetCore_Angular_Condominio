@@ -5,13 +5,13 @@ import { UsuarioService } from '../services/usuario-service';
 import { EmpresaService } from '../../empresas/services/empresa-service';
 import { Usuario } from '../usuario.model';
 import { EnumService } from '../../../shared/services/enum.service';
-import { NotificationService } from '../../../shared/notification/services/notification-service';
+import { NotificationService } from '../../../shared/modals/notification/services/notification-service';
 
 @Component({
   selector: 'app-usuario-form',
   templateUrl: './usuario-form.html',
   standalone: false,
-  styleUrls: ['./usuario-form.css']
+  styleUrls: ['../../../shared/styles/form-module.css']
 })
 export class UsuarioForm implements OnInit, AfterViewInit {
   @ViewChild('focusInput') focusInputRef!: ElementRef;

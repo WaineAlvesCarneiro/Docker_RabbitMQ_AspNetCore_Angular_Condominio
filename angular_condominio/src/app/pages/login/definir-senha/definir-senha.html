@@ -21,11 +21,17 @@
       </div>
     </div>
 
-    <div>
-      <button type="submit" class="fullWidthButton" [disabled]="isSaving || form.invalid">
-        <span *ngIf="!isSaving">Salvar Senha</span>
-        <span *ngIf="isSaving">Aguarde...</span>
-      </button>
+    <div class="submit-container">
+      <app-button
+        type="submit"
+        variant="success"
+        size="md"
+        [block]="true"
+        [disabled]="isSaving || form.invalid"
+        [loading]="isSaving"
+      >
+        Salvar Senha
+      </app-button>
     </div>
   </form>
 </div>

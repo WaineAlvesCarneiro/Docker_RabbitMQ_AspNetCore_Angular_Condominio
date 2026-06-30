@@ -1,0 +1,25 @@
+<div class="form-group">
+  <label *ngIf="label" [ngClass]="{ required: required }" class="form-label">
+    {{ label }}
+  </label>
+  <div class="select-container">
+    <select
+      [ngClass]="getSelectClasses()"
+      [value]="value"
+      [disabled]="disabled"
+      [required]="required"
+      [multiple]="multiple"
+      (change)="onSelectChange($event)"
+      (blur)="onSelectBlur()"
+    >
+      <option *ngIf="!multiple" [value]="" disabled selected hidden>
+        {{ placeholder }}
+      </option>
+      <option *ngFor="let option of options" [value]="option.value" [disabled]="option.disabled">
+        {{ option.label }}
+      </option>
+    </select>
+  </div>
+  <span *ngIf="hasError" class="form-error">{{ error }}</span>
+  <span *ngIf="hint && !hasError" class="form-hint">{{ hint }}</span>
+</div>

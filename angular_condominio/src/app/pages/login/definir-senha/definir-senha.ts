@@ -1,15 +1,14 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
-
-import { NotificationService } from '../../../shared/notification/services/notification-service';
+import { NotificationService } from '../../../shared/modals/notification/services/notification-service';
 import { AuthService } from '../../../core/services/AuthService';
 
 @Component({
   selector: 'app-definir-senha',
   templateUrl: './definir-senha.html',
-  standalone: false,
-  styleUrls: ['./definir-form.css']
+  styleUrls: ['./definir-form.css'],
+  standalone: false
 })
 export class DefinirSenha implements OnInit, AfterViewInit {
   @ViewChild('focusInput') focusInputRef!: ElementRef;

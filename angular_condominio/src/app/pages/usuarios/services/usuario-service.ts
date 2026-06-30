@@ -13,7 +13,7 @@ export class UsuarioService {
   private apiUrl = environment.apiUrl + '/Auth';
   constructor(private http: HttpClient, private authService: AuthService) {}
 
-  getall(): Observable<Usuario[]> {
+  getAll(): Observable<Usuario[]> {
     return this.http.get<Result<Usuario[]>>(this.apiUrl).pipe(
       map(r => (r.dados || []).map(u => UsuarioAdapter.fromApi(u)))
     );

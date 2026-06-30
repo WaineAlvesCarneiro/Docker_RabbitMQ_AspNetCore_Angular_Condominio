@@ -13,7 +13,7 @@ export class MoradorService {
   private apiUrl = environment.apiUrl + '/morador';
   constructor(private http: HttpClient, private authService: AuthService) {}
 
-  getall(): Observable<Morador[]> {
+  getAll(): Observable<Morador[]> {
     return this.http.get<Result<Morador[]>>(this.apiUrl).pipe(
       map(r => (r.dados || []).map(u => MoradorAdapter.fromApi(u)))
     );

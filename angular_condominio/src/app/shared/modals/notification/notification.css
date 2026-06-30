@@ -33,16 +33,3 @@
 .alert {
   background-color: #fff3cd;
 }
-
-.notification-message button {
-  background: none;
-  border: none;
-  color: black;
-  font-weight: bold;
-  cursor: pointer;
-  font-size: 1.2em;
-}
-
-.notification-message button:hover {
-  opacity: 0.8;
-}

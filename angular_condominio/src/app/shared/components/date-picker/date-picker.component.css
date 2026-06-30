@@ -1,0 +1,24 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.form-group {
+  width: 100%;
+}
+
+input[type='date'] {
+  width: 100%;
+}
+
+input[type='date']::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  border-radius: var(--radius-md);
+  margin-right: var(--spacing-sm);
+  opacity: 0.6;
+  filter: invert(0.5);
+}
+
+input[type='date']::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}

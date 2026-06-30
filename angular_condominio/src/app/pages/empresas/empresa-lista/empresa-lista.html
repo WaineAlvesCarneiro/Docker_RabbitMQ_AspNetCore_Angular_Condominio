@@ -1,8 +1,14 @@
 <div class="container">
   <div class="header">
-      <h2>Lista de Empresas</h2>
-      <button class="btn primary" (click)="novo()">Novo empresa</button>
-    </div>
+    <h2>Lista de Empresas</h2>
+    <app-button
+      variant="primary"
+      size="md"
+      (click)="novo()"
+    >
+      Nova empresa
+    </app-button>
+  </div>
 
   <table class="itens-table">
     <thead>
@@ -18,17 +24,30 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let e of empresas">
-        <td>{{ e.id }}</td>
-        <td>{{ getAtivoLabel(e.ativo) }}</td>
-        <td>{{ e.razaoSocial }}</td>
-        <td>{{ e.cnpj | cnpjpipe }}</td>
-        <td>{{ getTipoCondominioLabel(e.tipoDeCondominio) }}</td>
-        <td>{{ e.nome }}</td>
-        <td>{{ e.celular | celularpipe}}</td>
+      <tr *ngFor="let item of empresas">
+        <td>{{ item.id }}</td>
+        <td>{{ getAtivoLabel(item.ativo) }}</td>
+        <td>{{ item.razaoSocial }}</td>
+        <td>{{ item.cnpj | cnpjpipe }}</td>
+        <td>{{ getTipoCondominioLabel(item.tipoDeCondominio) }}</td>
+        <td>{{ item.nome }}</td>
+        <td>{{ item.celular | celularpipe }}</td>
         <td class="actions" data-label="Ações">
-          <button class="btn edit" (click)="editar(e.id)">Editar</button>
-          <button class="btn delete" (click)="excluir(e.id)">Excluir</button>
+          <app-button
+            variant="outline"
+            size="sm"
+            (click)="editar(item.id)"
+          >
+            Editar
+          </app-button>
+
+          <app-button
+            variant="danger"
+            size="sm"
+            (click)="excluir(item.id)"
+          >
+            Excluir
+          </app-button>
         </td>
       </tr>
     </tbody>
