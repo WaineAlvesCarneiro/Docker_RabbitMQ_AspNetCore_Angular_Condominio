@@ -6,6 +6,8 @@ import { NotificationService } from '../../../shared/modals/notification/service
 import { DialogService } from '../../../shared/modals/services/dialog-service';
 import { EnumService } from '../../../shared/services/enum.service';
 
+import { PaginatedResponse } from '../../../shared/models/paginated-response.model';
+
 @Component({
   selector: 'app-empresa-lista',
   templateUrl: './empresa-lista.html',
@@ -16,6 +18,10 @@ export class EmpresaLista implements OnInit {
   empresas: Empresa[] = [];
   tipoCondominioMap = new Map<number, string>();
   tipoEmpresaAtivoMap = new Map<number, string>();
+  totalCount: number = 0;
+  pageIndex: number = 0;
+  pageSize: number = 10;
+  currentSearch: string = '';
 
   constructor(
     private empresaService: EmpresaService,
@@ -41,13 +47,34 @@ export class EmpresaLista implements OnInit {
   }
 
   carregar(): void {
-    this.empresaService.getAll().subscribe({
-      next: (res) => this.empresas = res,
+    this.empresaService.getAllPage(this.pageIndex, this.pageSize, 'razaoSocial', 'ASC', this.currentSearch).subscribe({
+      next: (res: PaginatedResponse<Empresa>) => {
+        if (res && res.sucesso) {
+          this.empresas = Array.isArray(res.dados.items) ? res.dados.items : [];
+          this.totalCount = res.dados.totalCount;
+          this.pageIndex = res.dados.pageIndex;
+          this.pageSize = res.dados.pageSize;
+        } else {
+          this.notificationService.showError('Erro ao carregar empresas.');
+        }
+      },
       error: (err) => {
         this.notificationService.showError('Erro ao carregar empresas.');
         console.error(err);
       }
     });
+  }
+
+  onFiltersChange(filters: { search?: string; pageSize?: number }) {
+    this.currentSearch = filters.search || '';
+    this.pageSize = filters.pageSize || this.pageSize;
+    this.pageIndex = 0;
+    this.carregar();
+  }
+
+  onPageChange(page: number) {
+    this.pageIndex = page;
+    this.carregar();
   }
 
   novo(): void { this.router.navigate(['/empresas/novo']); }

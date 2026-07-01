@@ -1,10 +1,11 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from '../../../shared/modals/notification/services/notification-service';
 import { Imovel } from '../imovel.model';
 import { ImovelService } from '../services/imovel-service';
 import { AuthService } from '../../../core/services/AuthService';
+import { InputComponent } from '../../../shared/components/input/input.component';
 
 @Component({
   selector: 'app-imovel-form',
@@ -13,11 +14,12 @@ import { AuthService } from '../../../core/services/AuthService';
   styleUrls: ['../../../shared/styles/form-module.css']
 })
 export class ImovelForm implements OnInit , AfterViewInit {
-  @ViewChild('focusInput') focusInputRef!: ElementRef;
+  @ViewChild(InputComponent) blocoInput!: InputComponent;
   
   ngAfterViewInit(): void {
-    if (this.focusInputRef && this.userRole !== 'Porteiro')
-      this.focusInputRef.nativeElement.focus();
+    if (this.blocoInput) {
+      this.blocoInput.setFocus();
+    }
   }
 
   form!: FormGroup;

@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UsuarioService } from '../services/usuario-service';
@@ -6,6 +6,8 @@ import { EmpresaService } from '../../empresas/services/empresa-service';
 import { Usuario } from '../usuario.model';
 import { EnumService } from '../../../shared/services/enum.service';
 import { NotificationService } from '../../../shared/modals/notification/services/notification-service';
+import { SelectOption } from '../../../shared/components/select/select.component';
+import { InputComponent } from '../../../shared/components/input/input.component';
 
 @Component({
   selector: 'app-usuario-form',
@@ -14,14 +16,17 @@ import { NotificationService } from '../../../shared/modals/notification/service
   styleUrls: ['../../../shared/styles/form-module.css']
 })
 export class UsuarioForm implements OnInit, AfterViewInit {
-  @ViewChild('focusInput') focusInputRef!: ElementRef;
-
+  @ViewChild(InputComponent) userNameInput!: InputComponent;
+  
   ngAfterViewInit(): void {
-    this.focusInputRef.nativeElement.focus();
+    if (this.userNameInput) {
+      this.userNameInput.setFocus();
+    }
   }
-
+  
   form!: FormGroup;
   empresas: any[] = [];
+  empresaOptions: SelectOption[] = [];
   tiposRole: { value: number; label: string }[] = [];
   tiposUserAtivo: { value: number; label: string }[] = [];
   tiposEmpresaAtivo: { value: number; label: string }[] = [];
@@ -61,6 +66,16 @@ export class UsuarioForm implements OnInit, AfterViewInit {
 
     this.id = this.route.snapshot.paramMap.get('id') || undefined;
     if (this.id) this.carregar(this.id);
+
+    this.empresaService.getAll().subscribe({
+      next: (res) => {
+        this.empresas = res;
+        this.empresaOptions = this.empresas.map(e => ({
+          value: e.id,
+          label: e.razaoSocial
+        }));
+      }
+    });
   }
 
   carregar(id: string): void {

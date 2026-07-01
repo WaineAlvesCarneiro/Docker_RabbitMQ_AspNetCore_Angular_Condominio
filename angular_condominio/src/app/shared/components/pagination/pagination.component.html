@@ -1,0 +1,13 @@
+<nav class="pagination-container" *ngIf="totalPages > 1">
+  <button class="page-btn" (click)="previous()" [disabled]="pageIndex <= 0">Anterior</button>
+
+  <button
+    class="page-number"
+    *ngFor="let p of pages"
+    [class.active]="p === pageIndex"
+    (click)="goToPage(p)">
+    {{ p + 1 }}
+  </button>
+
+  <button class="page-btn" (click)="next()" [disabled]="pageIndex >= totalPages - 1">Próximo</button>
+</nav>

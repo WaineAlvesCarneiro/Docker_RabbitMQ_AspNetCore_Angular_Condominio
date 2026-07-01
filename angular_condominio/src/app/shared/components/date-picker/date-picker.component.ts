@@ -35,7 +35,22 @@ export class DatePickerComponent implements ControlValueAccessor {
   private onTouched: () => void = () => {};
 
   writeValue(value: any): void {
-    this.value = value || '';
+    if (!value) {
+      this.value = '';
+      return;
+    }
+
+    // If value comes in BR format dd/MM/yyyy, convert to ISO yyyy-MM-dd for input[type=date]
+    if (typeof value === 'string' && value.indexOf('/') !== -1) {
+      this.value = this.formatDateToISO(value);
+    } else if (typeof value === 'string' && value.indexOf('-') !== -1) {
+      // assume already ISO-like
+      // if value contains time portion, extract date
+      const dateOnly = value.split('T')[0];
+      this.value = dateOnly;
+    } else {
+      this.value = value;
+    }
   }
 
   registerOnChange(fn: (value: string) => void): void {

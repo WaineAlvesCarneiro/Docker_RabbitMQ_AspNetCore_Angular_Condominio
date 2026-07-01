@@ -16,7 +16,5 @@
   />
   <span *ngIf="hasError" class="form-error">{{ error }}</span>
   <span *ngIf="hint && !hasError" class="form-hint">{{ hint }}</span>
-  <span class="form-hint" style="font-size: 0.75rem; margin-top: 4px;">
-    {{ placeholder }}
-  </span>
+  <!-- placeholder text removed for date input to avoid duplicate native hints -->
 </div>

@@ -1,40 +1,39 @@
 <h2>{{ form.get('id')?.value ? 'Editar Imóvel' : 'Novo Imóvel' }}</h2>
 
 <form [formGroup]="form" class="form-container" (ngSubmit)="salvar()" autocomplete="off">
+
   <div *ngIf="id" class="form-group">
-    <label for="id">Código:</label>
-    <input type="number" id="id" formControlName="id" maxlength="10"/>
+    <app-input
+      label="Código"
+      type="number"
+      formControlName="id"
+      [readonly]="true"
+      [maxLength]="10">
+    </app-input>
   </div>
 
-  <div class="form-group">
-    <label for="bloco">Bloco:</label>
-    <input id="bloco" formControlName="bloco" maxlength="10" #focusInput/>
-  </div>
-  <div *ngIf="form.get('bloco')?.invalid && (formSubmetido)" class="validation-message">
-    <div *ngIf="form.get('bloco')?.errors?.['required']">
-      Bloco é obrigatório.
-    </div>
-  </div>
+  <app-input
+    label="Bloco"
+    formControlName="bloco"
+    [required]="true"
+    [maxLength]="10"
+    [error]="form.get('bloco')?.invalid && formSubmetido ? 'Bloco é obrigatório.' : ''">
+  </app-input>
 
-  <div class="form-group">
-    <label for="apartamento">Apartamento:</label>
-    <input id="apartamento" formControlName="apartamento" maxlength="10"/>
-  </div>
-  <div *ngIf="form.get('apartamento')?.invalid && (formSubmetido)" class="validation-message">
-    <div *ngIf="form.get('apartamento')?.errors?.['required']">
-      Apartamento é obrigatório.
-    </div>
-  </div>
+  <app-input
+    label="Apartamento"
+    formControlName="apartamento"
+    [required]="true"
+    [maxLength]="10"
+    [error]="form.get('apartamento')?.invalid && formSubmetido ? 'Apartamento é obrigatório.' : ''">
+  </app-input>
 
-  <div class="form-group">
-    <label for="boxGaragem">Box Garagem:</label>
-    <input id="boxGaragem" formControlName="boxGaragem"/>
-  </div>
-  <div *ngIf="form.get('boxGaragem')?.invalid && (formSubmetido)" class="validation-message">
-    <div *ngIf="form.get('boxGaragem')?.errors?.['required']">
-      Box Garagem é obrigatório.
-    </div>
-  </div>
+  <app-input
+    label="Box Garagem"
+    formControlName="boxGaragem"
+    [required]="true"
+    [error]="form.get('boxGaragem')?.invalid && formSubmetido ? 'Box Garagem é obrigatório.' : ''">
+  </app-input>
 
   <div class="form-actions">
     <app-button
@@ -42,8 +41,7 @@
       variant="primary"
       size="md"
       [disabled]="isSaving || form.invalid"
-      [loading]="isSaving"
-    >
+      [loading]="isSaving">
       <span *ngIf="!isSaving">Salvar</span>
       <span *ngIf="isSaving">Aguarde...</span>
     </app-button>
@@ -52,8 +50,7 @@
       type="button"
       variant="secondary"
       size="md"
-      (click)="cancelar()"
-    >
+      (click)="cancelar()">
       {{ userRole === 'Porteiro' ? 'Voltar' : 'Cancelar' }}
     </app-button>
   </div>

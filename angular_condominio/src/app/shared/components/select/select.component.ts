@@ -1,5 +1,18 @@
-import { Component, Input, Output, EventEmitter, forwardRef } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  forwardRef,
+  OnChanges,
+  SimpleChanges,
+  ChangeDetectorRef
+} from '@angular/core';
+
+import {
+  ControlValueAccessor,
+  NG_VALUE_ACCESSOR
+} from '@angular/forms';
 
 export interface SelectOption {
   value: any;
@@ -9,9 +22,9 @@ export interface SelectOption {
 
 @Component({
   selector: 'app-select',
-  standalone: false,
   templateUrl: './select.component.html',
   styleUrls: ['./select.component.css'],
+  standalone: false,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -20,34 +33,36 @@ export interface SelectOption {
     }
   ]
 })
-export class SelectComponent implements ControlValueAccessor {
-  @Input() label: string = '';
+export class SelectComponent implements ControlValueAccessor, OnChanges {
+  @Input() label = '';
   @Input() options: SelectOption[] = [];
-  @Input() placeholder: string = 'Selecione uma opção';
-  @Input() disabled: boolean = false;
-  @Input() required: boolean = false;
-  @Input() hint: string = '';
-  @Input() error: string = '';
-  @Input() multiple: boolean = false;
-
+  @Input() placeholder = 'Selecione uma opção';
+  @Input() required = false;
+  @Input() hint = '';
+  @Input() error = '';
+  @Input() multiple = false;
   @Output() change = new EventEmitter<any>();
   @Output() blur = new EventEmitter<void>();
 
-  value: any = '';
-  touched: boolean = false;
+  value: any = null;
+  disabled = false;
+  touched = false;
 
   private onChange: (value: any) => void = () => {};
   private onTouched: () => void = () => {};
+  constructor(private cd: ChangeDetectorRef) {}
 
   writeValue(value: any): void {
     this.value = value;
+    // ensure view updates when value is written, especially if options arrive later
+    try { this.cd.detectChanges(); } catch (e) { /* ignore */ }
   }
 
-  registerOnChange(fn: (value: any) => void): void {
+  registerOnChange(fn: any): void {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: () => void): void {
+  registerOnTouched(fn: any): void {
     this.onTouched = fn;
   }
 
@@ -55,14 +70,15 @@ export class SelectComponent implements ControlValueAccessor {
     this.disabled = isDisabled;
   }
 
-  onSelectChange(event: Event): void {
-    const target = event.target as HTMLSelectElement;
-    const newValue = this.multiple 
-      ? Array.from(target.selectedOptions, option => option.value)
-      : target.value;
-    this.value = newValue;
-    this.onChange(newValue);
-    this.change.emit(newValue);
+  onSelectChange(selected: any): void {
+    // selected comes from ngModel/ngModelChange: it preserves original types when using [ngValue]
+    if (this.multiple) {
+      this.value = Array.isArray(selected) ? selected : (selected ? [selected] : []);
+    } else {
+      this.value = selected === '' ? null : selected;
+    }
+    this.onChange(this.value);
+    this.change.emit(this.value);
   }
 
   onSelectBlur(): void {
@@ -71,20 +87,22 @@ export class SelectComponent implements ControlValueAccessor {
     this.blur.emit();
   }
 
-  getSelectClasses(): string {
-    const classes = ['form-control'];
-    if (this.error) classes.push('error');
-    return classes.join(' ');
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['options']) {
+      // when options change, ensure the template reflects current value
+      try { this.cd.detectChanges(); } catch (e) { /* ignore */ }
+    }
   }
 
   get hasError(): boolean {
     return this.touched && !!this.error;
   }
 
-  getSelectedLabel(): string {
-    if (!this.value) return this.placeholder;
-
-    const selected = this.options.find(opt => opt.value === this.value);
-    return selected ? selected.label : this.placeholder;
+  getSelectClasses(): string {
+    const classes = ['form-control'];
+    if (this.error) {
+      classes.push('error');
+    }
+    return classes.join(' ');
   }
 }

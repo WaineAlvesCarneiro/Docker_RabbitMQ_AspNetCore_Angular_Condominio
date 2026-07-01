@@ -17,6 +17,7 @@ export class MoradorLista {
   totalCount: number = 0;
   pageIndex: number = 0;
   pageSize: number = 0;
+  currentSearch: string = '';
 
   userRole: string | null = null;
   isPorteiro = false;
@@ -36,7 +37,7 @@ export class MoradorLista {
   }
 
   carregar(page: number = 0) {
-    this.moradorService.getAllPage(page, 10, 'nome', 'ASC').subscribe({
+    this.moradorService.getAllPage(page, this.pageSize || 10, 'nome', 'ASC', this.currentSearch).subscribe({
       next: response => {
         if (response.sucesso) {
           this.moradores = Array.isArray(response.dados.items) ? response.dados.items : [];
@@ -61,6 +62,18 @@ export class MoradorLista {
         }
       }
     });
+  }
+
+  onFiltersChange(filters: { search?: string; pageSize?: number }) {
+    this.currentSearch = filters.search || '';
+    this.pageSize = filters.pageSize || this.pageSize || 10;
+    this.pageIndex = 0;
+    this.carregar();
+  }
+
+  onPageChange(page: number) {
+    this.pageIndex = page;
+    this.carregar(page);
   }
 
   novo(): void { this.router.navigate(['/moradores/novo']); }

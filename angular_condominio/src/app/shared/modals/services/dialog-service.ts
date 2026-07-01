@@ -21,7 +21,6 @@ export class DialogService {
   ) {}
 
   openConfirmation(message: string): Observable<boolean> {
-    // fecha modal anterior se existir
     if (this.activeModal) {
       this.closeModal(this.activeModal);
     }
@@ -54,10 +53,8 @@ export class DialogService {
 
     const domElem = (componentRef as any).domElem as HTMLElement;
 
-    // garante que remove o mesmo nó anexado
     if (domElem && document.body.contains(domElem)) {
       document.body.removeChild(domElem);
-      console.log('✅ Modal removido do body');
     }
 
     componentRef.destroy();

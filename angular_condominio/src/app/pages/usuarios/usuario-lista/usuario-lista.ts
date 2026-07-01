@@ -17,6 +17,7 @@ export class UsuarioLista implements OnInit {
   totalCount: number = 0;
   pageIndex: number = 0;
   pageSize: number = 0;
+  currentSearch: string = '';
 
   tipoRoleMap = new Map<number, string>();
   tipoUserAtivoMap = new Map<number, string>();
@@ -51,7 +52,7 @@ export class UsuarioLista implements OnInit {
   }
 
   carregar(page: number = 0) {
-    this.usuarioService.getAllPage(page, 10, 'username', 'ASC').subscribe({
+    this.usuarioService.getAllPage(page, this.pageSize || 10, 'username', 'ASC', this.currentSearch).subscribe({
       next: response => {
         if (response.sucesso) {
           this.usuarios = Array.isArray(response.dados.items) ? response.dados.items : [];
@@ -63,8 +64,8 @@ export class UsuarioLista implements OnInit {
             this.notificationService.showAlerta(response.erro);
           } else {
             this.notificationService.showError('Erro ao carregar usuários.');
-            console.error('Erro ao carregar usuários metodo carregar: ', response.erro);
-          }
+              console.error('Erro ao carregar usuários metodo carregar: ', response.erro);
+            }
         }
         },
       error: (err) => {
@@ -76,6 +77,18 @@ export class UsuarioLista implements OnInit {
         }
       }
     });
+  }
+
+  onFiltersChange(filters: { search?: string; pageSize?: number }) {
+    this.currentSearch = filters.search || '';
+    this.pageSize = filters.pageSize || this.pageSize || 10;
+    this.pageIndex = 0;
+    this.carregar();
+  }
+
+  onPageChange(page: number) {
+    this.pageIndex = page;
+    this.carregar(page);
   }
 
   novo(): void { this.router.navigate(['/usuarios/novo']); }

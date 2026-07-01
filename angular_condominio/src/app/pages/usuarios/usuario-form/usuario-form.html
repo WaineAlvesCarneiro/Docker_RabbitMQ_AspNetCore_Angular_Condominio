@@ -1,40 +1,47 @@
 <h2>{{ form.get('id')?.value ? 'Editar Usuário' : 'Novo Usuário' }}</h2>
 
 <form [formGroup]="form" class="form-container" (ngSubmit)="salvar()" autocomplete="off">
+
   <div *ngIf="id" class="form-group">
-    <label for="id">Código:</label>
-    <input type="text" id="id" formControlName="id"/>
+    <app-input
+      label="Código"
+      type="text"
+      formControlName="id"
+      [readonly]="true">
+    </app-input>
   </div>
 
-  <div class="form-group">
-    <label for="userName">Usuário</label>
-    <input id="userName" formControlName="userName" #focusInput/>
-    <div *ngIf="form.get('userName')?.invalid && formSubmetido" class="validation-message">
-      Usuário é obrigatório
-    </div>
-  </div>
+  <app-input
+    label="Usuário"
+    formControlName="userName"
+    [required]="true"
+    [error]="form.get('userName')?.invalid && formSubmetido ? 'Usuário é obrigatório' : ''">
+  </app-input>
 
-  <div class="form-group">
-    <label for="email">E-mail</label>
-    <input id="email" formControlName="email" />
-    <div *ngIf="form.get('email')?.invalid && formSubmetido" class="validation-message">
-      <div *ngIf="form.get('email')?.errors?.['required']">E-mail é obrigatório</div>
-      <div *ngIf="form.get('email')?.errors?.['email']">Formato inválido</div>
-    </div>
-  </div>
+  <app-input
+    label="E-mail"
+    type="email"
+    formControlName="email"
+    [required]="true"
+    [error]="form.get('email')?.invalid && formSubmetido ? 'E-mail obrigatório ou formato inválido' : ''">
+  </app-input>
 
-  <div class="form-group">
-    <label for="role">Perfil</label>
-    <select formControlName="role">
-      <option *ngFor="let opt of tiposRole" [value]="opt.value">{{ opt.label }}</option>
-    </select>
-  </div>
+  <app-select
+    label="Perfil"
+    formControlName="role"
+    [options]="tiposRole"
+    [required]="true"
+    [error]="form.get('role')?.invalid && formSubmetido ? 'Perfil é obrigatório' : ''">
+  </app-select>
 
   <div class="form-group" *ngIf="form.get('role')?.value !== 'Suporte'">
-    <label for="empresaId">Empresa:</label>
-    <select id="empresaId" formControlName="empresaId">
-      <option *ngFor="let empresa of empresas" [value]="empresa.id">{{ empresa.razaoSocial }}</option>
-    </select>
+    <app-select
+      label="Empresa"
+      formControlName="empresaId"
+      [options]="empresaOptions"
+      [required]="true"
+      [error]="form.get('empresaId')?.invalid && formSubmetido ? 'Empresa é obrigatória' : ''">
+    </app-select>
   </div>
 
   <div class="form-actions">
@@ -43,8 +50,7 @@
       variant="primary"
       size="md"
       [disabled]="isSaving || form.invalid"
-      [loading]="isSaving"
-    >
+      [loading]="isSaving">
       <span *ngIf="!isSaving">Salvar</span>
       <span *ngIf="isSaving">Aguarde...</span>
     </app-button>
@@ -53,8 +59,7 @@
       type="button"
       variant="secondary"
       size="md"
-      (click)="cancelar()"
-    >
+      (click)="cancelar()">
       Cancelar
     </app-button>
   </div>

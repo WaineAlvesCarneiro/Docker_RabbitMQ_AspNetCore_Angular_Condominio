@@ -11,6 +11,8 @@
     </app-button>
   </div>
 
+  <app-table-filters (filtersChange)="onFiltersChange($event)"></app-table-filters>
+
   <table class="itens-table">
     <thead>
       <tr>
@@ -48,4 +50,11 @@
       </tr>
     </tbody>
   </table>
+
+  <app-pagination
+    [totalCount]="totalCount"
+    [pageIndex]="pageIndex"
+    [pageSize]="pageSize"
+    (pageChange)="onPageChange($event)">
+  </app-pagination>
 </div>

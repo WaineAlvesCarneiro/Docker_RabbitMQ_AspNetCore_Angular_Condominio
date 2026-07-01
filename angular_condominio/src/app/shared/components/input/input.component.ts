@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, forwardRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, forwardRef, ElementRef, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 export type InputType = 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'date' | 'time' | 'datetime-local';
@@ -17,6 +17,8 @@ export type InputType = 'text' | 'email' | 'password' | 'number' | 'tel' | 'url'
   ]
 })
 export class InputComponent implements ControlValueAccessor {
+  @ViewChild('inputRef') inputRef!: ElementRef<HTMLInputElement>;
+
   @Input() label: string = '';
   @Input() type: InputType = 'text';
   @Input() placeholder: string = '';
@@ -31,10 +33,11 @@ export class InputComponent implements ControlValueAccessor {
   @Input() min: string | number | null = null;
   @Input() max: string | number | null = null;
   @Input() step: string | number | null = null;
+  @Input() maskName: 'cnpj' | 'cep' | 'telefone' | 'celular' | null = null;
 
   @Output() change = new EventEmitter<any>();
   @Output() blur = new EventEmitter<void>();
-  @Output() focus = new EventEmitter<void>();
+  @Output() focusEvent = new EventEmitter<void>();
 
   value: any = '';
   touched: boolean = false;
@@ -73,7 +76,13 @@ export class InputComponent implements ControlValueAccessor {
   }
 
   onInputFocus(): void {
-    this.focus.emit();
+    this.focusEvent.emit();
+  }
+
+  setFocus(): void {
+    if (this.inputRef) {
+      this.inputRef.nativeElement.focus();
+    }
   }
 
   getInputClasses(): string {

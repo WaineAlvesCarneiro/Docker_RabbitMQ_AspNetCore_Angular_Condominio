@@ -44,7 +44,8 @@ export class CepMaskDirective implements ControlValueAccessor {
 
   private format(d: string) {
     if (!d) return '';
-    if (d.length <= 5) return d;
-    return `${d.slice(0,5)}-${d.slice(5)}`;
+    if (d.length <= 2) return d;
+    if (d.length <= 5) return `${d.slice(0,2)}.${d.slice(2,5)}`;
+    return `${d.slice(0,2)}.${d.slice(2,5)}-${d.slice(5,8)}`;
   }
 }

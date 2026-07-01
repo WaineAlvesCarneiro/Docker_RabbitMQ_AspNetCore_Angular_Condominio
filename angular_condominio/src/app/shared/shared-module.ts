@@ -7,6 +7,8 @@ import { InputComponent } from './components/input/input.component';
 import { DatePickerComponent } from './components/date-picker/date-picker.component';
 import { SelectComponent } from './components/select/select.component';
 import { BooleanComponent } from './components/boolean/boolean.component';
+import { PaginationComponent } from './components/pagination/pagination.component';
+import { TableFiltersComponent } from './components/table-filters/table-filters.component';
 import { CelularMaskDirective } from './directive/celular-mask-directive';
 import { CepMaskDirective } from './directive/cep-mask-directive';
 import { CnpjMaskDirective } from './directive/cnpj-mask-directive';
@@ -25,6 +27,8 @@ import { NotificationComponent } from './modals/notification/notification';
     DatePickerComponent,
     SelectComponent,
     BooleanComponent,
+    PaginationComponent,
+    TableFiltersComponent,
     CelularMaskDirective,
     CepMaskDirective,
     CnpjMaskDirective,
@@ -50,6 +54,8 @@ import { NotificationComponent } from './modals/notification/notification';
     DatePickerComponent,
     SelectComponent,
     BooleanComponent,
+    PaginationComponent,
+    TableFiltersComponent,
     CelularMaskDirective,
     CepMaskDirective,
     CnpjMaskDirective,

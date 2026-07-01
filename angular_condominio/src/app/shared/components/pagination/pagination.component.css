@@ -1,0 +1,22 @@
+.pagination-container {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-top: 12px;
+}
+.page-btn, .page-number {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  background: #fff;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.page-number.active {
+  background: #007bff;
+  color: #fff;
+  border-color: #007bff;
+}
+.page-btn[disabled], .page-number[disabled] {
+  opacity: 0.6;
+  cursor: default;
+}

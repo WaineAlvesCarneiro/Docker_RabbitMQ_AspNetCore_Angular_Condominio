@@ -1,0 +1,15 @@
+<div class="table-filters">
+  <input
+    type="text"
+    placeholder="Pesquisar..."
+    [(ngModel)]="search"
+    (keyup.enter)="apply()"
+  />
+
+  <select [(ngModel)]="pageSize" (change)="apply()">
+    <option *ngFor="let p of pageSizeOptions" [value]="p">{{ p }}</option>
+  </select>
+
+  <button class="btn" (click)="apply()">Aplicar</button>
+  <button class="btn-outline" (click)="clear()">Limpar</button>
+</div>

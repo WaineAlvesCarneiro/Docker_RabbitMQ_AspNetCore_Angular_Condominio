@@ -1,122 +1,148 @@
 <h2>{{ form.get('id')?.value ? 'Editar Empresa' : 'Cadastro de Empresa' }}</h2>
 
 <form [formGroup]="form" class="form-container" (ngSubmit)="salvar()" autocomplete="off">
-  <div *ngIf="form.get('id')?.value !== 0" class="form-group" >
-    <label for="id">Código:</label>
-    <input type="number" id="id" formControlName="id" />
+
+  <div *ngIf="form.get('id')?.value !== 0" class="form-group">
+    <app-input
+      label="Código"
+      type="number"
+      formControlName="id"
+      [readonly]="true"
+      [required]="false">
+    </app-input>
   </div>
 
   <div *ngIf="form.get('id')?.value !== 0" class="form-group">
-    <label for="ativo">Status</label>
-    <select formControlName="ativo">
-      <option *ngFor="let opt of tiposEmpresaAtivo" [value]="opt.value">{{ opt.label }}</option>
-    </select>
+    <app-select
+        label="Status"
+        formControlName="ativo"
+        [options]="tiposEmpresaAtivo"
+        [error]="form.get('ativo')?.invalid && formSubmetido ? 'Selecione o status' : ''">
+    </app-select>
   </div>
 
-  <div class="form-group">
-    <label for="razaoSocial">Razão Social</label>
-    <input id="razaoSocial" formControlName="razaoSocial" #focusInput />
-    <div *ngIf="form.get('razaoSocial')?.invalid && formSubmetido" class="validation-message">
-      Razão Social é obrigatória
-    </div>
-  </div>
+  <app-input
+    label="Razão Social"
+    formControlName="razaoSocial"
+    [required]="true"
+    placeholder="Digite a razão social"
+    [error]="form.get('razaoSocial')?.invalid && formSubmetido ? 'Razão Social é obrigatória' : ''">
+  </app-input>
 
-  <div class="form-group">
-    <label for="fantasia">Fantasia</label>
-    <input id="fantasia" formControlName="fantasia" />
-  </div>
+  <app-input
+    label="Fantasia"
+    formControlName="fantasia"
+    placeholder="Nome fantasia">
+  </app-input>
 
-  <div class="form-group">
-    <label for="cnpj">CNPJ</label>
-    <input id="cnpj" formControlName="cnpj" (blur)="validarCnpj()" cnpjMask />
-    <div *ngIf="cnpjInvalido" class="validation-message">CNPJ inválido.</div>
-  </div>
+  <app-input
+    label="CNPJ"
+    formControlName="cnpj"
+    (blur)="validarCnpj()"
+    placeholder="00.000.000/0000-00"
+    maskName="cnpj"
+    [error]="cnpjInvalido ? 'CNPJ inválido.' : ''">
+  </app-input>
 
-  <div class="form-group">
-    <label for="tipoDeCondominio">Tipo de Condomínio</label>
-    <select formControlName="tipoDeCondominio">
-      <option *ngFor="let opt of tiposDeCondominio" [value]="opt.value">{{ opt.label }}</option>
-    </select>
-  </div>
+  <app-select
+    label="Tipo de Condomínio"
+    formControlName="tipoDeCondominio"
+    [options]="tiposDeCondominio"
+    [error]="form.get('tipoDeCondominio')?.invalid && formSubmetido ? 'Selecione o tipo de condomínio' : ''">
+  </app-select>
 
-  <div class="form-group">
-    <label for="nome">Nome:</label>
-    <input id="nome" formControlName="nome" maxlength="50" />
-    <div *ngIf="form.get('nome')?.invalid && formSubmetido" class="validation-message">
-      <div *ngIf="form.get('nome')?.errors?.['required']">Nome é obrigatório.</div>
-    </div>
-  </div>
+  <app-input
+    label="Nome"
+    formControlName="nome"
+    [required]="true"
+    [maxLength]="50"
+    [error]="form.get('nome')?.invalid && formSubmetido ? 'Nome é obrigatório.' : ''">
+  </app-input>
 
-  <div class="form-group">
-    <label for="celular">Celular:</label>
-    <input id="celular" formControlName="celular" maxlength="15" celularMask placeholder="(99) 99999-9999" />
-    <div *ngIf="form.get('celular')?.invalid && formSubmetido" class="validation-message">
-      <div *ngIf="form.get('celular')?.errors?.['required']">Celular é obrigatório.</div>
-      <div *ngIf="form.get('celular')?.errors?.['pattern']">Celular deve ter 11 dígitos.</div>
-    </div>
-  </div>
+  <app-input
+    label="Celular"
+    type="tel"
+    formControlName="celular"
+    placeholder="(99) 99999-9999"
+    maskName="celular"
+    [required]="true"
+    [error]="form.get('celular')?.invalid && formSubmetido ? 'Celular inválido ou obrigatório.' : ''">
+  </app-input>
 
-  <div class="form-group">
-    <label for="email">E-mail:</label>
-    <input id="email" formControlName="email" maxlength="50" />
-    <div *ngIf="form.get('email')?.invalid && formSubmetido" class="validation-message">
-      <div *ngIf="form.get('email')?.errors?.['required']">E-mail é obrigatório.</div>
-      <div *ngIf="form.get('email')?.errors?.['email']">Formato inválido.</div>
-    </div>
-  </div>
+  <app-input
+    label="E-mail"
+    type="email"
+    formControlName="email"
+    placeholder="exemplo@dominio.com"
+    [required]="true"
+    [error]="form.get('email')?.invalid && formSubmetido ? 'E-mail obrigatório ou formato inválido.' : ''">
+  </app-input>
 
-  <div class="form-group">
-    <label for="telefone">Telefone:</label>
-    <input id="telefone" formControlName="telefone" maxlength="14" telefoneMask placeholder="(99) 9999-9999" />
-  </div>
+  <app-input
+    label="Telefone"
+    type="tel"
+    formControlName="telefone"
+    placeholder="(99) 9999-9999"
+    maskName="telefone">
+  </app-input>
 
-  <div class="form-group">
-    <label for="senha">Senha</label>
-    <input id="senha" type="password" formControlName="senha" />
-    <div *ngIf="form.get('senha')?.invalid && formSubmetido" class="validation-message">
-      Senha é obrigatória no cadastro.
-    </div>
-  </div>
+  <app-input
+    label="Senha"
+    type="password"
+    formControlName="senha"
+    [required]="true"
+    [error]="form.get('senha')?.invalid && formSubmetido ? 'Senha é obrigatória no cadastro.' : ''">
+  </app-input>
 
-  <div class="form-group">
-    <label for="host">Host</label>
-    <input id="host" formControlName="host" />
-  </div>
+  <app-input
+    label="Host"
+    formControlName="host"
+    [required]="true"
+    [error]="form.get('host')?.invalid && formSubmetido ? 'Host é obrigatório.' : ''">
+  </app-input>
 
-  <div class="form-group">
-    <label for="porta">Porta</label>
-    <input id="porta" type="number" formControlName="porta" />
-  </div>
+  <app-input
+    label="Porta"
+    type="number"
+    formControlName="porta"
+    [required]="true"
+    [error]="form.get('porta')?.invalid && formSubmetido ? 'Porta é obrigatória.' : ''">
+  </app-input>
 
-  <div class="form-group">
-    <label for="cep">CEP</label>
-    <input id="cep" formControlName="cep" (input)="onCepInput($event)" cepMask />
-  </div>
+  <app-input
+    label="CEP"
+    formControlName="cep"
+    placeholder="00.000-000"
+    maskName="cep"
+    (input)="onCepInput($event)"
+    [required]="true"
+    [error]="form.get('cep')?.invalid && formSubmetido ? 'CEP é obrigatório.' : ''">
+  </app-input>
 
-  <div class="form-group">
-    <label for="uf">UF</label>
-    <input id="uf" formControlName="uf" />
-  </div>
+  <app-input
+    label="UF"
+    formControlName="uf">
+  </app-input>
 
-  <div class="form-group">
-    <label for="cidade">Cidade</label>
-    <input id="cidade" formControlName="cidade" />
-  </div>
+  <app-input
+    label="Cidade"
+    formControlName="cidade">
+  </app-input>
 
-  <div class="form-group">
-    <label for="endereco">Endereço / Logradouro</label>
-    <input id="endereco" formControlName="endereco" />
-  </div>
+  <app-input
+    label="Endereço / Logradouro"
+    formControlName="endereco">
+  </app-input>
 
-  <div class="form-group">
-    <label for="bairro">Bairro</label>
-    <input id="bairro" formControlName="bairro" />
-  </div>
+  <app-input
+    label="Bairro"
+    formControlName="bairro">
+  </app-input>
 
-  <div class="form-group">
-    <label for="complemento">Complemento</label>
-    <input id="complemento" formControlName="complemento" />
-  </div>
+  <app-input
+    label="Complemento"
+    formControlName="complemento">
+  </app-input>
 
   <div class="form-actions">
     <app-button
@@ -124,8 +150,7 @@
       variant="primary"
       size="md"
       [disabled]="isSaving || form.invalid"
-      [loading]="isSaving"
-    >
+      [loading]="isSaving">
       <span *ngIf="!isSaving">Salvar</span>
       <span *ngIf="isSaving">Aguarde...</span>
     </app-button>
@@ -134,8 +159,7 @@
       type="button"
       variant="secondary"
       size="md"
-      (click)="cancelar()"
-    >
+      (click)="cancelar()">
       Cancelar
     </app-button>
   </div>

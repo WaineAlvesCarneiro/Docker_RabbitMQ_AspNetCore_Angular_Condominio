@@ -1,24 +1,41 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Morador } from '../morador.model';
-import { Imovel } from '../../imoveis/imovel.model';
 import { MoradorService } from '../services/morador-service';
 import { ImovelService } from '../../imoveis/services/imovel-service';
 import { AuthService } from '../../../core/services/AuthService';
 import { NotificationService } from '../../../shared/modals/notification/services/notification-service';
+import { SelectOption } from '../../../shared/components/select/select.component';
+import { InputComponent } from '../../../shared/components/input/input.component';
 
 @Component({
   selector: 'app-morador-form',
   templateUrl: './morador-form.html',
+  styleUrls: ['../../../shared/styles/form-module.css'],
   standalone: false,
-  styleUrls: ['../../../shared/styles/form-module.css']
 })
 export class MoradorForm implements OnInit, AfterViewInit {
-  @ViewChild('focusInput') focusInputRef!: ElementRef;
+  @ViewChild(InputComponent) nomeInput!: InputComponent;
+  
+  ngAfterViewInit(): void {
+    if (this.nomeInput) {
+      this.nomeInput.setFocus();
+    }
+  }
+
+  logForm(): void {
+    console.log('form.valid:', this.form.valid);
+    console.log('form.value:', this.form.getRawValue());
+    Object.keys(this.form.controls).forEach(k => {
+      const c: any = this.form.get(k);
+      console.log(k, 'valid=', c?.valid, 'value=', c?.value, 'errors=', c?.errors);
+    });
+  }
 
   form!: FormGroup;
-  imoveis: Imovel[] = [];
+  imoveis: any[] = [];
+  imovelOptions: SelectOption[] = [];
   isSaving = false;
   id?: string;
   formSubmetido = false;
@@ -44,11 +61,17 @@ export class MoradorForm implements OnInit, AfterViewInit {
       dataEntrada: ['', Validators.required],
       dataSaida: '',
       isProprietario: false,
-      imovelId: ['', Validators.required]
+      imovelId: ['0', Validators.required]
     });
 
     this.imovelService.getAll().subscribe({
-      next: (res) => this.imoveis = res,
+      next: (res) => {
+        this.imoveis = res;
+        this.imovelOptions = this.imoveis.map(imovel => ({
+          value: imovel.id,
+          label: `Bloco ${imovel.bloco} - Apto ${imovel.apartamento}`
+        }));
+      },
       error: () => this.notificationService.showError('Erro ao carregar imóvel.')
     });
 
@@ -58,10 +81,11 @@ export class MoradorForm implements OnInit, AfterViewInit {
     this.userRole = this.authService.getUserRole();
     this.isPorteiro = this.userRole === 'Porteiro' || this.userRole === '3';
     if (this.userRole === 'Porteiro') this.form.disable();
-  }
 
-  ngAfterViewInit(): void {
-    this.focusInputRef.nativeElement.focus();
+    this.imovelOptions = this.imoveis.map(imovel => ({
+      value: imovel.id,
+      label: `Bloco ${imovel.bloco} - Apto ${imovel.apartamento}`
+    }));
   }
 
   carregar(id: string): void {

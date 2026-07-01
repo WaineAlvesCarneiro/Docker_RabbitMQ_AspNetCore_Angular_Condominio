@@ -2,24 +2,107 @@
   <label *ngIf="label" [ngClass]="{ required: required }" class="form-label">
     {{ label }}
   </label>
-  <input
-    [ngClass]="getInputClasses()"
-    [type]="type"
-    [placeholder]="placeholder"
-    [(ngModel)]="value"
-    [disabled]="disabled"
-    [readonly]="readonly"
-    [required]="required"
-    [maxlength]="maxLength"
-    [minlength]="minLength"
-    [attr.pattern]="pattern"
-    [min]="min"
-    [max]="max"
-    [step]="step"
-    (input)="onInputChange($event)"
-    (blur)="onInputBlur()"
-    (focus)="onInputFocus()"
-  />
+
+  <ng-container [ngSwitch]="maskName">
+    <input *ngSwitchDefault
+      #inputRef
+      [ngClass]="getInputClasses()"
+      [type]="type"
+      [placeholder]="placeholder"
+      [(ngModel)]="value"
+      [disabled]="disabled"
+      [readonly]="readonly"
+      [required]="required"
+      [maxlength]="maxLength"
+      [minlength]="minLength"
+      [attr.pattern]="pattern"
+      [min]="min"
+      [max]="max"
+      [step]="step"
+      (input)="onInputChange($event)"
+      (blur)="onInputBlur()"
+      (focus)="onInputFocus()" />
+
+    <input *ngSwitchCase="'cnpj'"
+      #inputRef
+      cnpjMask
+      [ngClass]="getInputClasses()"
+      [type]="type"
+      [placeholder]="placeholder"
+      [(ngModel)]="value"
+      [disabled]="disabled"
+      [readonly]="readonly"
+      [required]="required"
+      [maxlength]="maxLength"
+      [minlength]="minLength"
+      [attr.pattern]="pattern"
+      [min]="min"
+      [max]="max"
+      [step]="step"
+      (input)="onInputChange($event)"
+      (blur)="onInputBlur()"
+      (focus)="onInputFocus()" />
+
+    <input *ngSwitchCase="'cep'"
+      #inputRef
+      cepMask
+      [ngClass]="getInputClasses()"
+      [type]="type"
+      [placeholder]="placeholder"
+      [(ngModel)]="value"
+      [disabled]="disabled"
+      [readonly]="readonly"
+      [required]="required"
+      [maxlength]="maxLength"
+      [minlength]="minLength"
+      [attr.pattern]="pattern"
+      [min]="min"
+      [max]="max"
+      [step]="step"
+      (input)="onInputChange($event)"
+      (blur)="onInputBlur()"
+      (focus)="onInputFocus()" />
+
+    <input *ngSwitchCase="'telefone'"
+      #inputRef
+      telefoneMask
+      [ngClass]="getInputClasses()"
+      [type]="type"
+      [placeholder]="placeholder"
+      [(ngModel)]="value"
+      [disabled]="disabled"
+      [readonly]="readonly"
+      [required]="required"
+      [maxlength]="maxLength"
+      [minlength]="minLength"
+      [attr.pattern]="pattern"
+      [min]="min"
+      [max]="max"
+      [step]="step"
+      (input)="onInputChange($event)"
+      (blur)="onInputBlur()"
+      (focus)="onInputFocus()" />
+
+    <input *ngSwitchCase="'celular'"
+      #inputRef
+      celularMask
+      [ngClass]="getInputClasses()"
+      [type]="type"
+      [placeholder]="placeholder"
+      [(ngModel)]="value"
+      [disabled]="disabled"
+      [readonly]="readonly"
+      [required]="required"
+      [maxlength]="maxLength"
+      [minlength]="minLength"
+      [attr.pattern]="pattern"
+      [min]="min"
+      [max]="max"
+      [step]="step"
+      (input)="onInputChange($event)"
+      (blur)="onInputBlur()"
+      (focus)="onInputFocus()" />
+  </ng-container>
 
   <span *ngIf="hasError" class="form-error">{{ error }}</span>
   <span *ngIf="hint && !hasError" class="form-hint">{{ hint }}</span>

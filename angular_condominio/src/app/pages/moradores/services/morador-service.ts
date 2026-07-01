@@ -20,16 +20,17 @@ export class MoradorService {
   }
 
   getAllPage(
-    page: number = 1,
+    page: number = 0,
     pageSize: number = 10,
     orderBy: string = 'nome',
     direction: string = 'ASC',
     nome: string = ''
   ) {
+    const serverPage = (Number(page) || 0) + 1;
     const idEmpresa = this.authService.getUserEmpresaId();
 
     let params = new HttpParams()
-      .set('page', page)
+      .set('page', serverPage)
       .set('pageSize', pageSize)
       .set('orderBy', orderBy)
       .set('direction', direction)
@@ -37,7 +38,31 @@ export class MoradorService {
 
     idEmpresa !== null ? params = params.set('empresaId', idEmpresa) : params = params.set('empresaId', 0);
 
-    return this.http.get<PaginatedResponse<Morador>>(`${this.apiUrl}/paginado`, { params });
+    return this.http.get<PaginatedResponse<any>>(`${this.apiUrl}/paginado`, { params }).pipe(
+      map(response => {
+        if (!response) return response as any;
+
+        const respDados: any = response.dados || {};
+        const items = Array.isArray(respDados.items) ? respDados.items.map((i: any) => MoradorAdapter.fromApi(i)) : [];
+
+        const serverPageIndex = respDados.pageIndex ?? respDados.pageNumber ?? 1;
+        const normalizedPageIndex = Number(serverPageIndex) > 0 ? Number(serverPageIndex) - 1 : 0;
+        const normalizedPageSize = respDados.pageSize ?? respDados.linesPerPage ?? pageSize;
+        const normalizedTotalCount = respDados.totalCount ?? 0;
+
+        const mapped = {
+          ...response,
+          dados: {
+            items,
+            totalCount: normalizedTotalCount,
+            pageIndex: normalizedPageIndex,
+            pageSize: Number(normalizedPageSize)
+          }
+        } as PaginatedResponse<Morador>;
+
+        return mapped;
+      })
+    );
   }
 
   getId(id: string): Observable<Morador> {

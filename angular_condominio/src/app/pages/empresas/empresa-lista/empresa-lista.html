@@ -52,4 +52,11 @@
       </tr>
     </tbody>
   </table>
+
+  <app-pagination
+    [totalCount]="totalCount"
+    [pageIndex]="pageIndex"
+    [pageSize]="pageSize"
+    (pageChange)="onPageChange($event)">
+  </app-pagination>
 </div>

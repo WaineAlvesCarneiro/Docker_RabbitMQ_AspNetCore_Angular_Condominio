@@ -17,6 +17,7 @@ export class ImovelLista {
   totalCount: number = 0;
   pageIndex: number = 0;
   pageSize: number = 0;
+  currentSearch: string = '';
 
   userRole: string | null = null;
   isPorteiro = false;
@@ -36,7 +37,7 @@ export class ImovelLista {
   }
 
   carregar(page: number = 0) {
-    this.imovelService.getAllPage(page, 10, 'bloco', 'ASC').subscribe({
+    this.imovelService.getAllPage(page, this.pageSize || 10, 'bloco', 'ASC', this.currentSearch).subscribe({
       next: response => {
         if (response.sucesso) {
           this.imoveis = Array.isArray(response.dados.items) ? response.dados.items : [];
@@ -61,6 +62,18 @@ export class ImovelLista {
         }
       }
     });
+  }
+
+  onFiltersChange(filters: { search?: string; pageSize?: number }) {
+    this.currentSearch = filters.search || '';
+    this.pageSize = filters.pageSize || this.pageSize || 10;
+    this.pageIndex = 0;
+    this.carregar();
+  }
+
+  onPageChange(page: number) {
+    this.pageIndex = page;
+    this.carregar(page);
   }
 
   novo(): void { this.router.navigate(['/imoveis/novo']); }
