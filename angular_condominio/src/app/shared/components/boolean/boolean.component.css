@@ -5,3 +5,18 @@
 .form-group {
   margin: var(--spacing-md) 0;
 }
+
+.form-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.form-control-checkbox {
+  width: 18px;
+  height: 18px;
+}
+
+.form-check-label {
+  font-size: 0.95rem;
+}

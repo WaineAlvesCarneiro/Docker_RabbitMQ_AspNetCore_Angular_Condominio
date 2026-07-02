@@ -23,6 +23,15 @@ export class UsuarioForm implements OnInit, AfterViewInit {
       this.userNameInput.setFocus();
     }
   }
+
+  logForm(): void {
+    console.log('form.valid:', this.form.valid);
+    console.log('form.value:', this.form.getRawValue());
+    Object.keys(this.form.controls).forEach(k => {
+      const c: any = this.form.get(k);
+      console.log(k, 'valid=', c?.valid, 'value=', c?.value, 'errors=', c?.errors);
+    });
+  }
   
   form!: FormGroup;
   empresas: any[] = [];
@@ -105,7 +114,7 @@ export class UsuarioForm implements OnInit, AfterViewInit {
       id: this.id ? this.id : '0',
       ativo: 1,
       empresaAtiva: 1,
-      empresaId: Number(this.form.get('empresaId')?.value),
+      empresaId: Number(this.form.get('role')?.value) === 1 ? null : Number(this.form.get('empresaId')?.value),
       userName: this.form.get('userName')?.value,
       email: this.form.get('email')?.value,
       role: Number(this.form.get('role')?.value),
@@ -115,20 +124,22 @@ export class UsuarioForm implements OnInit, AfterViewInit {
 
     this.isSaving = true;
 
-    const obs = this.id
-      ? this.usuarioService.atualizar({ ...usuario, id: this.id })
+    const request = this.id
+      ? this.usuarioService.atualizar(usuario)
       : this.usuarioService.criar(usuario);
 
-    obs.subscribe({
+    request.subscribe({
       next: () => {
-        this.isSaving = false;
         this.notificationService.showSuccess('Usuário salvo com sucesso!');
         this.router.navigate(['/usuarios']);
       },
       error: (err) => {
-        this.isSaving = false;
         this.notificationService.showError('Erro ao salvar usuário.');
+        this.isSaving = false;
         console.error(err);
+      },
+      complete: () => {
+        this.isSaving = false;
       }
     });
   }

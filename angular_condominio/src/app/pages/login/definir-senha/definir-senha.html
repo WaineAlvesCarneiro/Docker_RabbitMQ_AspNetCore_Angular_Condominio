@@ -1,37 +1,22 @@
 <div class="loginContainer">
-  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="loginForm" autocomplete="off">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="loginForm form-container" autocomplete="off">
     <h2>Primeiro Acesso</h2>
     <p>Você precisa definir uma senha definitiva para continuar.</p>
 
-    <div>
-      <label for="novaSenha">Nova senha</label>
-      <input id="novaSenha" formControlName="novaSenha" type="password" #focusInput />
-      <div *ngIf="form.get('novaSenha')?.touched" class="validation-message">
-        <div *ngIf="form.get('novaSenha')?.errors?.['required']">A nova senha é obrigatória.</div>
-        <div *ngIf="form.get('novaSenha')?.errors?.['minlength']">A senha deve ter no mínimo 5 caracteres.</div>
-      </div>
+    <div class="form-group">
+      <app-input id="novaSenha" label="Nova senha" formControlName="novaSenha" type="password" #focusInput></app-input>
     </div>
+    <div *ngIf="form.get('novaSenha')?.invalid && form.get('novaSenha')?.touched" class="form-error">Nova senha é obrigatória.</div>
+    <div *ngIf="form.get('novaSenha')?.errors?.['minlength'] && form.get('novaSenha')?.touched" class="form-error">A senha deve ter no mínimo 5 caracteres.</div>
 
-    <div>
-      <label for="confirmarSenha">Confirmar senha</label>
-      <input id="confirmarSenha" formControlName="confirmarSenha" type="password" />
-      <div *ngIf="(form.get('confirmarSenha')?.touched || form.touched)" class="validation-message">
-        <div *ngIf="form.get('confirmarSenha')?.errors?.['required']">Confirmação de senha é obrigatória.</div>
-        <div *ngIf="form.errors?.['passwordMismatch']">As senhas não conferem.</div>
-      </div>
+    <div class="form-group">
+      <app-input id="confirmarSenha" label="Confirmar senha" formControlName="confirmarSenha" type="password"></app-input>
     </div>
+    <div *ngIf="form.get('confirmarSenha')?.invalid && form.get('confirmarSenha')?.touched" class="form-error">Confirmar senha é obrigatória.</div>
+    <div *ngIf="form.errors?.['passwordMismatch'] && form.get('confirmarSenha')?.touched" class="form-error">As senhas não conferem.</div>
 
-    <div class="submit-container">
-      <app-button
-        type="submit"
-        variant="success"
-        size="md"
-        [block]="true"
-        [disabled]="isSaving || form.invalid"
-        [loading]="isSaving"
-      >
-        Salvar Senha
-      </app-button>
+    <div class="form-actions">
+      <app-button type="submit" variant="success" [block]="true" [disabled]="isSaving || form.invalid">Salvar Senha</app-button>
     </div>
   </form>
 </div>

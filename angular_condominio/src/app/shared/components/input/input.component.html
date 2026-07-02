@@ -6,6 +6,7 @@
   <ng-container [ngSwitch]="maskName">
     <input *ngSwitchDefault
       #inputRef
+      class="form-control"
       [ngClass]="getInputClasses()"
       [type]="type"
       [placeholder]="placeholder"
@@ -26,6 +27,7 @@
     <input *ngSwitchCase="'cnpj'"
       #inputRef
       cnpjMask
+      class="form-control"
       [ngClass]="getInputClasses()"
       [type]="type"
       [placeholder]="placeholder"
@@ -46,6 +48,7 @@
     <input *ngSwitchCase="'cep'"
       #inputRef
       cepMask
+      class="form-control"
       [ngClass]="getInputClasses()"
       [type]="type"
       [placeholder]="placeholder"
@@ -66,6 +69,7 @@
     <input *ngSwitchCase="'telefone'"
       #inputRef
       telefoneMask
+      class="form-control"
       [ngClass]="getInputClasses()"
       [type]="type"
       [placeholder]="placeholder"
@@ -86,6 +90,7 @@
     <input *ngSwitchCase="'celular'"
       #inputRef
       celularMask
+      class="form-control"
       [ngClass]="getInputClasses()"
       [type]="type"
       [placeholder]="placeholder"

@@ -1,8 +1,9 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../core/services/AuthService';
 import { NotificationService } from '../../shared/modals/notification/services/notification-service';
 import { AuthRedirectService } from '../../core/services/auth-redirect.service';
+import { InputComponent } from '../../shared/components/input/input.component';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +12,13 @@ import { AuthRedirectService } from '../../core/services/auth-redirect.service';
   standalone: false
 })
 export class Login implements OnInit, AfterViewInit {
-  @ViewChild('focusInput') focusInputRef!: ElementRef;
+  @ViewChild(InputComponent) usernameInput!: InputComponent;
+
+  ngAfterViewInit(): void {
+    if (this.usernameInput) {
+      this.usernameInput.setFocus();
+    }
+  }
   
   form!: FormGroup;
   errorMessage: string | null = null;
@@ -22,12 +29,7 @@ export class Login implements OnInit, AfterViewInit {
     private authService: AuthService,
     private notificationService: NotificationService,
     private authRedirectService: AuthRedirectService
-  ) {
-  }
-
-  ngAfterViewInit(): void {
-    this.focusInputRef.nativeElement.focus();
-  }
+  ) {}
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -45,7 +47,8 @@ export class Login implements OnInit, AfterViewInit {
           this.isLogging = false;
           const role = this.authService.getUserRole();
           const empresaId = this.authService.getUserEmpresaId();
-          const user = { ...res, role, empresaId };
+          // Suporte não precisa estar vinculado a uma empresa (multi-tenant SaaS)
+          const user = { ...res, role, empresaId: role === 'Suporte' ? null : empresaId };
           this.authRedirectService.redirectAfterLogin(user);
         },
         error: (err) => {

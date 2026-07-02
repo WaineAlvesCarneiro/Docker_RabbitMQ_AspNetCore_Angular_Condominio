@@ -3,25 +3,25 @@
   border-collapse: collapse;
   margin-top: 12px;
   font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-  background: #fff;
-  border-radius: 8px;
+  background: var(--bg-surface, #fff);
+  border-radius: var(--radius-2, 8px);
   overflow: hidden;
-  box-shadow: 0 6px 18px rgba(27, 39, 51, 0.08);
+  box-shadow: var(--shadow-md, 0 6px 18px rgba(27, 39, 51, 0.08));
 }
 
 .itens-table thead {
-  background: linear-gradient(90deg, #f5f7fa, #eef2f6);
-  color: #334155;
+  background: var(--bg-gradient, linear-gradient(90deg, #f5f7fa, #eef2f6));
+  color: var(--color-text-strong, #334155);
   font-weight: 600;
 }
 
 .itens-table th,
 .itens-table td {
-  padding: 12px 14px;
+  padding: var(--space-sm, 12px) var(--space-md, 14px);
   text-align: left;
   vertical-align: middle;
-  font-size: 14px;
-  color: #475569;
+  font-size: var(--font-size-sm, 14px);
+  color: var(--color-text, #475569);
 }
 
 .itens-table tbody tr {
@@ -30,7 +30,7 @@
 }
 
 .itens-table tbody tr:hover {
-  background: #fbfdff;
+  background: var(--surface-hover, #fbfdff);
 }
 
 .itens-table .actions {
@@ -40,7 +40,7 @@
 }
 
 .itens-table .actions app-button {
-  margin: 0 4px;
+  margin: 0 var(--space-xs, 4px);
 }
 
 .itens-table th.sortable {
@@ -50,8 +50,8 @@
 
 .itens-table th .sort-indicator {
   opacity: 0.5;
-  margin-left: 6px;
-  font-size: 12px;
+  margin-left: var(--space-2, 6px);
+  font-size: var(--font-size-xs, 12px);
 }
 
 .itens-table th.sorted-asc .sort-indicator {
@@ -108,12 +108,12 @@
 }
 
 .status.sim {
-  color: #16a34a;
+  color: var(--color-success, #16a34a);
   font-weight: 600;
 }
 
 .status.nao {
-  color: #ef4444;
+  color: var(--color-danger, #ef4444);
   font-weight: 600;
 }
 
@@ -125,6 +125,6 @@
 }
 
 .list-title {
-  font-size: 20px;
-  font-weight: 700;
+  font-size: var(--font-size-lg, 20px);
+  font-weight: var(--font-weight-700, 700);
 }

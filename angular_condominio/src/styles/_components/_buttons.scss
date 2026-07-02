@@ -1,0 +1,41 @@
+@use '../design_tokens' as dt;
+@use 'sass:color' as color;
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: dt.$radius-md;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.08s ease, box-shadow 0.12s ease, opacity 0.12s ease;
+}
+
+.btn:active { transform: translateY(1px); }
+.btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.btn-primary {
+  background: dt.$primary-500;
+  color: #fff;
+  border: 1px solid color.adjust(dt.$primary-500, $lightness: -6%);
+  box-shadow: 0 6px 16px rgba(2, 132, 199, 0.12);
+}
+.btn-primary:hover { background: dt.$primary-600; }
+
+.btn-ghost {
+  background: transparent;
+  color: dt.$primary-600;
+  border: 1px solid rgba(16,24,40,0.06);
+}
+.btn-ghost:hover { background: rgba(2,132,199,0.04); }
+
+.btn-danger {
+  background: dt.$danger-500;
+  color: #fff;
+  border: 1px solid color.adjust(dt.$danger-500, $lightness: -6%);
+}
+.btn-danger:hover { filter: brightness(0.95); }
+
+.btn-sm { padding: 6px 8px; font-size: 13px; border-radius: dt.$radius-sm; }
+.btn-md { padding: 10px 14px; font-size: 14px; border-radius: dt.$radius-md; }

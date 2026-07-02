@@ -3,7 +3,14 @@
   [disabled]="disabled || loading"
   [type]="type"
   (click)="onButtonClick()"
+  [id]="id"
+  [name]="name"
+  [value]="value"
+  [attr.aria-label]="ariaLabel"
+  [attr.aria-pressed]="ariaPressed"
+  [attr.title]="title"
+  [attr.tabindex]="tabIndex"
 >
-  <span *ngIf="loading" class="spinner spinner-sm"></span>
-  <ng-content></ng-content>
+  <span *ngIf="loading" class="spinner spinner-sm" aria-hidden="true"></span>
+  <span class="btn-content"><ng-content></ng-content></span>
 </button>

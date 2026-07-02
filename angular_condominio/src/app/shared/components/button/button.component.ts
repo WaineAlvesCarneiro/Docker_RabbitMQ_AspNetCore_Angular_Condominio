@@ -16,6 +16,16 @@ export class ButtonComponent {
   @Input() loading: boolean = false;
   @Input() block: boolean = false;
   @Input() type: 'button' | 'submit' | 'reset' = 'button';
+  // Common native attributes passed-through
+  @Input() id?: string;
+  @Input() name?: string;
+  @Input() value?: string | number;
+  @Input('aria-label') ariaLabel?: string;
+  @Input('aria-pressed') ariaPressed?: boolean | null = null;
+  @Input() ariaCurrent?: string | null = null;
+  @Input() title?: string;
+  @Input() tabIndex?: number;
+  @Input() active: boolean = false;
 
   @Output() click = new EventEmitter<void>();
 
@@ -26,9 +36,10 @@ export class ButtonComponent {
   }
 
   getButtonClasses(): string {
-    const classes = ['btn', `btn-${this.variant}`, `btn-${this.size}`];
+    const classes = ['btn', 'btn-' + this.variant, 'btn-' + this.size];
     if (this.block) classes.push('btn-block');
     if (this.loading) classes.push('btn-loading');
     return classes.join(' ');
   }
+  // Refreshed file context - no functional change
 }

@@ -1,34 +1,30 @@
 <aside class="app-sidebar">
-  <div class="user-info" *ngIf="isLoggedIn && userName">
-    <span>{{ userName }}</span>
+  <div class="sidebar-top">
+    <div class="user-info" *ngIf="isLoggedIn && userName">
+      <div class="avatar">{{ userName.charAt(0) }}</div>
+      <div class="user-name">{{ userName }}</div>
+    </div>
   </div>
   <nav class="main-nav">
     <ul>
       <li>
-        <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+        <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
       </li>
       <li *ngIf="isSindicoOrPorteiro">
-        <a routerLink="/imoveis" routerLinkActive="active">Imóveis</a>
+        <a class="nav-link" routerLink="/imoveis" routerLinkActive="active">Imóveis</a>
       </li>
       <li *ngIf="isSindicoOrPorteiro">
-        <a routerLink="/moradores" routerLinkActive="active">Moradores</a>
+        <a class="nav-link" routerLink="/moradores" routerLinkActive="active">Moradores</a>
       </li>
       <li *ngIf="isSuporte">
-        <a routerLink="/empresas" routerLinkActive="active">Empresas</a>
+        <a class="nav-link" routerLink="/empresas" routerLinkActive="active">Empresas</a>
       </li>
       <li *ngIf="isSuporte">
-        <a routerLink="/usuarios" routerLinkActive="active">Usuários</a>
+        <a class="nav-link" routerLink="/usuarios" routerLinkActive="active">Usuários</a>
       </li>
     </ul>
   </nav>
   <div class="logout-container">
-    <app-button
-      variant="danger"
-      size="md"
-      [block]="true"
-      (click)="logout()"
-    >
-      Sair
-    </app-button>
+    <app-button variant="danger" [block]="true" (click)="logout()">Sair</app-button>
   </div>
 </aside>

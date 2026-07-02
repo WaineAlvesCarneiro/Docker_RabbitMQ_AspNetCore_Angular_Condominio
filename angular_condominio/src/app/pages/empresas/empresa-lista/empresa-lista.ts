@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { EmpresaService } from '../services/empresa-service';
-import { Empresa } from '../empresa.model';
 import { NotificationService } from '../../../shared/modals/notification/services/notification-service';
 import { DialogService } from '../../../shared/modals/services/dialog-service';
 import { EnumService } from '../../../shared/services/enum.service';
 import { PaginatedResponse } from '../../../shared/models/paginated-response.model';
+import { EmpresaService } from '../services/empresa-service';
+import { Empresa } from '../empresa.model';
 
 @Component({
   selector: 'app-empresa-lista',
@@ -15,8 +15,6 @@ import { PaginatedResponse } from '../../../shared/models/paginated-response.mod
 })
 export class EmpresaLista implements OnInit {
   empresas: Empresa[] = [];
-  tipoCondominioMap = new Map<number, string>();
-  tipoEmpresaAtivoMap = new Map<number, string>();
   totalCount: number = 0;
   pageIndex: number = 0;
   pageSize: number = 10;
@@ -24,13 +22,16 @@ export class EmpresaLista implements OnInit {
   orderBy: string = 'razaoSocial';
   direction: string = 'ASC';
 
+  tipoCondominioMap = new Map<number, string>();
+  tipoEmpresaAtivoMap = new Map<number, string>();
+
   constructor(
     private empresaService: EmpresaService,
     private router: Router,
     private notificationService: NotificationService,
     private dialogService: DialogService,
     private enumService: EnumService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.carregar();
@@ -43,7 +44,7 @@ export class EmpresaLista implements OnInit {
     return this.tipoCondominioMap.get(value) || '';
   }
 
-  getAtivoLabel(value: number): string {
+  getEmpresaAtivoLabel(value: number): string {
     return this.tipoEmpresaAtivoMap.get(value) || '';
   }
 

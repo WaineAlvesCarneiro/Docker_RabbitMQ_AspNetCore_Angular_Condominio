@@ -9,16 +9,20 @@ import { NotificationService, Notification } from './services/notification-servi
 })
 export class NotificationComponent implements OnInit {
   notifications: Notification[] = [];
+  private subscriptionActive = false;
 
   constructor(private notificationService: NotificationService) {}
 
   ngOnInit(): void {
-    this.notificationService.notification$.subscribe(notification => {
-      this.notifications.push(notification);
-      setTimeout(() => {
-        this.notifications = this.notifications.filter(n => n !== notification);
-      }, 5000);
-    });
+    if (!this.subscriptionActive) {
+      this.subscriptionActive = true;
+      this.notificationService.notification$.subscribe(notification => {
+        this.notifications.push(notification);
+        setTimeout(() => {
+          this.notifications = this.notifications.filter(n => n !== notification);
+        }, 5000);
+      });
+    }
   }
 
   close(notification: Notification): void {

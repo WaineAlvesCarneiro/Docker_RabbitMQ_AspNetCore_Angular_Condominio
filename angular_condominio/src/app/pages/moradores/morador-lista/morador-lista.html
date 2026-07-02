@@ -1,26 +1,41 @@
 <div class="container">
-
   <div class="header">
-    <h2>Lista de Moradores</h2>
-    <app-button
-      *ngIf="userRole !== 'Porteiro'"
-      variant="primary"
-      size="md"
-      (click)="novo()"
-    >
-      Novo morador
-    </app-button>  </div>
+    <div class="list-header">
+      <div class="list-title">Lista de Moradores</div>
+      <app-button *ngIf="userRole !== 'Porteiro'" variant="primary" size="md" (click)="novo()">Novo morador</app-button>
+    </div>
+  </div>
 
   <app-table-filters (filtersChange)="onFiltersChange($event)"></app-table-filters>
 
   <table class="itens-table">
     <thead>
       <tr>
-        <th>Código</th>
-        <th>Nome</th>
-        <th>Celular</th>
-        <th>Data entrada</th>
-        <th>Data saída</th>
+        <th class="sortable" (click)="sortBy('id')" 
+          [ngClass]="{ 'sorted-asc': orderBy==='id' && direction==='ASC', 'sorted-desc': orderBy==='id' && direction==='DESC' }">
+          ID
+          <span class="sort-indicator">▾</span>
+        </th>
+        <th class="sortable" (click)="sortBy('nome')" 
+          [ngClass]="{ 'sorted-asc': orderBy==='nome' && direction==='ASC', 'sorted-desc': orderBy==='nome' && direction==='DESC' }">
+          Nome
+          <span class="sort-indicator">▾</span>
+        </th>
+        <th class="sortable" (click)="sortBy('celular')" 
+          [ngClass]="{ 'sorted-asc': orderBy==='celular' && direction==='ASC', 'sorted-desc': orderBy==='celular' && direction==='DESC' }">
+          Celular
+          <span class="sort-indicator">▾</span>
+        </th>
+        <th class="sortable" (click)="sortBy('dataEntrada')" 
+          [ngClass]="{ 'sorted-asc': orderBy==='dataEntrada' && direction==='ASC', 'sorted-desc': orderBy==='dataEntrada' && direction==='DESC' }">
+          Data entrada
+          <span class="sort-indicator">▾</span>
+        </th>
+        <th class="sortable" (click)="sortBy('dataSaida')" 
+          [ngClass]="{ 'sorted-asc': orderBy==='dataSaida' && direction==='ASC', 'sorted-desc': orderBy==='dataSaida' && direction==='DESC' }">
+          Data saída
+          <span class="sort-indicator">▾</span>
+        </th>
         <th>Imóvel 'Bloco-Apto'</th>
         <th>Proprietário</th>
         <th class="actions">Ações</th>
@@ -28,7 +43,7 @@
     </thead>
     <tbody>
       <tr *ngFor="let item of moradores">
-        <td data-label="Código">{{ item.id }}</td>
+        <td data-label="ID">{{ item.id }}</td>
         <td data-label="Nome">{{ item.nome }}</td>
         <td data-label="Celular">{{ item.celular | celularpipe }}</td>
         <td data-label="Data entrada">{{ item.dataEntrada | date:'dd/MM/yyyy':'':'pt-BR' }}</td>
@@ -40,24 +55,21 @@
           </span>
         </td>
         <td class="actions" data-label="Ações">
-          <app-button
-            variant="outline"
-            size="sm"
-            (click)="editar(item.id)"
-          >
-            {{ userRole === 'Porteiro' ? 'Visualizar' : 'Editar' }}
+          <app-button variant="outline" size="sm" (click)="editar(item.id)"><span class="icon">
+            ✎</span> <span>Editar</span>
           </app-button>
-
-          <app-button
-            *ngIf="userRole !== 'Porteiro'"
-            variant="danger"
-            size="sm"
-            (click)="excluir(item.id)"
-          >
-            Excluir
+          <app-button variant="danger" size="sm" (click)="excluir(item.id)"><span class="icon">
+            🗑</span> <span>Excluir</span>
           </app-button>
         </td>
       </tr>
     </tbody>
   </table>
+
+  <app-pagination
+    [totalCount]="totalCount"
+    [pageIndex]="pageIndex"
+    [pageSize]="pageSize"
+    (pageChange)="onPageChange($event)">
+  </app-pagination>
 </div>

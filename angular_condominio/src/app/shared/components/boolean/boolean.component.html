@@ -3,13 +3,14 @@
     <input
       [id]="id"
       type="checkbox"
+      class="form-control-checkbox"
       [checked]="value"
       [disabled]="disabled"
       [required]="required"
       (change)="onCheckboxChange($event)"
       (blur)="onCheckboxBlur()"
     />
-    <label *ngIf="label" [for]="id" [ngClass]="{ required: required }">
+    <label *ngIf="label" [for]="id" [ngClass]="{ required: required }" class="form-check-label">
       {{ label }}
     </label>
   </div>

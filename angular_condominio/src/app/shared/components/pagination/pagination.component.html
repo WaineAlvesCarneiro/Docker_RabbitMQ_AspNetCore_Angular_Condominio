@@ -1,13 +1,18 @@
-<nav class="pagination-container" *ngIf="totalPages > 1">
-  <button class="page-btn" (click)="previous()" [disabled]="pageIndex <= 0">Anterior</button>
+<nav class="pagination-container ds-pagination" aria-label="Paginação" *ngIf="totalPages > 1">
+  <app-button class="pagination-prev" variant="outline" size="sm" (click)="previous()" [disabled]="pageIndex <= 0" ariaLabel="Página anterior">Anterior</app-button>
 
-  <button
-    class="page-number"
-    *ngFor="let p of pages"
-    [class.active]="p === pageIndex"
-    (click)="goToPage(p)">
-    {{ p + 1 }}
-  </button>
+  <ul class="pagination-list" role="list">
+    <li *ngFor="let p of pages" role="listitem">
+      <app-button
+        class="page-number btn-ghost btn-sm"
+        [class.active]="p === pageIndex"
+        [attr.aria-current]="p === pageIndex ? 'page' : null"
+        (click)="goToPage(p)">
+        <span class="sr-only">Ir para página</span>
+        {{ p + 1 }}
+      </app-button>
+    </li>
+  </ul>
 
-  <button class="page-btn" (click)="next()" [disabled]="pageIndex >= totalPages - 1">Próximo</button>
+  <app-button variant="outline" size="sm" class="pagination-next" (click)="next()" [disabled]="pageIndex >= totalPages - 1" ariaLabel="Próxima página">Próximo</app-button>
 </nav>

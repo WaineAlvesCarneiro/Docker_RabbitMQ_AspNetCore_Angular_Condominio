@@ -1,3 +1,10 @@
 <header class="app-header">
-  <h1>{{ title }}</h1>
+  <div class="container header-inner">
+    <div class="brand">
+      <a class="brand-link" routerLink="/">{{ title }}</a>
+    </div>
+    <div class="header-actions">
+      <ng-content select=".header-actions"></ng-content>
+    </div>
+  </div>
 </header>

@@ -1,0 +1,21 @@
+@use '../design_tokens' as dt;
+
+
+.form-container {
+  background: dt.$surface;
+  padding: dt.$sp-md;
+  border-radius: dt.$radius-lg;
+  box-shadow: 0 10px 30px rgba(2,6,23,0.06);
+}
+
+.form-group { display:flex; gap: dt.$sp-sm; align-items:center; margin-bottom: dt.$sp-sm; }
+.form-label { min-width: 140px; font-weight: 600; color: dt.$muted-600; }
+.form-control { flex:1; padding: 10px 12px; border: 1px solid #e6eef1; border-radius: dt.$radius-sm; }
+.form-control.error { border-color: dt.$danger-500; }
+.form-error { color: dt.$danger-500; font-size: 13px; margin-top: 6px; }
+
+.form-actions { display:flex; justify-content:flex-end; gap: dt.$sp-sm; margin-top: dt.$sp-md; }
+
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: dt.$sp-md; }
+.form-grid .form-group { margin-bottom: 0; }
+

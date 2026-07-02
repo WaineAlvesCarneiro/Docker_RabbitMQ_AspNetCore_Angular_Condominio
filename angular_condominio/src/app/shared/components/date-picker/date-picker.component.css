@@ -10,20 +10,9 @@
   align-items: center;
 }
 
-.form-label {
-  min-width: 100px;
-  font-weight: bold;
-}
+.form-label { min-width: 140px; font-weight:600; color:#374151; }
 
-input[type='date'] {
-  flex: 1;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  margin-left: 10px;
-  height: 38px;
-  box-sizing: border-box;
-}
+input[type='date'] { flex:1; padding:10px 12px; border:1px solid #e6eef1; border-radius:8px; margin-left:12px; height:40px; box-sizing:border-box; }
 
 input[type='date']::-webkit-calendar-picker-indicator {
   cursor: pointer;

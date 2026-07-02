@@ -13,11 +13,7 @@
   margin-bottom: 12px;
 }
 
-.form-label {
-  min-width: 140px;
-  font-weight: 600;
-  color: #374151;
-}
+.form-label { min-width: 140px; font-weight: 600; color: #374151; }
 
 .validation-message {
   color: #ef4444;
@@ -27,3 +23,6 @@
 .form-actions app-button:first-child {
   min-width: 100px;
 }
+
+.form-grid { display:grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.form-grid .form-group { margin-bottom: 0; }

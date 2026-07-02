@@ -1,0 +1,26 @@
+@use '../design_tokens' as dt;
+
+.itens-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: dt.$radius-lg;
+  overflow: hidden;
+  background: dt.$surface;
+  box-shadow: 0 6px 18px rgba(2,6,23,0.06);
+}
+
+.itens-table thead { background: linear-gradient(90deg, dt.$bg-200, #f7fafc); color: dt.$muted-600; }
+.itens-table th, .itens-table td { padding: 12px 14px; text-align: left; font-size: 14px; }
+
+.itens-table th.sortable { cursor: pointer; user-select: none; }
+.itens-table th .sort-indicator { margin-left: 8px; opacity: 0.6; }
+
+.itens-table tbody tr { transition: background 0.12s ease; }
+.itens-table tbody tr:hover { background: #fbfdff; }
+
+.itens-table .actions { display:flex; gap: 8px; justify-content:center; }
+
+@media (max-width: 768px) {
+  .itens-table thead { display:none; }
+  .itens-table, .itens-table tbody, .itens-table tr, .itens-table td { display:block; width:100%; }
+}

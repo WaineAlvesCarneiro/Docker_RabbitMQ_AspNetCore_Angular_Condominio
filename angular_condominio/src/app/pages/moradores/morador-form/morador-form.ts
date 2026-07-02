@@ -30,6 +30,7 @@ export class MoradorForm implements OnInit, AfterViewInit {
     return c.errors['celularInvalid'] ? 'Celular inválido (11 dígitos).' : 'Celular obrigatório.';
   }
 
+  // DEBUG: botão temporário para inspecionar estado do formulário
   logForm(): void {
     console.log('form.valid:', this.form.valid);
     console.log('form.value:', this.form.getRawValue());

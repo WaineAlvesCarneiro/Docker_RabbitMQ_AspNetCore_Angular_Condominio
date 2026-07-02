@@ -1,34 +1,19 @@
 <div class="loginContainer">
-  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="loginForm" autocomplete="off">
-    <h2>Login</h2>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="loginForm form-container auth-card" autocomplete="off">
+    <h2 class="card-title">Acessar sistema</h2>
 
-    <div>
-      <label for="username">Usuário</label>
-      <input id="username" type="text" formControlName="username" #focusInput/>
+    <div class="form-group">
+      <app-input label="Usuário" id="username" type="text" formControlName="username" #focusInput></app-input>
     </div>
-    <div *ngIf="form.get('username')?.invalid && form.get('username')?.touched" class="error-message">
-      Usuário é obrigatório.
-    </div>
+    <div *ngIf="form.get('username')?.invalid && form.get('username')?.touched" class="form-error">Usuário é obrigatório.</div>
 
-    <div>
-      <label for="password">Senha</label>
-      <input id="password" type="password" formControlName="password"/>
+    <div class="form-group">
+      <app-input label="Senha" id="password" type="password" formControlName="password"></app-input>
     </div>
-    <div *ngIf="form.get('password')?.invalid && form.get('password')?.touched" class="error-message"> 
-      Senha é obrigatória.
-    </div>
+    <div *ngIf="form.get('password')?.invalid && form.get('password')?.touched" class="form-error">Senha é obrigatória.</div>
 
-    <div class="submit-container">
-      <app-button
-        type="submit"
-        variant="success"
-        size="md"
-        [block]="true"
-        [disabled]="isLogging || form.invalid"
-        [loading]="isLogging"
-      >
-        Entrar
-      </app-button>
+    <div class="form-actions">
+      <app-button type="submit" variant="primary" [block]="true" [disabled]="isLogging || form.invalid">Entrar</app-button>
     </div>
   </form>
 </div>

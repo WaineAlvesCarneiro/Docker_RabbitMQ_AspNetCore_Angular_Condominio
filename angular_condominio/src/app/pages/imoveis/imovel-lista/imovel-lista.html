@@ -1,14 +1,9 @@
 <div class="container">
   <div class="header">
-    <h2>Lista de Imóveis</h2>
-    <app-button
-      *ngIf="userRole !== 'Porteiro'"
-      variant="primary"
-      size="md"
-      (click)="novo()"
-    >
-      Novo imóvel
-    </app-button>
+    <div class="list-header">
+      <div class="list-title">Lista de Imóveis</div>
+      <app-button *ngIf="userRole !== 'Porteiro'" variant="primary" size="md" (click)="novo()">Novo imóvel</app-button>
+    </div>
   </div>
 
   <app-table-filters (filtersChange)="onFiltersChange($event)"></app-table-filters>
@@ -16,35 +11,41 @@
   <table class="itens-table">
     <thead>
       <tr>
-        <th>Código</th>
-        <th>Bloco</th>
-        <th>Apartamento</th>
-        <th>Box</th>
+        <th class="sortable" (click)="sortBy('id')" 
+          [ngClass]="{ 'sorted-asc': orderBy==='id' && direction==='ASC', 'sorted-desc': orderBy==='id' && direction==='DESC' }">
+          ID
+          <span class="sort-indicator">▾</span>
+        </th>
+        <th class="sortable" (click)="sortBy('bloco')" 
+          [ngClass]="{ 'sorted-asc': orderBy==='bloco' && direction==='ASC', 'sorted-desc': orderBy==='bloco' && direction==='DESC' }">
+          Bloco
+          <span class="sort-indicator">▾</span>
+        </th>
+        <th class="sortable" (click)="sortBy('apartamento')" 
+          [ngClass]="{ 'sorted-asc': orderBy==='apartamento' && direction==='ASC', 'sorted-desc': orderBy==='apartamento' && direction==='DESC' }">
+          Apartamento
+          <span class="sort-indicator">▾</span>
+        </th>
+        <th class="sortable" (click)="sortBy('boxGaragem')" 
+          [ngClass]="{ 'sorted-asc': orderBy==='boxGaragem' && direction==='ASC', 'sorted-desc': orderBy==='boxGaragem' && direction==='DESC' }">
+          Box
+          <span class="sort-indicator">▾</span>
+        </th>
         <th class="actions">Ações</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let item of imoveis">
-        <td data-label="Código">{{ item.id }}</td>
+        <td data-label="ID">{{ item.id }}</td>
         <td data-label="Bloco">{{ item.bloco }}</td>
         <td data-label="Apartamento">{{ item.apartamento }}</td>
         <td data-label="Box">{{ item.boxGaragem }}</td>
         <td class="actions" data-label="Ações">
-          <app-button
-            variant="outline"
-            size="sm"
-            (click)="editar(item.id)"
-          >
-            {{ userRole === 'Porteiro' ? 'Visualizar' : 'Editar' }}
+          <app-button variant="outline" size="sm" (click)="editar(item.id)"><span class="icon">
+            ✎</span> <span>Editar</span>
           </app-button>
-
-          <app-button
-            *ngIf="userRole !== 'Porteiro'"
-            variant="danger"
-            size="sm"
-            (click)="excluir(item.id)"
-          >
-            Excluir
+          <app-button variant="danger" size="sm" (click)="excluir(item.id)"><span class="icon">
+            🗑</span> <span>Excluir</span>
           </app-button>
         </td>
       </tr>

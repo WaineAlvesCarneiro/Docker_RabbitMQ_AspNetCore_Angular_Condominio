@@ -24,19 +24,15 @@ export class MoradorService {
     pageSize: number = 10,
     orderBy: string = 'nome',
     direction: string = 'ASC',
-    nome: string = ''
+    search: string = ''
   ) {
     const serverPage = (Number(page) || 0) + 1;
-    const idEmpresa = this.authService.getUserEmpresaId();
-
     let params = new HttpParams()
       .set('page', serverPage)
       .set('pageSize', pageSize)
       .set('orderBy', orderBy)
       .set('direction', direction)
-      .set('nome', nome);
-
-    idEmpresa !== null ? params = params.set('empresaId', idEmpresa) : params = params.set('empresaId', 0);
+      .set('search', search);
 
     return this.http.get<PaginatedResponse<any>>(`${this.apiUrl}/paginado`, { params }).pipe(
       map(response => {
@@ -47,6 +43,7 @@ export class MoradorService {
 
         const serverPageIndex = respDados.pageIndex ?? respDados.pageNumber ?? 1;
         const normalizedPageIndex = Number(serverPageIndex) > 0 ? Number(serverPageIndex) - 1 : 0;
+
         const normalizedPageSize = respDados.pageSize ?? respDados.linesPerPage ?? pageSize;
         const normalizedTotalCount = respDados.totalCount ?? 0;
 

@@ -2,94 +2,44 @@
 
 <form [formGroup]="form" class="form-container" (ngSubmit)="salvar()" autocomplete="off">
 
-  <div *ngIf="form.get('id')?.value !== 0" class="form-group">
-    <app-input
-      label="Código"
-      type="number"
-      formControlName="id"
-      [readonly]="true">
+  <div class="form-grid">
+    <div *ngIf="form.get('id')?.value !== 0" class="form-group">
+      <app-input label="Código" type="number" formControlName="id" [readonly]="true"></app-input>
+    </div>
+
+    <app-input label="Nome" formControlName="nome" [required]="true" [maxLength]="255" [error]="form.get('nome')?.invalid && formSubmetido ? 'Nome é obrigatório.' : ''"></app-input>
+
+    <app-input label="Celular" type="tel" formControlName="celular" placeholder="(99) 99999-9999" maskName="celular" 
+      [required]="true" [maxLength]="15" [error]="form.get('celular')?.invalid && formSubmetido ? getCelularError() : ''">
     </app-input>
-  </div>
 
-  <app-input
-    label="Nome"
-    formControlName="nome"
-    [required]="true"
-    [maxLength]="50"
-    [error]="form.get('nome')?.invalid && formSubmetido ? 'Nome é obrigatório.' : ''">
-  </app-input>
+    <app-input label="E-mail" type="email" formControlName="email" 
+      [required]="true" [maxLength]="255" [error]="form.get('email')?.invalid && formSubmetido ? 'E-mail obrigatório ou formato inválido.' : ''">
+    </app-input>
 
-  <app-input
-    label="Celular"
-    type="tel"
-    formControlName="celular"
-    placeholder="(99) 99999-9999"
-    maskName="celular"
-    [required]="true"
-    [maxLength]="15"
-    [error]="form.get('celular')?.invalid && formSubmetido ? getCelularError() : ''">
-  </app-input>
-
-  <app-input
-    label="E-mail"
-    type="email"
-    formControlName="email"
-    [required]="true"
-    [maxLength]="50"
-    [error]="form.get('email')?.invalid && formSubmetido ? 'E-mail obrigatório ou formato inválido.' : ''">
-  </app-input>
-
-  <app-date-picker
-    label="Data Entrada"
-    formControlName="dataEntrada"
-    [required]="true"
-    [error]="form.get('dataEntrada')?.invalid && formSubmetido ? 'Data entrada é obrigatória.' : ''">
-  </app-date-picker>
-
-  <div *ngIf="form.get('id')?.value !== 0" class="form-group">
-    <app-date-picker
-      label="Data Saída"
-      formControlName="dataSaida">
+    <app-date-picker label="Data Entrada" formControlName="dataEntrada" 
+      [required]="true" [error]="form.get('dataEntrada')?.invalid && formSubmetido ? 'Data entrada é obrigatória.' : ''">
     </app-date-picker>
-  </div>
 
-  <app-select
-    label="Imóvel"
-    formControlName="imovelId"
-    [options]="imovelOptions"
-    [required]="true"
-    [error]="form.get('imovelId')?.invalid && formSubmetido ? 'Imóvel é obrigatório.' : ''">
-  </app-select>
+    <div *ngIf="form.get('id')?.value !== 0" class="form-group">
+      <app-date-picker label="Data Saída" formControlName="dataSaida"></app-date-picker>
+    </div>
 
-  <div class="form-group">
-    <app-switch
-      formControlName="isProprietario"
-      label="Proprietário"
-      id="isProprietario">
-    </app-switch>
+    <app-select label="Imóvel" formControlName="imovelId" [options]="imovelOptions" 
+      [required]="true" [error]="form.get('imovelId')?.invalid && formSubmetido ? 'Imóvel é obrigatório.' : ''">
+    </app-select>
+
+    <div class="form-group">
+      <app-switch formControlName="isProprietario" label="Proprietário" id="isProprietario"></app-switch>
+    </div>
   </div>
 
   <div class="form-actions">
-    <app-button
-      type="submit"
-      variant="primary"
-      size="md"
-      [disabled]="isSaving || form.invalid"
-      [loading]="isSaving">
-      <span *ngIf="!isSaving">Salvar</span>
-      <span *ngIf="isSaving">Aguarde...</span>
-    </app-button>
-
-    <app-button
-      type="button"
-      variant="secondary"
-      size="md"
-      (click)="cancelar()">
-      {{ userRole === 'Porteiro' ? 'Voltar' : 'Cancelar' }}
-    </app-button>
+    <app-button type="submit" variant="primary" size="md" [disabled]="isSaving || form.invalid">{{ isSaving ? 'Aguarde...' : 'Salvar' }}</app-button>
+    <app-button type="button" variant="outline" size="md" (click)="cancelar()">{{ userRole === 'Porteiro' ? 'Voltar' : 'Cancelar' }}</app-button>
   </div>
   <!-- DEBUG: botão temporário para inspecionar estado do formulário -->
   <div style="margin-top:8px;">
-    <button type="button" (click)="logForm()" style="padding:6px 10px;">Debug: Log Form</button>
+      <button type="button" (click)="logForm()" style="padding:6px 10px;">Debug: Log Form</button>
   </div>
 </form>

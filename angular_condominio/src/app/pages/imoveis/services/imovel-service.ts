@@ -20,15 +20,15 @@ export class ImovelService {
       map(r => (r.dados || []).map(e => ImovelAdapter.fromApi(e)))
     );
   }
+  
   getAllPage(
     page: number = 0,
     pageSize: number = 10,
-    orderBy: string = 'id',
+    orderBy: string = 'bloco',
     direction: string = 'ASC',
     search: string = ''
   ) {
     const serverPage = (Number(page) || 0) + 1;
-
     let params = new HttpParams()
       .set('page', serverPage)
       .set('pageSize', pageSize)
@@ -45,6 +45,7 @@ export class ImovelService {
 
         const serverPageIndex = respDados.pageIndex ?? respDados.pageNumber ?? 1;
         const normalizedPageIndex = Number(serverPageIndex) > 0 ? Number(serverPageIndex) - 1 : 0;
+
         const normalizedPageSize = respDados.pageSize ?? respDados.linesPerPage ?? pageSize;
         const normalizedTotalCount = respDados.totalCount ?? 0;
 

@@ -1,0 +1,19 @@
+@use 'design_tokens' as dt;
+
+html, body {
+  height: 100%;
+  font-family: dt.$font-family-base;
+  font-size: dt.$font-size-base;
+  color: #0f172a;
+  background: dt.$bg-100;
+  margin: 0;
+}
+
+* { box-sizing: border-box; }
+
+a { color: dt.$primary-500; text-decoration: none; }
+
+button { font-family: inherit; }
+
+/* utility */
+.container { max-width: auto; margin: 0 auto; padding: 0 dt.$sp-md; }

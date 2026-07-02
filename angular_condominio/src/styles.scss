@@ -1,0 +1,11 @@
+@use 'styles/_design_tokens' as *;
+@use 'styles/_base' as *;
+@use 'styles/_components/_buttons' as *;
+@use 'styles/_components/_forms' as *;
+@use 'styles/_components/_tables' as *;
+/* Import shared listing styles from app to ensure list pages have consistent styles */
+@use 'app/shared/styles/listing' as listing;
+
+/* Import legacy styles last so they can be overridden if necessary */
+@use 'styles/_lista_tabela' as *;
+@use 'styles/_form' as *;

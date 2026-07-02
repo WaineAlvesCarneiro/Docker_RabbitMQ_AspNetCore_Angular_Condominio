@@ -20,28 +20,56 @@ export class UsuarioService {
   }
 
   getAllPage(
-    page: number = 1,
+    page: number = 0,
     pageSize: number = 10,
-    orderBy: string = 'username',
+    orderBy: string = 'userName',
     direction: string = 'ASC',
-    userName: string = ''
+    search: string = ''
   ) {
     const idEmpresa = this.authService.getUserEmpresaId();
     const nomeUsuario = this.authService.getUserName();
     const userRole = this.authService.getUserRole();
-
+    
+    const serverPage = (Number(page) || 0) + 1;
     let params = new HttpParams()
-      .set('page', page)
+      .set('page', serverPage)
       .set('pageSize', pageSize)
       .set('orderBy', orderBy)
       .set('direction', direction)
-      .set('userName', userName);
+      .set('search', search);
 
-    idEmpresa !== null ? params = params.set('empresaId', idEmpresa) : params = params.set('empresaId', 0);
+    userRole === 'Suporte' ? params = params.set('empresaId', 0)
+      : idEmpresa !== null ? params = params.set('empresaId', idEmpresa) : params = params.set('empresaId', 0);
+
     nomeUsuario !== null && userRole !== 'Suporte' ? params = params.set('userName', nomeUsuario) : params = params.set('userName', '');
 
-    return this.http.get<PaginatedResponse<Usuario>>(`${this.apiUrl}/paginado`, { params });
-  }
+    return this.http.get<PaginatedResponse<Usuario>>(`${this.apiUrl}/paginado`, { params }).pipe(
+          map(response => {
+            if (!response) return response as any;
+    
+            const respDados: any = response.dados || {};
+            const items = Array.isArray(respDados.items) ? respDados.items.map((i: any) => UsuarioAdapter.fromApi(i)) : [];
+    
+            const serverPageIndex = respDados.pageIndex ?? respDados.pageNumber ?? 1;
+            const normalizedPageIndex = Number(serverPageIndex) > 0 ? Number(serverPageIndex) - 1 : 0;
+    
+            const normalizedPageSize = respDados.pageSize ?? respDados.linesPerPage ?? pageSize;
+            const normalizedTotalCount = respDados.totalCount ?? 0;
+    
+            const mapped = {
+              ...response,
+              dados: {
+                items,
+                totalCount: normalizedTotalCount,
+                pageIndex: normalizedPageIndex,
+                pageSize: Number(normalizedPageSize)
+              }
+            } as PaginatedResponse<Usuario>;
+    
+            return mapped;
+          })
+        );
+      }
   
   getId(id: string): Observable<Usuario> {
     return this.http.get<Result<Usuario>>(`${this.apiUrl}/${id}`).pipe(

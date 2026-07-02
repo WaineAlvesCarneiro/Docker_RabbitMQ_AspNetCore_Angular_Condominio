@@ -1,8 +1,9 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NotificationService } from '../../../shared/modals/notification/services/notification-service';
 import { AuthService } from '../../../core/services/AuthService';
+import { InputComponent } from '../../../shared/components/input/input.component';
 
 @Component({
   selector: 'app-definir-senha',
@@ -11,7 +12,13 @@ import { AuthService } from '../../../core/services/AuthService';
   standalone: false
 })
 export class DefinirSenha implements OnInit, AfterViewInit {
-  @ViewChild('focusInput') focusInputRef!: ElementRef;
+  @ViewChild(InputComponent) novaSenhaInput!: InputComponent;
+
+  ngAfterViewInit(): void {
+    if (this.novaSenhaInput) {
+      this.novaSenhaInput.setFocus();
+    }
+  }
 
   form!: FormGroup;
   errorMessage: string | null = null;
@@ -23,10 +30,6 @@ export class DefinirSenha implements OnInit, AfterViewInit {
     private router: Router,
     private notificationService: NotificationService
   ) { }
-  
-  ngAfterViewInit(): void {
-    this.focusInputRef.nativeElement.focus();
-  }
 
   ngOnInit(): void {
     this.form = this.fb.group({

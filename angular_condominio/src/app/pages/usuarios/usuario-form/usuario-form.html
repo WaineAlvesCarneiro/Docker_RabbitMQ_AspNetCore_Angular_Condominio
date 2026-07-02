@@ -38,29 +38,16 @@
     <app-select
       label="Empresa"
       formControlName="empresaId"
-      [options]="empresaOptions"
-      [required]="true"
-      [error]="form.get('empresaId')?.invalid && formSubmetido ? 'Empresa é obrigatória' : ''">
+      [options]="empresaOptions">
     </app-select>
   </div>
 
   <div class="form-actions">
-    <app-button
-      type="submit"
-      variant="primary"
-      size="md"
-      [disabled]="isSaving || form.invalid"
-      [loading]="isSaving">
-      <span *ngIf="!isSaving">Salvar</span>
-      <span *ngIf="isSaving">Aguarde...</span>
-    </app-button>
-
-    <app-button
-      type="button"
-      variant="secondary"
-      size="md"
-      (click)="cancelar()">
-      Cancelar
-    </app-button>
+    <app-button type="submit" variant="primary" size="md" [disabled]="isSaving || form.invalid">{{ isSaving ? 'Aguarde...' : 'Salvar' }}</app-button>
+    <app-button type="button" variant="outline" size="md" (click)="cancelar()">Cancelar</app-button>
+  </div>
+  <!-- DEBUG: botão temporário para inspecionar estado do formulário -->
+  <div style="margin-top:8px;">
+    <button type="button" (click)="logForm()" style="padding:6px 10px;">Debug: Log Form</button>
   </div>
 </form>

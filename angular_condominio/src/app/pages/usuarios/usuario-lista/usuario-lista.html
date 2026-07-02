@@ -1,13 +1,9 @@
 <div class="container">
   <div class="header">
-    <h2>Lista de Usuários</h2>
-    <app-button
-      variant="primary"
-      size="md"
-      (click)="novo()"
-    >
-      Novo usuário
-    </app-button>
+    <div class="list-header">
+      <div class="list-title">Lista de Usuários</div>
+      <app-button variant="primary" size="md" (click)="novo()">Novo usuário</app-button>
+    </div>
   </div>
 
   <app-table-filters (filtersChange)="onFiltersChange($event)"></app-table-filters>
@@ -15,19 +11,47 @@
   <table class="itens-table">
     <thead>
       <tr>
-        <th>Código</th>
-        <th>Usuário</th>
-        <th>Perfil</th>
-        <th>Status Usuário</th>
-        <th>Status Empresa</th>
-        <th>Código Empresa</th>
-        <th>Empresa</th>
+        <th class="sortable" (click)="sortBy('id')" 
+          [ngClass]="{ 'sorted-asc': orderBy==='id' && direction==='ASC', 'sorted-desc': orderBy==='id' && direction==='DESC' }">
+          ID
+          <span class="sort-indicator">▾</span>
+        </th>
+        <th class="sortable" (click)="sortBy('userName')" 
+          [ngClass]="{ 'sorted-asc': orderBy==='userName' && direction==='ASC', 'sorted-desc': orderBy==='userName' && direction==='DESC' }">
+          Usuário
+          <span class="sort-indicator">▾</span>
+        </th>
+        <th class="sortable" (click)="sortBy('role')" 
+          [ngClass]="{ 'sorted-asc': orderBy==='role' && direction==='ASC', 'sorted-desc': orderBy==='role' && direction==='DESC' }">
+          Perfil
+          <span class="sort-indicator">▾</span>
+        </th>
+        <th class="sortable" (click)="sortBy('ativo')" 
+          [ngClass]="{ 'sorted-asc': orderBy==='ativo' && direction==='ASC', 'sorted-desc': orderBy==='ativo' && direction==='DESC' }">
+          Status Usuário
+          <span class="sort-indicator">▾</span>
+        </th>
+        <th class="sortable" (click)="sortBy('empresaAtiva')" 
+          [ngClass]="{ 'sorted-asc': orderBy==='empresaAtiva' && direction==='ASC', 'sorted-desc': orderBy==='empresaAtiva' && direction==='DESC' }">
+          Status Empresa
+          <span class="sort-indicator">▾</span>
+        </th>
+        <th class="sortable" (click)="sortBy('empresaId')" 
+          [ngClass]="{ 'sorted-asc': orderBy==='empresaId' && direction==='ASC', 'sorted-desc': orderBy==='empresaId' && direction==='DESC' }">
+          Código Empresa
+          <span class="sort-indicator">▾</span>
+        </th>
+        <th class="sortable" (click)="sortBy('empresaDto.razaoSocial')" 
+          [ngClass]="{ 'sorted-asc': orderBy==='empresaDto.razaoSocial' && direction==='ASC', 'sorted-desc': orderBy==='empresaDto.razaoSocial' && direction==='DESC' }">
+          Empresa
+          <span class="sort-indicator">▾</span>
+        </th>
         <th class="actions">Ações</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let item of usuarios">
-        <td data-label="Código">{{ item.id }}</td>
+        <td data-label="ID">{{ item.id }}</td>
         <td data-label="Usuário">{{ item.userName }}</td>
         <td data-label="Perfil">{{ getRoleLabel(item.role) }}</td>
         <td data-label="Status">{{ tipoUserAtivoMap.get(item.ativo) }}</td>
@@ -35,20 +59,11 @@
         <td data-label="Código Empresa">{{ item.empresaId || '-' }}</td>
         <td data-label="Empresa">{{ item.empresaDto?.razaoSocial || '-' }}</td>
         <td class="actions" data-label="Ações">
-          <app-button
-            variant="outline"
-            size="sm"
-            (click)="editar(item.id)"
-          >
-            Editar
+          <app-button variant="outline" size="sm" (click)="editar(item.id)"><span class="icon">
+            ✎</span> <span>Editar</span>
           </app-button>
-
-          <app-button
-            variant="danger"
-            size="sm"
-            (click)="excluir(item.id)"
-          >
-            Excluir
+          <app-button variant="danger" size="sm" (click)="excluir(item.id)"><span class="icon">
+            🗑</span> <span>Excluir</span>
           </app-button>
         </td>
       </tr>

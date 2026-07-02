@@ -1,23 +1,26 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/AuthService';
-import { Imovel } from '../imovel.model';
-import { ImovelService } from '../services/imovel-service';
 import { NotificationService } from '../../../shared/modals/notification/services/notification-service';
 import { DialogService } from '../../../shared/modals/services/dialog-service';
+import { PaginatedResponse } from '../../../shared/models/paginated-response.model';
+import { ImovelService } from '../services/imovel-service';
+import { Imovel } from '../imovel.model';
 
 @Component({
   selector: 'app-imovel-lista',
   standalone: false,
   templateUrl: './imovel-lista.html',
-  styleUrl: '../../../../styles/_lista_tabela.scss'
+  styleUrls: ['../../../shared/styles/lista-tabela.css']
 })
 export class ImovelLista {
   imoveis: Imovel[] = [];
   totalCount: number = 0;
   pageIndex: number = 0;
-  pageSize: number = 0;
+  pageSize: number = 10;
   currentSearch: string = '';
+  orderBy: string = 'bloco';
+  direction: string = 'ASC';
 
   userRole: string | null = null;
   isPorteiro = false;
@@ -36,44 +39,45 @@ export class ImovelLista {
     this.carregar();
   }
 
-  carregar(page: number = 0) {
-    this.imovelService.getAllPage(page, this.pageSize || 10, 'bloco', 'ASC', this.currentSearch).subscribe({
-      next: response => {
-        if (response.sucesso) {
-          this.imoveis = Array.isArray(response.dados.items) ? response.dados.items : [];
-          this.totalCount = response.dados.totalCount;
-          this.pageIndex = response.dados.pageIndex;
-          this.pageSize = response.dados.pageSize;
+  carregar(): void {
+    this.imovelService.getAllPage(this.pageIndex, this.pageSize, this.orderBy, this.direction, this.currentSearch).subscribe({
+      next: (res: PaginatedResponse<Imovel>) => {
+        if (res && res.sucesso) {
+          this.imoveis = Array.isArray(res.dados.items) ? res.dados.items : [];
+          this.totalCount = res.dados.totalCount;
+          this.pageIndex = res.dados.pageIndex;
+          this.pageSize = res.dados.pageSize;
         } else {
-          if (response.erro) {
-            this.notificationService.showAlerta(response.erro);
-          } else {
-            this.notificationService.showError('Erro ao carregar imoveis.');
-            console.error('Erro ao carregar imoveis metodo carregarImoveisPage: ', response.erro);
-          }
+          this.notificationService.showError('Erro ao carregar imóveis.');
         }
       },
       error: (err) => {
-        if (err.error && err.error.erro) {
-          this.notificationService.showAlerta(err.error.erro);
-        } else {
-          this.notificationService.showError('Erro ao carregar imóvel.');
-          console.error('Erro ao carregar imóvel metodo carregarImoveisPage: ', err);
-        }
+        this.notificationService.showError('Erro ao carregar imóveis.');
+        console.error(err);
       }
     });
   }
 
   onFiltersChange(filters: { search?: string; pageSize?: number }) {
     this.currentSearch = filters.search || '';
-    this.pageSize = filters.pageSize || this.pageSize || 10;
+    this.pageSize = filters.pageSize || this.pageSize;
     this.pageIndex = 0;
     this.carregar();
   }
 
   onPageChange(page: number) {
     this.pageIndex = page;
-    this.carregar(page);
+    this.carregar();
+  }
+
+  sortBy(column: string) {
+    if (this.orderBy === column) {
+      this.direction = this.direction === 'ASC' ? 'DESC' : 'ASC';
+    } else {
+      this.orderBy = column;
+      this.direction = 'ASC';
+    }
+    this.carregar();
   }
 
   novo(): void { this.router.navigate(['/imoveis/novo']); }

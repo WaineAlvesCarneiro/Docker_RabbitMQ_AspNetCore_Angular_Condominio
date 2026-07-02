@@ -1,23 +1,26 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { UsuarioService } from '../services/usuario-service';
-import { Usuario } from '../usuario.model';
 import { EnumService } from '../../../shared/services/enum.service';
 import { NotificationService } from '../../../shared/modals/notification/services/notification-service';
 import { DialogService } from '../../../shared/modals/services/dialog-service';
+import { PaginatedResponse } from '../../../shared/models/paginated-response.model';
+import { UsuarioService } from '../services/usuario-service';
+import { Usuario } from '../usuario.model';
 
 @Component({
   selector: 'app-usuario-lista',
   templateUrl: './usuario-lista.html',
   standalone: false,
-  styleUrl: '../../../../styles/_lista_tabela.scss'
+  styleUrls: ['../../../shared/styles/lista-tabela.css']
 })
 export class UsuarioLista implements OnInit {
   usuarios: Usuario[] = [];
   totalCount: number = 0;
   pageIndex: number = 0;
-  pageSize: number = 0;
+  pageSize: number = 10;
   currentSearch: string = '';
+  orderBy: string = 'userName';
+  direction: string = 'ASC';
 
   tipoRoleMap = new Map<number, string>();
   tipoUserAtivoMap = new Map<number, string>();
@@ -51,45 +54,46 @@ export class UsuarioLista implements OnInit {
     return this.tipoEmpresaAtivoMap.get(value) || '';
   }
 
-  carregar(page: number = 0) {
-    this.usuarioService.getAllPage(page, this.pageSize || 10, 'username', 'ASC', this.currentSearch).subscribe({
-      next: response => {
-        if (response.sucesso) {
-          this.usuarios = Array.isArray(response.dados.items) ? response.dados.items : [];
-          this.totalCount = response.dados.totalCount;
-          this.pageIndex = response.dados.pageIndex;
-          this.pageSize = response.dados.pageSize;
-        } else {
-          if (response.erro) {
-            this.notificationService.showAlerta(response.erro);
+  carregar(): void {
+      this.usuarioService.getAllPage(this.pageIndex, this.pageSize, this.orderBy, this.direction, this.currentSearch).subscribe({
+        next: (res: PaginatedResponse<Usuario>) => {
+          if (res && res.sucesso) {
+            this.usuarios = Array.isArray(res.dados.items) ? res.dados.items : [];
+            this.totalCount = res.dados.totalCount;
+            this.pageIndex = res.dados.pageIndex;
+            this.pageSize = res.dados.pageSize;
           } else {
             this.notificationService.showError('Erro ao carregar usuários.');
-              console.error('Erro ao carregar usuários metodo carregar: ', response.erro);
-            }
-        }
+          }
         },
-      error: (err) => {
-        if (err.error && err.error.erro) {
-          this.notificationService.showAlerta(err.error.erro);
-        } else {
+        error: (err) => {
           this.notificationService.showError('Erro ao carregar usuários.');
-          console.error('Erro ao carregar usuários metodo carregar: ', err);
+          console.error(err);
         }
+      });
+    }
+  
+    onFiltersChange(filters: { search?: string; pageSize?: number }) {
+      this.currentSearch = filters.search || '';
+      this.pageSize = filters.pageSize || this.pageSize;
+      this.pageIndex = 0;
+      this.carregar();
+    }
+  
+    onPageChange(page: number) {
+      this.pageIndex = page;
+      this.carregar();
+    }
+  
+    sortBy(column: string) {
+      if (this.orderBy === column) {
+        this.direction = this.direction === 'ASC' ? 'DESC' : 'ASC';
+      } else {
+        this.orderBy = column;
+        this.direction = 'ASC';
       }
-    });
-  }
-
-  onFiltersChange(filters: { search?: string; pageSize?: number }) {
-    this.currentSearch = filters.search || '';
-    this.pageSize = filters.pageSize || this.pageSize || 10;
-    this.pageIndex = 0;
-    this.carregar();
-  }
-
-  onPageChange(page: number) {
-    this.pageIndex = page;
-    this.carregar(page);
-  }
+      this.carregar();
+    }
 
   novo(): void { this.router.navigate(['/usuarios/novo']); }
   

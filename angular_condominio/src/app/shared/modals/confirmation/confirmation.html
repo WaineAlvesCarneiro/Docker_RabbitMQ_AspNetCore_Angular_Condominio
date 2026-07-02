@@ -7,22 +7,8 @@
       <p>{{ message }}</p>
     </div>
     <div class="modal-footer">
-      <app-button
-        type="button"
-        variant="secondary"
-        size="md"
-        (click)="onClose(false)"
-      >
-        Não
-      </app-button>
-      <app-button
-        type="button"
-        variant="primary"
-        size="md"
-        (click)="onClose(true)"
-      >
-        Sim
-      </app-button>
+      <app-button type="button" variant="outline" (click)="onClose(false)">Não</app-button>
+      <app-button type="button" variant="primary" (click)="onClose(true)">Sim</app-button>
     </div>
   </div>
 </div>
