@@ -35,8 +35,8 @@ public static class ImovelEndpoints
                     SortBy: sortBy ?? "Id",
                     Direction: direction ?? "ASC",
                     EmpresaId: empresaId,
-                    Bloco: bloco,
-                    Apartamento: apartamento
+                    Bloco: bloco ?? "",
+                    Apartamento: apartamento ?? ""
                 );
 
             var result = await mediator.Send(query, ct);

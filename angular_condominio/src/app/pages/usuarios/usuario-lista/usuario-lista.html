@@ -6,7 +6,12 @@
     </div>
   </div>
 
-  <app-table-filters (filtersChange)="onFiltersChange($event)"></app-table-filters>
+  <app-table-filters
+    [filtersConfig]="[
+      { key: 'search', placeholder: 'Nome do Usuário' }
+    ]"
+    (filtersChange)="onFiltersChange($event)">
+  </app-table-filters>
 
   <table class="itens-table">
     <thead>

@@ -18,7 +18,8 @@ export class ImovelLista {
   totalCount: number = 0;
   pageIndex: number = 0;
   pageSize: number = 10;
-  currentSearch: string = '';
+  currentSearchBloco: string = '';
+  currentSearchApartamento: string = '';
   orderBy: string = 'bloco';
   direction: string = 'ASC';
 
@@ -40,7 +41,8 @@ export class ImovelLista {
   }
 
   carregar(): void {
-    this.imovelService.getAllPage(this.pageIndex, this.pageSize, this.orderBy, this.direction, this.currentSearch).subscribe({
+    this.imovelService.getAllPage(this.pageIndex, this.pageSize, this.orderBy, this.direction, 
+        this.currentSearchBloco, this.currentSearchApartamento).subscribe({
       next: (res: PaginatedResponse<Imovel>) => {
         if (res && res.sucesso) {
           this.imoveis = Array.isArray(res.dados.items) ? res.dados.items : [];
@@ -58,8 +60,9 @@ export class ImovelLista {
     });
   }
 
-  onFiltersChange(filters: { search?: string; pageSize?: number }) {
-    this.currentSearch = filters.search || '';
+  onFiltersChange(filters: { searchBloco?: string; searchApartamento?: string; pageSize?: number }) {
+    this.currentSearchBloco = filters.searchBloco || '';
+    this.currentSearchApartamento = filters.searchApartamento || '';
     this.pageSize = filters.pageSize || this.pageSize;
     this.pageIndex = 0;
     this.carregar();

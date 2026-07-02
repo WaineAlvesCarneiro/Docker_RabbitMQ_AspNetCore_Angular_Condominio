@@ -26,7 +26,8 @@ export class ImovelService {
     pageSize: number = 10,
     orderBy: string = 'bloco',
     direction: string = 'ASC',
-    search: string = ''
+    searchBloco: string = '',
+    searchApartamento: string = ''
   ) {
     const serverPage = (Number(page) || 0) + 1;
     let params = new HttpParams()
@@ -34,7 +35,8 @@ export class ImovelService {
       .set('pageSize', pageSize)
       .set('orderBy', orderBy)
       .set('direction', direction)
-      .set('search', search);
+      .set('bloco', searchBloco || '')
+      .set('apartamento', searchApartamento || '');
 
     return this.http.get<PaginatedResponse<any>>(`${this.apiUrl}/paginado`, { params }).pipe(
       map(response => {

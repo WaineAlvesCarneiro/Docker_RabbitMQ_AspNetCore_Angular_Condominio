@@ -27,12 +27,16 @@ export class MoradorService {
     search: string = ''
   ) {
     const serverPage = (Number(page) || 0) + 1;
+    const idEmpresa = this.authService.getUserEmpresaId();
+
     let params = new HttpParams()
       .set('page', serverPage)
       .set('pageSize', pageSize)
       .set('orderBy', orderBy)
       .set('direction', direction)
-      .set('search', search);
+      .set('nome', search);
+
+    idEmpresa !== null ? params = params.set('empresaId', idEmpresa) : params = params.set('empresaId', 0);
 
     return this.http.get<PaginatedResponse<any>>(`${this.apiUrl}/paginado`, { params }).pipe(
       map(response => {

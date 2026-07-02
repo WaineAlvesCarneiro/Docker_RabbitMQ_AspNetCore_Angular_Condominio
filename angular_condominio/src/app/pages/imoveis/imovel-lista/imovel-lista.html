@@ -6,7 +6,13 @@
     </div>
   </div>
 
-  <app-table-filters (filtersChange)="onFiltersChange($event)"></app-table-filters>
+  <app-table-filters 
+    [filtersConfig]="[
+      { key: 'searchBloco', placeholder: 'Bloco' },
+      { key: 'searchApartamento', placeholder: 'Apartamento' }
+    ]"
+    (filtersChange)="onFiltersChange($event)">
+  </app-table-filters>
 
   <table class="itens-table">
     <thead>

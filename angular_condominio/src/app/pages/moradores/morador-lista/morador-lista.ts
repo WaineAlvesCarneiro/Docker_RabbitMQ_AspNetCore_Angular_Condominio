@@ -39,7 +39,7 @@ export class MoradorLista {
     this.carregar();
   }
 
-  carregar(): void {
+  carregar(): void { 
     this.moradorService.getAllPage(this.pageIndex, this.pageSize, this.orderBy, this.direction, this.currentSearch).subscribe({
       next: (res: PaginatedResponse<Morador>) => {
         if (res && res.sucesso) {

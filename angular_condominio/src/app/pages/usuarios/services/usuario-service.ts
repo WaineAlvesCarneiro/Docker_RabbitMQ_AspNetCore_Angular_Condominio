@@ -36,7 +36,7 @@ export class UsuarioService {
       .set('pageSize', pageSize)
       .set('orderBy', orderBy)
       .set('direction', direction)
-      .set('search', search);
+      .set('userName', search);
 
     userRole === 'Suporte' ? params = params.set('empresaId', 0)
       : idEmpresa !== null ? params = params.set('empresaId', idEmpresa) : params = params.set('empresaId', 0);

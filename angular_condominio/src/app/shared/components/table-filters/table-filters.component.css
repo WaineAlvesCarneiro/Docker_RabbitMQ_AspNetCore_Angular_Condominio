@@ -4,15 +4,19 @@
   align-items: center;
   margin-bottom: 12px;
 }
+
 .table-filters .form-control {
   padding: 8px 10px;
   border: 1px solid var(--border-color, #d0d7de);
   border-radius: 6px;
+}
+
+.table-filters input.form-control {
+  flex: 1;
   min-width: 180px;
 }
-.table-filters button.btn {
-  padding: 8px 12px;
-}
-.table-filters button.btn-outline {
-  padding: 8px 12px;
+
+.table-filters select.form-control {
+  width: 70px;
+  flex: 0;
 }

@@ -1,30 +1,37 @@
 import { Component, Output, EventEmitter, Input } from '@angular/core';
 
 export interface TableFilters {
-  search?: string;
+  [key: string]: string | number | undefined;
   pageSize?: number;
+}
+
+export interface FilterConfig {
+  key: string;
+  placeholder: string;
 }
 
 @Component({
   selector: 'app-table-filters',
-  standalone: false,
   templateUrl: './table-filters.component.html',
-  styleUrls: ['./table-filters.component.css']
+  styleUrls: ['./table-filters.component.css'],
+  standalone: false
 })
 export class TableFiltersComponent {
   @Input() pageSizeOptions: number[] = [5, 10, 20];
   @Input() initialPageSize = 10;
+  @Input() filtersConfig: FilterConfig[] = [];
+
   @Output() filtersChange = new EventEmitter<TableFilters>();
 
-  search: string = '';
+  filters: TableFilters = {};
   pageSize: number = this.initialPageSize;
 
   apply() {
-    this.filtersChange.emit({ search: this.search, pageSize: this.pageSize });
+    this.filtersChange.emit({ ...this.filters, pageSize: this.pageSize });
   }
 
   clear() {
-    this.search = '';
+    this.filters = {};
     this.pageSize = this.initialPageSize;
     this.apply();
   }

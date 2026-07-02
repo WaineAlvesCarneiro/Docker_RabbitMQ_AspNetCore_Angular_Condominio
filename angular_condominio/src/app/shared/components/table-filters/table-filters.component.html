@@ -1,5 +1,12 @@
 <div class="table-filters">
-  <input type="text" placeholder="Pesquisar..." class="form-control" [(ngModel)]="search" (keyup.enter)="apply()" />
+  <div *ngFor="let f of filtersConfig" class="mb-2" style="flex:1">
+    <input 
+      type="text" 
+      class="form-control" 
+      [(ngModel)]="filters[f.key]" 
+      [placeholder]="f.placeholder" 
+      (keyup.enter)="apply()" />
+  </div>
 
   <select class="form-control" [(ngModel)]="pageSize" (change)="apply()">
     <option *ngFor="let p of pageSizeOptions" [value]="p">{{ p }}</option>

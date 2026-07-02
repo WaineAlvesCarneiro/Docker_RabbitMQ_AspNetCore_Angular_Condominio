@@ -18,7 +18,8 @@ export class EmpresaLista implements OnInit {
   totalCount: number = 0;
   pageIndex: number = 0;
   pageSize: number = 10;
-  currentSearch: string = '';
+  currentSearchRazaoSocial: string = '';
+  currentSearchCnpj: string = '';
   orderBy: string = 'razaoSocial';
   direction: string = 'ASC';
 
@@ -49,7 +50,8 @@ export class EmpresaLista implements OnInit {
   }
 
   carregar(): void {
-    this.empresaService.getAllPage(this.pageIndex, this.pageSize, this.orderBy, this.direction, this.currentSearch).subscribe({
+    this.empresaService.getAllPage(this.pageIndex, this.pageSize, this.orderBy, this.direction,
+      this.currentSearchRazaoSocial, this.currentSearchCnpj).subscribe({
       next: (res: PaginatedResponse<Empresa>) => {
         if (res && res.sucesso) {
           this.empresas = Array.isArray(res.dados.items) ? res.dados.items : [];
@@ -67,8 +69,9 @@ export class EmpresaLista implements OnInit {
     });
   }
 
-  onFiltersChange(filters: { search?: string; pageSize?: number }) {
-    this.currentSearch = filters.search || '';
+  onFiltersChange(filters: { searchRazaoSocial?: string; searchCnpj?: string; pageSize?: number }) {
+    this.currentSearchRazaoSocial = filters.searchRazaoSocial || '';
+    this.currentSearchCnpj = filters.searchCnpj || '';
     this.pageSize = filters.pageSize || this.pageSize;
     this.pageIndex = 0;
     this.carregar();

@@ -23,15 +23,20 @@ export class EmpresaService {
     pageSize: number = 10,
     orderBy: string = 'razaoSocial',
     direction: string = 'ASC',
-    search: string = ''
+    searchRazaoSocial: string = '',
+    searchCnpj: string = ''
   ) {
     const serverPage = (Number(page) || 0) + 1;
+
+    const cnpj = searchCnpj ? String(searchCnpj).replace(/\D/g, '') : '';
+
     let params = new HttpParams()
       .set('page', serverPage)
       .set('pageSize', pageSize)
       .set('orderBy', orderBy)
       .set('direction', direction)
-      .set('search', search);
+      .set('razaoSocial', searchRazaoSocial || '')
+      .set('cnpj', cnpj || '');
 
     return this.http.get<PaginatedResponse<any>>(`${this.apiUrl}/paginado`, { params }).pipe(
       map(response => {
