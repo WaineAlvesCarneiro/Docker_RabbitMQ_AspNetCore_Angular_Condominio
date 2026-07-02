@@ -1,45 +1,72 @@
 .itens-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
-  font-family: Arial, sans-serif;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-top: 12px;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(27, 39, 51, 0.08);
 }
 
 .itens-table thead {
-  background-color: #ccc;
-  color: dimgray;
-  height: 30px;
+  background: linear-gradient(90deg, #f5f7fa, #eef2f6);
+  color: #334155;
+  font-weight: 600;
 }
 
 .itens-table th,
 .itens-table td {
-  padding: 8px;
+  padding: 12px 14px;
   text-align: left;
+  vertical-align: middle;
+  font-size: 14px;
+  color: #475569;
 }
 
 .itens-table tbody tr {
-  background: linear-gradient(90deg, #ffffff4d, #bdd1be);
-  height: 30px;
+  background: #fff;
+  transition: background 0.12s ease;
+}
+
+.itens-table tbody tr:hover {
+  background: #fbfdff;
 }
 
 .itens-table .actions {
   display: flex;
   justify-content: center;
-  gap: 4px;
+  gap: 6px;
 }
 
 .itens-table .actions app-button {
   margin: 0 4px;
 }
 
-.itens-table .actions app-button:first-child {
-  margin-right: 8px;
+.itens-table th.sortable {
+  cursor: pointer;
+  user-select: none;
 }
 
-@media (max-width: 768px) {
+.itens-table th .sort-indicator {
+  opacity: 0.5;
+  margin-left: 6px;
+  font-size: 12px;
+}
+
+.itens-table th.sorted-asc .sort-indicator {
+  transform: rotate(-180deg);
+  opacity: 1;
+}
+
+.itens-table th.sorted-desc .sort-indicator {
+  transform: rotate(0deg);
+  opacity: 1;
+}
+
+@media (max-width: 900px) {
   .itens-table thead {
-  display: none;
+    display: none;
   }
 
   .itens-table,
@@ -51,13 +78,14 @@
   }
 
   .itens-table tr {
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    margin-bottom: 12px;
+    border: 1px solid #eee;
+    border-radius: 6px;
+    padding: 10px;
   }
 
   .itens-table td {
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #eee;
     text-align: right;
     padding-left: 50%;
     position: relative;
@@ -69,8 +97,9 @@
     left: 0;
     width: 50%;
     padding-left: 10px;
-    font-weight: bold;
+    font-weight: 600;
     text-align: left;
+    color: #334155;
   }
 
   .itens-table td:last-child {
@@ -79,11 +108,23 @@
 }
 
 .status.sim {
-  color: green;
-  font-weight: bold;
+  color: #16a34a;
+  font-weight: 600;
 }
 
 .status.nao {
-  color: red;
-  font-weight: bold;
+  color: #ef4444;
+  font-weight: 600;
+}
+
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.list-title {
+  font-size: 20px;
+  font-weight: 700;
 }

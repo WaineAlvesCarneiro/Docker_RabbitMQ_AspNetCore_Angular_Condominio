@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { Morador } from '../morador.model';
 import { MoradorService } from '../services/morador-service';
 import { ImovelService } from '../../imoveis/services/imovel-service';
@@ -12,7 +12,7 @@ import { InputComponent } from '../../../shared/components/input/input.component
 @Component({
   selector: 'app-morador-form',
   templateUrl: './morador-form.html',
-  styleUrls: ['../../../shared/styles/form-module.css'],
+  styleUrls: ['../../../../styles/_form.scss'],
   standalone: false,
 })
 export class MoradorForm implements OnInit, AfterViewInit {
@@ -22,6 +22,12 @@ export class MoradorForm implements OnInit, AfterViewInit {
     if (this.nomeInput) {
       this.nomeInput.setFocus();
     }
+  }
+
+  getCelularError(): string {
+    const c = this.form.get('celular');
+    if (!c || !c.errors) return '';
+    return c.errors['celularInvalid'] ? 'Celular inválido (11 dígitos).' : 'Celular obrigatório.';
   }
 
   logForm(): void {
@@ -52,23 +58,32 @@ export class MoradorForm implements OnInit, AfterViewInit {
     private fb: FormBuilder
   ) {}
 
+  private celularValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const raw = (control.value || '').toString();
+      const digits = raw.replace(/\D/g, '');
+      return digits.length === 11 ? null : { celularInvalid: true };
+    };
+  }
+
   ngOnInit(): void {
     this.form = this.fb.group({
       id: [{ value: 0, disabled: true }],
       nome: ['', Validators.required],
-      celular: ['', [Validators.required, Validators.pattern(/^\d{11}$/)]],
+      celular: ['', [Validators.required, this.celularValidator()]],
       email: ['', [Validators.required, Validators.email]],
       dataEntrada: ['', Validators.required],
       dataSaida: '',
       isProprietario: false,
-      imovelId: ['0', Validators.required]
+      imovelId: ['', Validators.required]
     });
 
     this.imovelService.getAll().subscribe({
       next: (res) => {
         this.imoveis = res;
+        // usar string para value para consistência com o FormControl
         this.imovelOptions = this.imoveis.map(imovel => ({
-          value: imovel.id,
+          value: String(imovel.id),
           label: `Bloco ${imovel.bloco} - Apto ${imovel.apartamento}`
         }));
       },
@@ -82,8 +97,9 @@ export class MoradorForm implements OnInit, AfterViewInit {
     this.isPorteiro = this.userRole === 'Porteiro' || this.userRole === '3';
     if (this.userRole === 'Porteiro') this.form.disable();
 
+    // garantir opções também como strings (caso imoveis já estejam carregados)
     this.imovelOptions = this.imoveis.map(imovel => ({
-      value: imovel.id,
+      value: String(imovel.id),
       label: `Bloco ${imovel.bloco} - Apto ${imovel.apartamento}`
     }));
   }
@@ -91,7 +107,9 @@ export class MoradorForm implements OnInit, AfterViewInit {
   carregar(id: string): void {
     this.moradorService.getId(id).subscribe({
       next: (u) => {
-        this.form.patchValue(u);
+        // garantir que imovelId esteja como string para funcionar com <select>
+        const patch = { ...u, imovelId: u.imovelId != null ? String(u.imovelId) : '' } as any;
+        this.form.patchValue(patch);
       },
       error: (err) => {
         this.notificationService.showError('Erro ao carregar morador');

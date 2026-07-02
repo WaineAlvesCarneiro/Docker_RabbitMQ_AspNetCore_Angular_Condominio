@@ -14,7 +14,7 @@ import { forkJoin } from 'rxjs';
   selector: 'app-empresa-form',
   templateUrl: './empresa-form.html',
   standalone: false,
-  styleUrls: ['../../../shared/styles/form-module.css']
+  styleUrls: ['../../../../styles/_form.scss']
 })
 export class EmpresaForm implements OnInit, AfterViewInit {
   @ViewChild(InputComponent) razaoSocialInput!: InputComponent;

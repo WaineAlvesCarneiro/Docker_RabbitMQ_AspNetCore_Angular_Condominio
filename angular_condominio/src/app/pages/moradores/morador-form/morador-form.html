@@ -27,7 +27,7 @@
     maskName="celular"
     [required]="true"
     [maxLength]="15"
-    [error]="form.get('celular')?.invalid && formSubmetido ? 'Celular inválido ou obrigatório.' : ''">
+    [error]="form.get('celular')?.invalid && formSubmetido ? getCelularError() : ''">
   </app-input>
 
   <app-input

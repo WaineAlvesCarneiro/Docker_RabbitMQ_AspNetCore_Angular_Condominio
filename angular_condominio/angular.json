@@ -36,7 +36,9 @@
               }
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "src/styles/_lista_tabela.scss",
+              "src/app/shared/styles/lista-tabela.css"
             ]
           },
           "configurations": {

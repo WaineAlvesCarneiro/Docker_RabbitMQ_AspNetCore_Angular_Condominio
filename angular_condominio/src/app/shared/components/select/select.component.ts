@@ -47,15 +47,29 @@ export class SelectComponent implements ControlValueAccessor, OnChanges {
   value: any = null;
   disabled = false;
   touched = false;
+  private pendingValueSet = false;
+  private pendingValue: any = null;
+  selectedIndex: number = -1;
 
   private onChange: (value: any) => void = () => {};
   private onTouched: () => void = () => {};
   constructor(private cd: ChangeDetectorRef) {}
 
   writeValue(value: any): void {
+    // normalize primitives to string for consistent comparison with options
     this.value = value;
-    // ensure view updates when value is written, especially if options arrive later
-    try { this.cd.detectChanges(); } catch (e) { /* ignore */ }
+    // if options not yet present, store pending value and wait for options
+    if (!this.options || this.options.length === 0) {
+      this.pendingValueSet = true;
+      this.pendingValue = value;
+    } else {
+      this.pendingValueSet = false;
+      this.pendingValue = null;
+      // map value to selectedIndex
+      const idx = this.options.findIndex(o => this.areValuesEqual(o.value, value));
+      this.selectedIndex = idx >= 0 ? idx : -1;
+    }
+    try { this.cd.detectChanges(); } catch (e) {}
   }
 
   registerOnChange(fn: any): void {
@@ -71,7 +85,6 @@ export class SelectComponent implements ControlValueAccessor, OnChanges {
   }
 
   onSelectChange(selected: any): void {
-    // selected comes from ngModel/ngModelChange: it preserves original types when using [ngValue]
     if (this.multiple) {
       this.value = Array.isArray(selected) ? selected : (selected ? [selected] : []);
     } else {
@@ -79,6 +92,27 @@ export class SelectComponent implements ControlValueAccessor, OnChanges {
     }
     this.onChange(this.value);
     this.change.emit(this.value);
+  }
+
+  onNativeChange(ev: any): void {
+    const idx = ev;
+    if (idx === '-1' || idx === -1 || idx === null || idx === undefined) {
+      this.value = null;
+    } else {
+      const opt = this.options && this.options.length > 0 ? this.options[Number(idx)] : null;
+      this.value = opt ? opt.value : null;
+    }
+    this.onChange(this.value);
+    this.change.emit(this.value);
+  }
+
+  onSelectedIndexChange(newIdx: any) {
+    // if passed an event, extract target.value safely
+    let idx = newIdx;
+    try {
+      if (newIdx && newIdx.target) idx = newIdx.target.value;
+    } catch (e) { /* ignore */ }
+    this.onNativeChange(idx);
   }
 
   onSelectBlur(): void {
@@ -89,9 +123,40 @@ export class SelectComponent implements ControlValueAccessor, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['options']) {
-      // when options change, ensure the template reflects current value
-      try { this.cd.detectChanges(); } catch (e) { /* ignore */ }
+      // When options arrive, if there was a pending value, apply it
+      if (this.pendingValueSet) {
+        this.value = this.pendingValue;
+        // find index for pending value
+        const idx = this.options.findIndex(o => this.areValuesEqual(o.value, this.pendingValue));
+        this.selectedIndex = idx >= 0 ? idx : -1;
+        this.pendingValueSet = false;
+        this.pendingValue = null;
+        this.onChange(this.value);
+      }
+      // also update selectedIndex when options change and we already have a value
+      if (!this.pendingValueSet && this.value != null) {
+        const idx2 = this.options.findIndex(o => this.areValuesEqual(o.value, this.value));
+        this.selectedIndex = idx2 >= 0 ? idx2 : -1;
+      }
+      try { this.cd.detectChanges(); } catch (e) {}
     }
+  }
+
+  private areValuesEqual(a: any, b: any): boolean {
+    // compare primitives and objects by id where possible
+    if (a === b) return true;
+    if (a == null || b == null) return false;
+    // compare numeric/string equality
+    if ((typeof a === 'number' || typeof a === 'string') && (typeof b === 'number' || typeof b === 'string')) {
+      return String(a) === String(b);
+    }
+    // try object id comparison
+    try {
+      if (typeof a === 'object' && typeof b === 'object') {
+        if ('id' in a && 'id' in b) return String((a as any).id) === String((b as any).id);
+      }
+    } catch (e) {}
+    return false;
   }
 
   get hasError(): boolean {

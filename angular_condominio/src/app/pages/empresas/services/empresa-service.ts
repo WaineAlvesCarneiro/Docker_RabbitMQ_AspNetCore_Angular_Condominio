@@ -25,7 +25,6 @@ export class EmpresaService {
     direction: string = 'ASC',
     search: string = ''
   ) {
-    // backend expects 1-based page numbers; convert from 0-based frontend page
     const serverPage = (Number(page) || 0) + 1;
     let params = new HttpParams()
       .set('page', serverPage)
@@ -41,7 +40,6 @@ export class EmpresaService {
         const respDados: any = response.dados || {};
         const items = Array.isArray(respDados.items) ? respDados.items.map((i: any) => EmpresaAdapter.fromApi(i)) : [];
 
-        // Normalize paging fields: convert server 1-based page to 0-based pageIndex for frontend
         const serverPageIndex = respDados.pageIndex ?? respDados.pageNumber ?? 1;
         const normalizedPageIndex = Number(serverPageIndex) > 0 ? Number(serverPageIndex) - 1 : 0;
 

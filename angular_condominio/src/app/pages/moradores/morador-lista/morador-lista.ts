@@ -10,7 +10,7 @@ import { DialogService } from '../../../shared/modals/services/dialog-service';
   selector: 'app-morador-lista',
   standalone: false,
   templateUrl: './morador-lista.html',
-  styleUrl: '../../../shared/styles/lista-tabela.css'
+  styleUrl: '../../../../styles/_lista_tabela.scss'
 })
 export class MoradorLista {
   moradores: Morador[] = [];

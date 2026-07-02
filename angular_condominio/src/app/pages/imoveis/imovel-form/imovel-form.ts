@@ -11,7 +11,7 @@ import { InputComponent } from '../../../shared/components/input/input.component
   selector: 'app-imovel-form',
   standalone: false,
   templateUrl: './imovel-form.html',
-  styleUrls: ['../../../shared/styles/form-module.css']
+  styleUrls: ['../../../../styles/_form.scss']
 })
 export class ImovelForm implements OnInit , AfterViewInit {
   @ViewChild(InputComponent) blocoInput!: InputComponent;

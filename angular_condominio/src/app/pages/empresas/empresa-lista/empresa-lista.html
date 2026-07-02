@@ -1,37 +1,41 @@
 <div class="container">
   <div class="header">
-    <h2>Lista de Empresas</h2>
-    <app-button
-      variant="primary"
-      size="md"
-      (click)="novo()"
-    >
-      Nova empresa
-    </app-button>
+    <div class="list-header">
+      <div class="list-title">Lista de Empresas</div>
+      <app-button
+        variant="primary"
+        size="md"
+        (click)="novo()"
+      >
+        Nova empresa
+      </app-button>
+    </div>
   </div>
+
+  <app-table-filters (filtersChange)="onFiltersChange($event)"></app-table-filters>
 
   <table class="itens-table">
     <thead>
       <tr>
-        <th>ID</th>
-        <th>Status</th>
-        <th>Razão Social</th>
-        <th>CNPJ</th>
-        <th>Tipo de Condomínio</th>
-        <th>Nome Responsável</th>
-        <th>Celular</th>
+        <th class="sortable" (click)="sortBy('id')" [ngClass]="{ 'sorted-asc': orderBy==='id' && direction==='ASC', 'sorted-desc': orderBy==='id' && direction==='DESC' }">ID <span class="sort-indicator">▾</span></th>
+        <th class="sortable" (click)="sortBy('ativo')" [ngClass]="{ 'sorted-asc': orderBy==='ativo' && direction==='ASC', 'sorted-desc': orderBy==='ativo' && direction==='DESC' }">Status <span class="sort-indicator">▾</span></th>
+        <th class="sortable" (click)="sortBy('razaoSocial')" [ngClass]="{ 'sorted-asc': orderBy==='razaoSocial' && direction==='ASC', 'sorted-desc': orderBy==='razaoSocial' && direction==='DESC' }">Razão Social <span class="sort-indicator">▾</span></th>
+        <th class="sortable" (click)="sortBy('cnpj')" [ngClass]="{ 'sorted-asc': orderBy==='cnpj' && direction==='ASC', 'sorted-desc': orderBy==='cnpj' && direction==='DESC' }">CNPJ <span class="sort-indicator">▾</span></th>
+        <th class="sortable" (click)="sortBy('tipoDeCondominio')" [ngClass]="{ 'sorted-asc': orderBy==='tipoDeCondominio' && direction==='ASC', 'sorted-desc': orderBy==='tipoDeCondominio' && direction==='DESC' }">Tipo de Condomínio <span class="sort-indicator">▾</span></th>
+        <th class="sortable" (click)="sortBy('nome')" [ngClass]="{ 'sorted-asc': orderBy==='nome' && direction==='ASC', 'sorted-desc': orderBy==='nome' && direction==='DESC' }">Nome Responsável <span class="sort-indicator">▾</span></th>
+        <th class="sortable" (click)="sortBy('celular')" [ngClass]="{ 'sorted-asc': orderBy==='celular' && direction==='ASC', 'sorted-desc': orderBy==='celular' && direction==='DESC' }">Celular <span class="sort-indicator">▾</span></th>
         <th class="actions">Ações</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let item of empresas">
-        <td>{{ item.id }}</td>
-        <td>{{ getAtivoLabel(item.ativo) }}</td>
-        <td>{{ item.razaoSocial }}</td>
-        <td>{{ item.cnpj | cnpjpipe }}</td>
-        <td>{{ getTipoCondominioLabel(item.tipoDeCondominio) }}</td>
-        <td>{{ item.nome }}</td>
-        <td>{{ item.celular | celularpipe }}</td>
+        <td data-label="ID">{{ item.id }}</td>
+        <td data-label="Status">{{ getAtivoLabel(item.ativo) }}</td>
+        <td data-label="Razão Social">{{ item.razaoSocial }}</td>
+        <td data-label="CNPJ">{{ item.cnpj | cnpjpipe }}</td>
+        <td data-label="Tipo de Condomínio">{{ getTipoCondominioLabel(item.tipoDeCondominio) }}</td>
+        <td data-label="Nome Responsável">{{ item.nome }}</td>
+        <td data-label="Celular">{{ item.celular | celularpipe }}</td>
         <td class="actions" data-label="Ações">
           <app-button
             variant="outline"

@@ -8,26 +8,15 @@
 
   <select
     [class]="getSelectClasses()"
-    [(ngModel)]="value"
     [disabled]="disabled"
     [required]="required"
     [multiple]="multiple"
-    (ngModelChange)="onSelectChange($event)"
+    (change)="onSelectedIndexChange($event)"
     (blur)="onSelectBlur()">
 
-    <option
-      *ngIf="!multiple"
-      [ngValue]="null"
-      disabled>
-      {{ placeholder }}
-    </option>
+    <option *ngIf="!multiple" value="-1" [selected]="selectedIndex===-1" disabled>{{ placeholder }}</option>
 
-    <option
-      *ngFor="let option of options"
-      [ngValue]="option.value"
-      [disabled]="option.disabled">
-      {{ option.label }}
-    </option>
+    <option *ngFor="let option of options; let i = index" [attr.value]="i" [disabled]="option.disabled" [selected]="i===selectedIndex">{{ option.label }}</option>
 
   </select>
 

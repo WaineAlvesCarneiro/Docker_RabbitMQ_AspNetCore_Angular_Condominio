@@ -5,14 +5,13 @@ import { Empresa } from '../empresa.model';
 import { NotificationService } from '../../../shared/modals/notification/services/notification-service';
 import { DialogService } from '../../../shared/modals/services/dialog-service';
 import { EnumService } from '../../../shared/services/enum.service';
-
 import { PaginatedResponse } from '../../../shared/models/paginated-response.model';
 
 @Component({
   selector: 'app-empresa-lista',
   templateUrl: './empresa-lista.html',
   standalone: false,
-  styleUrl: '../../../shared/styles/lista-tabela.css'
+  styleUrls: ['../../../shared/styles/lista-tabela.css']
 })
 export class EmpresaLista implements OnInit {
   empresas: Empresa[] = [];
@@ -22,6 +21,8 @@ export class EmpresaLista implements OnInit {
   pageIndex: number = 0;
   pageSize: number = 10;
   currentSearch: string = '';
+  orderBy: string = 'razaoSocial';
+  direction: string = 'ASC';
 
   constructor(
     private empresaService: EmpresaService,
@@ -47,7 +48,7 @@ export class EmpresaLista implements OnInit {
   }
 
   carregar(): void {
-    this.empresaService.getAllPage(this.pageIndex, this.pageSize, 'razaoSocial', 'ASC', this.currentSearch).subscribe({
+    this.empresaService.getAllPage(this.pageIndex, this.pageSize, this.orderBy, this.direction, this.currentSearch).subscribe({
       next: (res: PaginatedResponse<Empresa>) => {
         if (res && res.sucesso) {
           this.empresas = Array.isArray(res.dados.items) ? res.dados.items : [];
@@ -74,6 +75,16 @@ export class EmpresaLista implements OnInit {
 
   onPageChange(page: number) {
     this.pageIndex = page;
+    this.carregar();
+  }
+
+  sortBy(column: string) {
+    if (this.orderBy === column) {
+      this.direction = this.direction === 'ASC' ? 'DESC' : 'ASC';
+    } else {
+      this.orderBy = column;
+      this.direction = 'ASC';
+    }
     this.carregar();
   }
 

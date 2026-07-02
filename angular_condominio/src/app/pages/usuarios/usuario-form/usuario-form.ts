@@ -13,7 +13,7 @@ import { InputComponent } from '../../../shared/components/input/input.component
   selector: 'app-usuario-form',
   templateUrl: './usuario-form.html',
   standalone: false,
-  styleUrls: ['../../../shared/styles/form-module.css']
+  styleUrls: ['../../../../styles/_form.scss']
 })
 export class UsuarioForm implements OnInit, AfterViewInit {
   @ViewChild(InputComponent) userNameInput!: InputComponent;
