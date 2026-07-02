@@ -9,7 +9,7 @@
 }
 
 .form-group { display:flex; gap: dt.$sp-sm; align-items:center; margin-bottom: dt.$sp-sm; }
-.form-label { min-width: 140px; font-weight: 600; color: dt.$muted-600; }
+.form-label { min-width: 150px; font-weight: 600; color: dt.$muted-600; }
 .form-control { flex:1; padding: 10px 12px; border: 1px solid #e6eef1; border-radius: dt.$radius-sm; }
 .form-control.error { border-color: dt.$danger-500; }
 .form-error { color: dt.$danger-500; font-size: 13px; margin-top: 6px; }

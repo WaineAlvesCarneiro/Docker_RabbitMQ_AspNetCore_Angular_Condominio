@@ -6,16 +6,23 @@
     <div *ngIf="form.get('id')?.value !== 0" class="form-group">
       <app-input label="Código" type="number" formControlName="id" [readonly]="true"></app-input>
     </div>
+  </div>
+  <app-input label="Nome" formControlName="nome" 
+    [required]="true" [maxLength]="255" [error]="form.get('nome')?.invalid && formSubmetido ? 'Nome é obrigatório.' : ''">
+  </app-input>
 
-    <app-input label="Nome" formControlName="nome" [required]="true" [maxLength]="255" [error]="form.get('nome')?.invalid && formSubmetido ? 'Nome é obrigatório.' : ''"></app-input>
-
+  <app-input label="E-mail" type="email" formControlName="email" 
+    [required]="true" [maxLength]="255" [error]="form.get('email')?.invalid && formSubmetido ? 'E-mail obrigatório ou formato inválido.' : ''">
+  </app-input>
+  
+  <div class="form-grid">
     <app-input label="Celular" type="tel" formControlName="celular" placeholder="(99) 99999-9999" maskName="celular" 
       [required]="true" [maxLength]="15" [error]="form.get('celular')?.invalid && formSubmetido ? getCelularError() : ''">
     </app-input>
 
-    <app-input label="E-mail" type="email" formControlName="email" 
-      [required]="true" [maxLength]="255" [error]="form.get('email')?.invalid && formSubmetido ? 'E-mail obrigatório ou formato inválido.' : ''">
-    </app-input>
+    <div class="form-group">
+      <app-switch formControlName="isProprietario" label="Proprietário" id="isProprietario"></app-switch>
+    </div>
 
     <app-date-picker label="Data Entrada" formControlName="dataEntrada" 
       [required]="true" [error]="form.get('dataEntrada')?.invalid && formSubmetido ? 'Data entrada é obrigatória.' : ''">
@@ -24,15 +31,11 @@
     <div *ngIf="form.get('id')?.value !== 0" class="form-group">
       <app-date-picker label="Data Saída" formControlName="dataSaida"></app-date-picker>
     </div>
-
-    <app-select label="Imóvel" formControlName="imovelId" [options]="imovelOptions" 
-      [required]="true" [error]="form.get('imovelId')?.invalid && formSubmetido ? 'Imóvel é obrigatório.' : ''">
-    </app-select>
-
-    <div class="form-group">
-      <app-switch formControlName="isProprietario" label="Proprietário" id="isProprietario"></app-switch>
-    </div>
   </div>
+
+  <app-select label="Imóvel" formControlName="imovelId" [options]="imovelOptions" 
+    [required]="true" [error]="form.get('imovelId')?.invalid && formSubmetido ? 'Imóvel é obrigatório.' : ''">
+  </app-select>
 
   <div class="form-actions">
     <app-button type="submit" variant="primary" size="md" [disabled]="isSaving || form.invalid">{{ isSaving ? 'Aguarde...' : 'Salvar' }}</app-button>
